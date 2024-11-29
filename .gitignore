@@ -1,0 +1,7 @@
+.idea
+logs
+.DS_Store
+.flattened-pom.xml
+target
+*.iml
+*.versionsBackup
