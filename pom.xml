@@ -333,22 +333,22 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.chromia.cli</groupId>
+                <groupId>com.chromia.cli.tools</groupId>
                 <artifactId>chromia-cli-tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.chromia.cli</groupId>-->
+<!--                <artifactId>chromia-cli</artifactId>-->
+<!--                <version>${project.version}</version>-->
+<!--            </dependency>-->
             <dependency>
-                <groupId>com.chromia.cli</groupId>
-                <artifactId>chromia-cli</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.chromia.cli</groupId>
+                <groupId>com.chromia.cli.tools</groupId>
                 <artifactId>chromia-build-tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.chromia.cli</groupId>
+                <groupId>com.chromia.cli.tools</groupId>
                 <artifactId>chromia-build-tools</artifactId>
                 <version>${project.version}</version>
                 <type>test-jar</type>
