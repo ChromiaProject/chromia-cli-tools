@@ -5,7 +5,6 @@ include:
       - templates/release.yml
       - templates/report-code-coverage.yml
       - templates/maven-dependency-scanning.yml
-      - templates/container-dependency-scanning.yml
 
 image: registry.gitlab.com/chromaway/core-tools/chromia-images/maven-docker-java21:1.0.1
 
