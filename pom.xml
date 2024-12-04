@@ -11,6 +11,7 @@
     <modules>
         <module>chromia-cli-tools</module>
         <module>chromia-build-tools</module>
+        <module>coverage-report-aggregate</module>
     </modules>
 
     <name>Chromia Cli Tools Parent</name>
