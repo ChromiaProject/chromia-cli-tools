@@ -63,7 +63,7 @@
             <artifactId>postchain-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.chromia.cli</groupId>
+            <groupId>com.chromia.cli.tools</groupId>
             <artifactId>chromia-build-tools</artifactId>
         </dependency>
         <dependency>
