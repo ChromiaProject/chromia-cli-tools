@@ -18,15 +18,15 @@
 
     <properties>
         <revision>dev</revision>
-        <codegen.version>0.14.3</codegen.version>
-        <postchain.version>3.22.3</postchain.version>
+        <codegen.version>0.15.0</codegen.version>
+        <postchain.version>3.25.0</postchain.version>
         <postchain.chromia.version>3.20.1</postchain.chromia.version>
         <postchain.client.version>3.18.4</postchain.client.version>
-        <rell.version>0.14.2</rell.version>
+        <rell.version>0.14.3</rell.version>
         <rell.dokka.version>0.2.8</rell.dokka.version>
         <rell.toolbox.version>0.4.12</rell.toolbox.version>
-        <eif.version>0.5.37</eif.version>
-        <directory.chain.version>1.61.0</directory.chain.version>
+        <eif.version>0.6.5</eif.version>
+        <directory.chain.version>1.74.0</directory.chain.version>
         <directory.source>${project.build.directory}/directory-chain/src</directory.source>
 
         <jgit.version>6.9.0.202403050737-r</jgit.version>
@@ -130,7 +130,7 @@
                 <plugin>
                     <groupId>net.postchain.rell</groupId>
                     <artifactId>rell-maven-plugin</artifactId>
-                    <version>0.12.2</version>
+                    <version>0.12.5</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -229,6 +229,11 @@
                         <dateFormatTimeZone>UTC</dateFormatTimeZone>
                         <dateFormat>yyyy-MM-dd'T'HH:mm:ssX</dateFormat>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>3.3.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.owasp</groupId>
@@ -338,11 +343,6 @@
                 <artifactId>chromia-cli-tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>com.chromia.cli</groupId>-->
-<!--                <artifactId>chromia-cli</artifactId>-->
-<!--                <version>${project.version}</version>-->
-<!--            </dependency>-->
             <dependency>
                 <groupId>com.chromia.cli.tools</groupId>
                 <artifactId>chromia-build-tools</artifactId>
@@ -480,11 +480,11 @@
                 <version>2.19.0</version>
                 <scope>runtime</scope>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>dev.forkhandles</groupId>-->
-<!--                <artifactId>result4k</artifactId>-->
-<!--                <version>2.4.0.0</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>dev.forkhandles</groupId>
+                <artifactId>result4k</artifactId>
+                <version>2.4.0.0</version>
+            </dependency>
             <dependency>
                 <groupId>org.http4k</groupId>
                 <artifactId>http4k-format-jackson</artifactId>
@@ -501,11 +501,11 @@
                 <version>0.44</version>
             </dependency>
             <dependency>
-              <groupId>org.apache.tika</groupId>
-              <artifactId>tika-core</artifactId>
-              <version>3.0.0</version>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>3.0.0</version>
             </dependency>
-            
+
             <!-- Needed by postchain-client -->
             <dependency>
                 <groupId>commons-io</groupId>
@@ -560,6 +560,7 @@
             <groupId>com.willowtreeapps.assertk</groupId>
             <artifactId>assertk-jvm</artifactId>
             <version>0.26.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
