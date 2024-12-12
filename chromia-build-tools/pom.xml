@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.chromia.cli.tools</groupId>
-        <artifactId>chromia-cli-tools-parent</artifactId>
+        <groupId>com.chromia.cli</groupId>
+        <artifactId>chromia-cli-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
@@ -75,7 +75,7 @@
                         <configuration>
                             <packageName>com.chromia.directory1</packageName>
                             <mainModule>
-                                version,proposal_blockchain,common.queries,anchoring_chain_common,economy_chain,economy_chain_in_directory_chain
+                                version,proposal_blockchain,common.queries,anchoring_chain_common,economy_chain_test,economy_chain_in_directory_chain
                             </mainModule>
                             <configPath>${directory.config}</configPath>
                         </configuration>

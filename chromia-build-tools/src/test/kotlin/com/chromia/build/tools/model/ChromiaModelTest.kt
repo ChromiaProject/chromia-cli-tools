@@ -11,19 +11,19 @@ import com.chromia.build.tools.testData
 import com.chromia.cli.model.BlockchainModel
 import com.chromia.cli.model.DefaultChromiaModelRellVersion
 import com.chromia.cli.model.parseModel
-import java.io.File
-import java.math.BigInteger
-import java.nio.file.Path
 import net.postchain.common.hexStringToByteArray
 import net.postchain.gtv.GtvBigInteger
 import net.postchain.gtv.GtvByteArray
-import net.postchain.gtv.GtvFactory
+import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtv.GtvInteger
 import net.postchain.gtv.GtvNull
 import net.postchain.gtv.GtvString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
+import java.io.File
+import java.math.BigInteger
+import java.nio.file.Path
 
 internal class ChromiaModelTest {
 
@@ -101,7 +101,7 @@ internal class ChromiaModelTest {
             }
         }
         val model = parseModel(dir.resolve("chromia.yml").toFile())
-        assertThat(model.blockchains["bc1"]!!.moduleArgs["arg"]!!["foo"]).isEqualTo(GtvFactory.gtv("hello"))
+        assertThat(model.blockchains["bc1"]!!.moduleArgs["arg"]!!["foo"]).isEqualTo(gtv("hello"))
     }
 
     @Test
@@ -317,5 +317,18 @@ internal class ChromiaModelTest {
             contains("Incorrect type, expected string (location: docs->additionalContent->0)")
             contains("Incorrect type, expected string (location: docs->footerMessage)")
         }
+    }
+
+    @Test
+    fun `empty file`(@TempDir dir: Path) {
+        val settingsFile = File(dir.toFile(), "chromia.yml").apply {
+            writeText("")
+        }
+        val res = assertThrows<ValidationException> { parseModel(settingsFile) }
+
+        assertThat(res.message!!).isEqualTo("""
+            Following errors found in chromia.yml:
+            Required property "blockchains" not found (location: #)
+            """.trimIndent())
     }
 }
