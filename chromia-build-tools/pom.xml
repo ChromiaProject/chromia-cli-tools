@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.chromia.cli</groupId>
-        <artifactId>chromia-cli-parent</artifactId>
+        <groupId>com.chromia.cli.tools</groupId>
+        <artifactId>chromia-cli-tools-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
