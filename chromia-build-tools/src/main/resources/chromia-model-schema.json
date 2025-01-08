@@ -4,9 +4,6 @@
   "id": "ChromiaModel",
   "description": "Chromia Model",
   "additionalProperties": false,
-  "required": [
-    "blockchains"
-  ],
   "properties": {
     "definitions": {
       "type": [
