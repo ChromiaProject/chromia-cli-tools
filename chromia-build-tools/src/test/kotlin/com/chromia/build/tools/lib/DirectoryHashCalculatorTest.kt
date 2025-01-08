@@ -3,25 +3,25 @@ package com.chromia.build.tools.lib
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.chromia.build.tools.lib.DirectoryHashCalculator.RidStrategy
-import java.nio.file.Path
-import kotlin.io.path.createParentDirectories
-import kotlin.io.path.writeText
 import net.postchain.common.hexStringToWrappedByteArray
 import net.postchain.common.wrap
-import net.postchain.crypto.Secp256K1CryptoSystem
+import net.postchain.crypto.sha256Digest
 import net.postchain.gtv.GtvFactory.gtv
-import net.postchain.gtv.merkle.GtvMerkleHashCalculator
+import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV2
 import net.postchain.gtv.merkleHash
 import net.postchain.rell.base.utils.RellGtxConfigConstants
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
+import kotlin.io.path.createParentDirectories
+import kotlin.io.path.writeText
 
 class DirectoryHashCalculatorTest {
 
     @TempDir
     lateinit var sourceDir: Path
 
-    val hashCalculator = GtvMerkleHashCalculator(Secp256K1CryptoSystem())
+    val hashCalculator = GtvMerkleHashCalculatorV2(::sha256Digest)
 
     @Test
     fun `Given set of files, rid is computed as the hash of the map of files to their content`() {

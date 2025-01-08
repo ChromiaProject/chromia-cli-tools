@@ -10,7 +10,7 @@ import net.postchain.client.transaction.TransactionBuilder
 import net.postchain.common.BlockchainRid
 import net.postchain.common.hexStringToByteArray
 import net.postchain.common.tx.TransactionStatus
-import net.postchain.crypto.sha256Digest
+import net.postchain.gtv.mapper.toObject
 import net.postchain.rell.api.base.RellCliEnv
 
 fun interface DeploymentOperation {
@@ -57,7 +57,7 @@ fun findBlockchainRid(cliEnv: RellCliEnv, client: PostchainClient, apiVersion: L
     val maybeBcRid = if (apiVersion >= 8) {
         client.findBlockchainRid(partialResult.txRid.rid.hexStringToByteArray())?.let { BlockchainRid(it) }
     } else {
-        GtvToBlockchainRidFactory.calculateBlockchainRid(partialResult.blockchain.config, ::sha256Digest)
+        GtvToBlockchainRidFactory.calculateBlockchainRid(partialResult.blockchain.config.toObject())
     }
     if (maybeBcRid == null) {
         cliEnv.print("Deployment of blockchain ${partialResult.blockchain.name} was proposed, tx-rid: ${partialResult.txRid.rid}")

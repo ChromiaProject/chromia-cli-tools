@@ -19,11 +19,11 @@ import net.postchain.core.block.BlockDetailsTruncated
 import net.postchain.core.block.BlockQueryHeightFilter
 import net.postchain.core.block.BlockQueryTimeFilter
 import net.postchain.crypto.PubKey
-import net.postchain.crypto.Secp256K1CryptoSystem
+import net.postchain.crypto.sha256Digest
 import net.postchain.ebft.rest.contract.StateNodeStatus
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
-import net.postchain.gtv.merkle.GtvMerkleHashCalculator
+import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV2
 import net.postchain.gtx.Gtx
 import net.postchain.gtx.GtxQuery
 
@@ -110,7 +110,7 @@ class TestModel(
 
     override fun postTransaction(tx: ByteArray) {
         val decoded = Gtx.decode(tx)
-        val rid = decoded.gtxBody.calculateTxRid(GtvMerkleHashCalculator(Secp256K1CryptoSystem())).let { TxRid(it) }
+        val rid = decoded.gtxBody.calculateTxRid(GtvMerkleHashCalculatorV2(::sha256Digest)).let { TxRid(it) }
         txQueue.add(decoded)
         txMap[rid] = decoded
     }

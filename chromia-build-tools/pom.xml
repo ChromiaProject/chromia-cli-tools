@@ -22,7 +22,6 @@
         <directory.config>${directory.source}/../chromia.yml</directory.config>
     </properties>
 
-
     <build>
         <plugins>
             <plugin>
@@ -105,7 +104,7 @@
         </dependency>
         <dependency>
             <groupId>net.postchain</groupId>
-            <artifactId>postchain-base</artifactId>
+            <artifactId>postchain-spi</artifactId>
         </dependency>
         <dependency>
             <groupId>net.postchain</groupId>
@@ -162,6 +161,13 @@
         <dependency>
           <groupId>org.apache.tika</groupId>
           <artifactId>tika-core</artifactId>
+        </dependency>
+
+        <!-- TODO try to get rid of postchain-base dependency -->
+        <dependency>
+            <groupId>net.postchain</groupId>
+            <artifactId>postchain-base</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>

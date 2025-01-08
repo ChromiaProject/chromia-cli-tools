@@ -1,6 +1,13 @@
 package com.chromia.build.tools.lib
 
-import com.chromia.build.tools.lib.DirectoryHashCalculator.RidStrategy
+import net.postchain.common.types.WrappedByteArray
+import net.postchain.common.wrap
+import net.postchain.crypto.sha256Digest
+import net.postchain.gtv.Gtv
+import net.postchain.gtv.GtvFactory.gtv
+import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV2
+import net.postchain.gtv.merkleHash
+import net.postchain.rell.base.utils.RellGtxConfigConstants
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors.toList
@@ -10,20 +17,12 @@ import kotlin.io.path.extension
 import kotlin.io.path.pathString
 import kotlin.io.path.readText
 import kotlin.io.path.relativeTo
-import net.postchain.common.types.WrappedByteArray
-import net.postchain.common.wrap
-import net.postchain.crypto.Secp256K1CryptoSystem
-import net.postchain.gtv.Gtv
-import net.postchain.gtv.GtvFactory.gtv
-import net.postchain.gtv.merkle.GtvMerkleHashCalculator
-import net.postchain.gtv.merkleHash
-import net.postchain.rell.base.utils.RellGtxConfigConstants
 
 /**
  * Computes the hash of all rell files in a folder relative to it parent source folder
  */
 class DirectoryHashCalculator(private val sourceDir: Path) {
-    private val hashCalculator = GtvMerkleHashCalculator(Secp256K1CryptoSystem())
+    private val hashCalculator = GtvMerkleHashCalculatorV2(::sha256Digest)
 
     companion object {
         const val EOL_WINDOWS: String = "\r\n"
@@ -45,7 +44,7 @@ class DirectoryHashCalculator(private val sourceDir: Path) {
 
         companion object {
             /**
-             * Given a files structure like `src/lib/foo/a.rell`, `src/lib/foo/b.rell`, it computes the hash of the files as a ordered list
+             * Given a files structure like `src/lib/foo/a.rell`, `src/lib/foo/b.rell`, it computes the hash of the files as an ordered list
              * `[<a.rell-content>, <b.rell-content>]`
              */
             val LIST = RidStrategy { s -> gtv(s.sorted(Comparator.comparing { it.first }).map { gtv(it.second) }.collect(toList())) }
