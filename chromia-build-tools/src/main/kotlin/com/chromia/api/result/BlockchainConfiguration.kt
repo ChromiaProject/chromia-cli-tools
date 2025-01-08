@@ -5,15 +5,15 @@ import com.chromia.build.tools.compile.BlockchainConfigurationWriter.storeConfig
 import com.chromia.build.tools.compile.BlockchainConfigurationWriter.storeConfigLenient
 import com.chromia.build.tools.compile.ValidationException
 import com.chromia.build.tools.compile.withSigner
-import net.postchain.common.BlockchainRid
+import net.postchain.base.configuration.BlockchainConfigurationData
 import net.postchain.common.exception.UserMistake
 import net.postchain.common.hexStringToByteArray
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvEncoder
-import net.postchain.gtx.GTXBlockchainConfigurationFactory
+import net.postchain.gtv.mapper.toObject
 import java.nio.file.Path
 
-data class BlockchainConfiguration(override val name: String, val config: Gtv): Named<Gtv>(name, config) {
+data class BlockchainConfiguration(override val name: String, val config: Gtv) : Named<Gtv>(name, config) {
     val configByteArray get() = GtvEncoder.encodeGtv(config)
 
     fun withSigners(vararg signer: ByteArray) = BlockchainConfiguration(name, withSigner(config, *signer))
@@ -40,20 +40,16 @@ data class BlockchainConfiguration(override val name: String, val config: Gtv): 
 
     fun validate() {
         try {
-            GTXBlockchainConfigurationFactory.validateConfiguration(
-                    withSigner(config, "000000000000000000000000000000000000000000000000000000000000000001".hexStringToByteArray()),
-                    BlockchainRid.ZERO_RID // dummy blockchain RID, works with Rell and all standard GTX modules, might not work properly with custom GTX modules
-            )
+            withSigner(config, "000000000000000000000000000000000000000000000000000000000000000001".hexStringToByteArray())
+                    .toObject<BlockchainConfigurationData>()
         } catch (e: UserMistake) {
             throw ValidationException(e.message!!)
-        } catch (e: ClassNotFoundException) {
-            throw ValidationException("Could not find Gtx module: ${e.message!!}")
         }
     }
 }
 
-open class Named<T> (
-    open val name: String,
-    val value: T
+open class Named<T>(
+        open val name: String,
+        val value: T
 )
 //data class Named<T>(val name: String, val value: T)

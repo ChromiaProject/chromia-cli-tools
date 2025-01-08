@@ -1,6 +1,5 @@
 package com.chromia.build.tools
 
-import java.time.Duration
 import net.postchain.client.config.PostchainClientConfig
 import net.postchain.client.core.BlockDetail
 import net.postchain.client.core.BlockRid
@@ -20,7 +19,9 @@ import net.postchain.crypto.Secp256K1CryptoSystem
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtv.GtvPrimitive
+import net.postchain.gtv.merkle.makeMerkleHashCalculator
 import net.postchain.gtx.Gtx
+import java.time.Duration
 
 data class TestConfiguration(
         val txs: MutableList<Gtx> = mutableListOf(),
@@ -32,6 +33,8 @@ open class TestClient(
         val blockHeight: () -> Long,
         private val testConfiguration: TestConfiguration = TestConfiguration()
 ) : PostchainClient {
+    private val hashCalculator = makeMerkleHashCalculator(config.merkleHashVersion.toLong())
+
     override fun blockAtHeight(height: Long): BlockDetail = TODO("Not yet implemented")
     override fun blockByRid(blockRid: BlockRid): BlockDetail = TODO("Not yet implemented")
     override fun awaitConfirmation(txRid: TxRid, retries: Int, pollInterval: Duration): TransactionResult =
@@ -60,7 +63,7 @@ open class TestClient(
             testConfiguration.txResultFactory(testConfiguration.txs.size).also { testConfiguration.txs.add(tx) }
 
     override fun transactionBuilder() = TransactionBuilder(
-            this, config.blockchainRid, config.signers.map { it.pubKey.data }, config.signers.map { it.sigMaker(Secp256K1CryptoSystem()) }
+            this, config.blockchainRid, config.signers.map { it.pubKey.data }, hashCalculator, config.signers.map { it.sigMaker(Secp256K1CryptoSystem()) }
     )
 
     override fun transactionBuilder(signers: List<KeyPair>) = TODO("Not yet implemented")
