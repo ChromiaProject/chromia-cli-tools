@@ -4,6 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsOnly
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import com.chromia.build.tools.compile.ValidationException
@@ -320,15 +321,24 @@ internal class ChromiaModelTest {
     }
 
     @Test
+    fun `no blockchains`(@TempDir dir: Path) {
+        val settingsFile = File(dir.toFile(), "chromia.yml").apply {
+            writeText("""
+                blockchains: {}                
+            """.trimIndent())
+        }
+
+        val settings = parseModel(settingsFile)
+        assertThat(settings.blockchains).isEmpty()
+    }
+
+    @Test
     fun `empty file`(@TempDir dir: Path) {
         val settingsFile = File(dir.toFile(), "chromia.yml").apply {
             writeText("")
         }
-        val res = assertThrows<ValidationException> { parseModel(settingsFile) }
 
-        assertThat(res.message!!).isEqualTo("""
-            Following errors found in chromia.yml:
-            Required property "blockchains" not found (location: #)
-            """.trimIndent())
+        val settings = parseModel(settingsFile)
+        assertThat(settings.blockchains).isEmpty()
     }
 }
