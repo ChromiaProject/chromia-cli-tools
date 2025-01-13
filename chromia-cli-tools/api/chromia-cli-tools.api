@@ -152,6 +152,39 @@ public final class com/chromia/cli/tools/formatter/ThemeKt {
 	public static final fun getWarning (Lcom/github/ajalt/clikt/core/CliktCommand;)Lcom/github/ajalt/mordant/rendering/TextStyle;
 }
 
+public final class com/chromia/cli/tools/ft/DescriptorUtilsKt {
+	public static final fun getFlags (Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)Ljava/util/List;
+	public static final fun getKeysAsFormattedString (Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)Ljava/lang/String;
+	public static final fun getMultiKeys (Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)[Lnet/postchain/gtv/Gtv;
+	public static final fun getNumberOfSigners (Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)J
+	public static final fun getSingleKey (Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)[B
+}
+
+public final class com/chromia/cli/tools/ft/EvmAuthKt {
+	public static final fun addEvmAuthOperation (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;)V
+	public static synthetic fun addEvmAuthOperation$default (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun fetchEvmSignatures (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static synthetic fun fetchEvmSignatures$default (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/util/List;
+	public static final fun openWebLink (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Ljava/lang/String;)V
+	public static final fun terminalWebLink (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Ljava/lang/String;)V
+}
+
+synthetic class com/chromia/cli/tools/ft/EvmAuthKt$fetchEvmSignatures$authMessages$1$nonce$1 : kotlin/jvm/internal/FunctionAdapter, net/postchain/crypto/Digester {
+	public static final field INSTANCE Lcom/chromia/cli/tools/ft/EvmAuthKt$fetchEvmSignatures$authMessages$1$nonce$1;
+	public final fun digest ([B)[B
+	public final fun equals (Ljava/lang/Object;)Z
+	public final fun getFunctionDelegate ()Lkotlin/Function;
+	public final fun hashCode ()I
+}
+
+public final class com/chromia/cli/tools/ft/FtAuthKt {
+	public static final fun addFtAuthOperation (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/transaction/TransactionBuilder;[B[B)V
+	public static final fun addFtAuthenticationOperation (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[BLjava/lang/String;Ljava/lang/String;)V
+	public static synthetic fun addFtAuthenticationOperation$default (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[BLjava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
+	public static final fun findFtAccountIdAndAuthDescriptorId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;[BLjava/lang/String;Ljava/lang/String;)Lkotlin/Pair;
+	public static final fun initFtAuth (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;)V
+}
+
 public class com/chromia/cli/tools/launcher/CliLauncher : com/github/ajalt/clikt/core/NoOpCliktCommand {
 	public fun <init> (Ljava/lang/String;)V
 	public final fun catchingAllExceptionsMain ([Ljava/lang/String;)V
