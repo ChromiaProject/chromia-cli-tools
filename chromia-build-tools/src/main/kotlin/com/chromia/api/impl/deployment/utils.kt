@@ -50,7 +50,7 @@ fun awaitConfirmation(printer: (Boolean, String) -> Unit, client: PostchainClien
         }
 
         TransactionStatus.WAITING -> {
-            printer(false, "Deployment of blockchain ${partialResult.blockchain.name} still pending, on tx-rid: ${partialResult.txRid.rid}")
+            printer(false, "Deployment of blockchain ${partialResult.blockchain.name} still pending, on tx-rid: ${partialResult.txRid.rid},  please check the tx-rid to see if the request got rejected/accepted")
         }
         else -> throw RuntimeException("Cannot find status for this transaction")
     }
