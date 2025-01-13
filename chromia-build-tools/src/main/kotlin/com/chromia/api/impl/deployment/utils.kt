@@ -16,7 +16,7 @@ fun interface DeploymentOperation {
     operator fun invoke(transactionBuilder: TransactionBuilder)
 }
 
-fun postTransaction(printer: (Boolean, String) -> Unit, client: PostchainClient, configuration: BlockchainConfiguration, operation: DeploymentOperation): BlockchainDeploymentResult {
+fun postTransaction(printer: (isError: Boolean, message: String) -> Unit, client: PostchainClient, configuration: BlockchainConfiguration, operation: DeploymentOperation): BlockchainDeploymentResult {
     val result = client
             .transactionBuilder()
             .addNop()
@@ -37,7 +37,7 @@ fun postTransaction(printer: (Boolean, String) -> Unit, client: PostchainClient,
     )
 }
 
-fun awaitConfirmation(printer: (Boolean, String) -> Unit, client: PostchainClient, partialResult: BlockchainDeploymentResult): BlockchainDeploymentResult {
+fun awaitConfirmation(printer: (isError: Boolean, message: String) -> Unit, client: PostchainClient, partialResult: BlockchainDeploymentResult): BlockchainDeploymentResult {
     if (!partialResult.success) return partialResult
     val result = client.awaitConfirmation(partialResult.txRid, client.config.statusPollCount, client.config.statusPollInterval)
     when (result.status) {
@@ -57,7 +57,7 @@ fun awaitConfirmation(printer: (Boolean, String) -> Unit, client: PostchainClien
     return partialResult.copy(success = false, transactionResult = result)
 }
 
-fun findBlockchainRid(printer: (Boolean, String) -> Unit, client: PostchainClient, apiVersion: Long, partialResult: BlockchainDeploymentResult): BlockchainDeploymentResult {
+fun findBlockchainRid(printer: (isError: Boolean, message: String) -> Unit, client: PostchainClient, apiVersion: Long, partialResult: BlockchainDeploymentResult): BlockchainDeploymentResult {
     if (!partialResult.success) return partialResult
     val maybeBcRid = if (apiVersion >= 8) {
         client.findBlockchainRid(partialResult.txRid.rid.hexStringToByteArray())?.let { BlockchainRid(it) }
