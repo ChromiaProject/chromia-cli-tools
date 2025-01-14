@@ -1,5 +1,6 @@
 package com.chromia.api.result
 
+import net.postchain.client.core.TransactionResult
 import net.postchain.client.core.TxRid
 import net.postchain.common.BlockchainRid
 import java.nio.file.Path
@@ -9,6 +10,7 @@ data class BlockchainDeploymentResult(
         val txRid: TxRid,
         val blockchainRid: BlockchainRid? = null,
         val success: Boolean = false,
+        val transactionResult: TransactionResult?
 )
 
 fun List<BlockchainDeploymentResult>.isSuccess() = all { it.success }

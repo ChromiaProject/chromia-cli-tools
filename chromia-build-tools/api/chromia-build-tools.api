@@ -7,9 +7,9 @@ public final class com/chromia/api/ChromiaCompileApi {
 public final class com/chromia/api/ChromiaDeploymentApi {
 	public static final field INSTANCE Lcom/chromia/api/ChromiaDeploymentApi;
 	public final fun action (Lcom/chromia/cli/model/DeploymentModel;Lcom/chromia/build/tools/config/ChromiaClientConfig;Lcom/chromia/directory1/proposal_blockchain/BlockchainAction;Ljava/lang/String;)Lkotlin/Pair;
-	public final fun create (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/DeploymentModel;Lcom/chromia/build/tools/config/ChromiaClientConfig;Ljava/util/List;Z)Ljava/util/List;
-	public final fun update (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/DeploymentModel;Lcom/chromia/build/tools/config/ChromiaClientConfig;Ljava/util/List;ZLjava/lang/Long;)Ljava/util/List;
-	public static synthetic fun update$default (Lcom/chromia/api/ChromiaDeploymentApi;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/DeploymentModel;Lcom/chromia/build/tools/config/ChromiaClientConfig;Ljava/util/List;ZLjava/lang/Long;ILjava/lang/Object;)Ljava/util/List;
+	public final fun create (Lkotlin/jvm/functions/Function2;Lcom/chromia/cli/model/DeploymentModel;Lcom/chromia/build/tools/config/ChromiaClientConfig;Ljava/util/List;Z)Ljava/util/List;
+	public final fun update (Lkotlin/jvm/functions/Function2;Lcom/chromia/cli/model/DeploymentModel;Lcom/chromia/build/tools/config/ChromiaClientConfig;Ljava/util/List;ZLjava/lang/Long;)Ljava/util/List;
+	public static synthetic fun update$default (Lcom/chromia/api/ChromiaDeploymentApi;Lkotlin/jvm/functions/Function2;Lcom/chromia/cli/model/DeploymentModel;Lcom/chromia/build/tools/config/ChromiaClientConfig;Ljava/util/List;ZLjava/lang/Long;ILjava/lang/Object;)Ljava/util/List;
 }
 
 public final class com/chromia/api/ChromiaLibrariesApi {
@@ -56,10 +56,10 @@ public abstract interface class com/chromia/api/impl/deployment/DeploymentOperat
 }
 
 public final class com/chromia/api/impl/deployment/UtilsKt {
-	public static final fun awaitConfirmation (Lnet/postchain/rell/api/base/RellCliEnv;Lnet/postchain/client/core/PostchainClient;Lcom/chromia/api/result/BlockchainDeploymentResult;)Lcom/chromia/api/result/BlockchainDeploymentResult;
+	public static final fun awaitConfirmation (Lkotlin/jvm/functions/Function2;Lnet/postchain/client/core/PostchainClient;Lcom/chromia/api/result/BlockchainDeploymentResult;)Lcom/chromia/api/result/BlockchainDeploymentResult;
 	public static final fun compressConfiguration (Lnet/postchain/client/core/PostchainClient;JLcom/chromia/api/result/BlockchainConfiguration;)Lcom/chromia/api/result/BlockchainConfiguration;
-	public static final fun findBlockchainRid (Lnet/postchain/rell/api/base/RellCliEnv;Lnet/postchain/client/core/PostchainClient;JLcom/chromia/api/result/BlockchainDeploymentResult;)Lcom/chromia/api/result/BlockchainDeploymentResult;
-	public static final fun postTransaction (Lnet/postchain/rell/api/base/RellCliEnv;Lnet/postchain/client/core/PostchainClient;Lcom/chromia/api/result/BlockchainConfiguration;Lcom/chromia/api/impl/deployment/DeploymentOperation;)Lcom/chromia/api/result/BlockchainDeploymentResult;
+	public static final fun findBlockchainRid (Lkotlin/jvm/functions/Function2;Lnet/postchain/client/core/PostchainClient;JLcom/chromia/api/result/BlockchainDeploymentResult;)Lcom/chromia/api/result/BlockchainDeploymentResult;
+	public static final fun postTransaction (Lkotlin/jvm/functions/Function2;Lnet/postchain/client/core/PostchainClient;Lcom/chromia/api/result/BlockchainConfiguration;Lcom/chromia/api/impl/deployment/DeploymentOperation;)Lcom/chromia/api/result/BlockchainDeploymentResult;
 }
 
 public synthetic class com/chromia/api/impl/deployment/UtilsKt$WhenMappings {
@@ -89,18 +89,20 @@ public final class com/chromia/api/result/BlockchainConfiguration : com/chromia/
 }
 
 public final class com/chromia/api/result/BlockchainDeploymentResult {
-	public synthetic fun <init> (Lcom/chromia/api/result/BlockchainConfiguration;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (Lcom/chromia/api/result/BlockchainConfiguration;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lcom/chromia/api/result/BlockchainConfiguration;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;ZLnet/postchain/client/core/TransactionResult;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lcom/chromia/api/result/BlockchainConfiguration;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;ZLnet/postchain/client/core/TransactionResult;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lcom/chromia/api/result/BlockchainConfiguration;
 	public final fun component2-14Yrzmo ()Ljava/lang/String;
 	public final fun component3 ()Lnet/postchain/common/BlockchainRid;
 	public final fun component4 ()Z
-	public final fun copy-SyyshaE (Lcom/chromia/api/result/BlockchainConfiguration;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Z)Lcom/chromia/api/result/BlockchainDeploymentResult;
-	public static synthetic fun copy-SyyshaE$default (Lcom/chromia/api/result/BlockchainDeploymentResult;Lcom/chromia/api/result/BlockchainConfiguration;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;ZILjava/lang/Object;)Lcom/chromia/api/result/BlockchainDeploymentResult;
+	public final fun component5 ()Lnet/postchain/client/core/TransactionResult;
+	public final fun copy-yRBiEQw (Lcom/chromia/api/result/BlockchainConfiguration;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;ZLnet/postchain/client/core/TransactionResult;)Lcom/chromia/api/result/BlockchainDeploymentResult;
+	public static synthetic fun copy-yRBiEQw$default (Lcom/chromia/api/result/BlockchainDeploymentResult;Lcom/chromia/api/result/BlockchainConfiguration;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;ZLnet/postchain/client/core/TransactionResult;ILjava/lang/Object;)Lcom/chromia/api/result/BlockchainDeploymentResult;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getBlockchain ()Lcom/chromia/api/result/BlockchainConfiguration;
 	public final fun getBlockchainRid ()Lnet/postchain/common/BlockchainRid;
 	public final fun getSuccess ()Z
+	public final fun getTransactionResult ()Lnet/postchain/client/core/TransactionResult;
 	public final fun getTxRid-14Yrzmo ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

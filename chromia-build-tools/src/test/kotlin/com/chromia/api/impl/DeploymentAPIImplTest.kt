@@ -3,6 +3,7 @@ package com.chromia.api.impl
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
+import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.chromia.api.result.BlockchainConfiguration
@@ -17,17 +18,21 @@ import net.postchain.common.BlockchainRid
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtv.GtvNull
-import net.postchain.rell.api.base.RellCliEnv
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
+fun printer(isError: Boolean, message: String) {
+    assertThat(message.length).isGreaterThan(0)
+}
+
+fun logger(message: String) {
+    assertThat(message.length).isGreaterThan(0)
+}
 
 class DeploymentAPIImplTest {
     @TempDir
     private lateinit var dir: Path
-
-    private val env = RellCliEnv.NULL
 
     @Test
     fun invalidConfigurations() {
@@ -45,7 +50,7 @@ class DeploymentAPIImplTest {
         }
         val testModel = DeploymentModel(BlockchainRid.ZERO_RID, "my_container", gtv("http://host"))
 
-        val res = createNew(env, testModel, ChromiaConfigLoader(env::print).loadClientConfigFile(dir.resolve(".chromia/config").toFile()), listOf(BlockchainConfiguration("my_chain", GtvNull)), false) { TestClient(it, { 0L }) }
+        val res = createNew(::printer, testModel, ChromiaConfigLoader(::logger).loadClientConfigFile(dir.resolve(".chromia/config").toFile()), listOf(BlockchainConfiguration("my_chain", GtvNull)), false) { TestClient(it, { 0L }) }
         assertThat(res.isSuccess()).isTrue()
         assertThat(res.first().blockchainRid).isNotNull()
     }
@@ -59,7 +64,7 @@ class DeploymentAPIImplTest {
 
         val res = assertThrows<IllegalArgumentException> {
             val modelWithMultiple = testModel.copy(chains = mapOf("my_chain" to BlockchainRid.buildRepeat(2), "other_chain" to BlockchainRid.buildRepeat(3)))
-            updateExisting(env, modelWithMultiple, ChromiaConfigLoader(env::print).loadClientConfigFile(), listOf(BlockchainConfiguration("my_chain", GtvNull), BlockchainConfiguration("other_chain", GtvNull)), 32, false)
+            updateExisting(::printer, modelWithMultiple, ChromiaConfigLoader(::logger).loadClientConfigFile(), listOf(BlockchainConfiguration("my_chain", GtvNull), BlockchainConfiguration("other_chain", GtvNull)), 32, false)
         }
         assertThat(res.message!!).contains("Cannot update multiple blockchains when height is set")
     }
@@ -71,21 +76,21 @@ class DeploymentAPIImplTest {
         }
         val testModel = DeploymentModel(BlockchainRid.ZERO_RID, "my_container", gtv("http://host"), chains = mapOf("my_chain" to BlockchainRid.buildRepeat(2)))
 
-        val res = updateExisting(env, testModel, ChromiaConfigLoader(env::print).loadClientConfigFile(dir.resolve(".chromia/config").toFile()), listOf(BlockchainConfiguration("my_chain", GtvNull)), null, false, { DeploymentClient(it) }) { ClusterManagementImpl(it) }
+        val res = updateExisting(::printer, testModel, ChromiaConfigLoader(::logger).loadClientConfigFile(dir.resolve(".chromia/config").toFile()), listOf(BlockchainConfiguration("my_chain", GtvNull)), null, false, { DeploymentClient(it) }) { ClusterManagementImpl(it) }
         assertThat(res.isSuccess()).isTrue()
         assertThat(res.first().blockchainRid).isEqualTo(BlockchainRid.buildRepeat(2))
     }
 
     private fun DeploymentModel.failsToCreateNewDeployment(containsMessage: String) {
         val res1 = assertThrows<IllegalArgumentException> {
-            createNew(env, this, ChromiaConfigLoader(env::print).loadClientConfigFile(), listOf(BlockchainConfiguration("my_chain", GtvNull)), false)
+            createNew(::printer, this, ChromiaConfigLoader(::logger).loadClientConfigFile(), listOf(BlockchainConfiguration("my_chain", GtvNull)), false)
         }
         assertThat(res1.message!!).contains(containsMessage)
     }
 
     private fun DeploymentModel.failsToUpdateDeployment(containsMessage: String) {
         val res1 = assertThrows<IllegalArgumentException> {
-            updateExisting(env, this, ChromiaConfigLoader(env::print).loadClientConfigFile(), listOf(BlockchainConfiguration("my_chain", GtvNull)), null, false)
+            updateExisting(::printer, this, ChromiaConfigLoader(::logger).loadClientConfigFile(), listOf(BlockchainConfiguration("my_chain", GtvNull)), null, false)
         }
         assertThat(res1.message!!).contains(containsMessage)
     }

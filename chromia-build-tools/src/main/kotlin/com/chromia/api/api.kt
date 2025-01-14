@@ -38,12 +38,12 @@ object ChromiaLibrariesApi {
 }
 
 object ChromiaDeploymentApi {
-    fun create(cliEnv: RellCliEnv, model: DeploymentModel, chromiaConfig: ChromiaClientConfig, configurations: List<BlockchainConfiguration>, compressConfigirations: Boolean): List<BlockchainDeploymentResult> {
-            return com.chromia.api.impl.createNew(cliEnv, model, chromiaConfig, configurations, compressConfigirations, PostchainClientProviderImpl())
+    fun create(printer: (isError: Boolean, message: String) -> Unit, model: DeploymentModel, chromiaConfig: ChromiaClientConfig, configurations: List<BlockchainConfiguration>, compressConfigirations: Boolean): List<BlockchainDeploymentResult> {
+            return com.chromia.api.impl.createNew(printer, model, chromiaConfig, configurations, compressConfigirations, PostchainClientProviderImpl())
     }
 
-    fun update(cliEnv: RellCliEnv, model: DeploymentModel, chromiaConfig: ChromiaClientConfig, configurations: List<BlockchainConfiguration>, compressConfigurations: Boolean, height: Long? = null): List<BlockchainDeploymentResult> {
-        return com.chromia.api.impl.updateExisting(cliEnv, model, chromiaConfig, configurations, height, compressConfigurations, PostchainClientProviderImpl()) { ClusterManagementImpl(it) }
+    fun update(printer: (isError: Boolean, message: String) -> Unit, model: DeploymentModel, chromiaConfig: ChromiaClientConfig, configurations: List<BlockchainConfiguration>, compressConfigurations: Boolean, height: Long? = null): List<BlockchainDeploymentResult> {
+        return com.chromia.api.impl.updateExisting(printer, model, chromiaConfig, configurations, height, compressConfigurations, PostchainClientProviderImpl()) { ClusterManagementImpl(it) }
     }
 
     fun action(model: DeploymentModel, chromiaConfig: ChromiaClientConfig, action: BlockchainAction, reason: String): Pair<Boolean, String?> {

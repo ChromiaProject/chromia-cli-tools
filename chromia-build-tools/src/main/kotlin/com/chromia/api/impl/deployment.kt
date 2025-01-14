@@ -13,7 +13,6 @@ import com.chromia.build.tools.util.apiVersion
 import com.chromia.cli.model.DeploymentModel
 import com.chromia.directory1.proposal_blockchain.BlockchainAction
 import com.chromia.directory1.proposal_blockchain.proposeBlockchainActionOperation
-import java.util.stream.Collectors
 import net.postchain.client.core.PostchainClient
 import net.postchain.client.core.PostchainClientProvider
 import net.postchain.client.impl.PostchainClientProviderImpl
@@ -21,11 +20,11 @@ import net.postchain.client.transaction.TransactionBuilder
 import net.postchain.cm.cm_api.ClusterManagementImpl
 import net.postchain.common.tx.TransactionStatus
 import net.postchain.d1.cluster.ClusterManagement
-import net.postchain.rell.api.base.RellCliEnv
+import java.util.stream.Collectors
 
 
 internal fun createNew(
-        cliEnv: RellCliEnv,
+        printer: (isError: Boolean, message: String) -> Unit,
         deploymentModel: DeploymentModel,
         config: ChromiaClientConfig,
         configurations: List<BlockchainConfiguration>,
@@ -44,9 +43,9 @@ internal fun createNew(
     }
     val deployedChains = configurations.parallelStream()
             .map { if (compressConfiguration) compressConfiguration(client, client.apiVersion, it) else it }
-            .map { bc -> postTransaction(cliEnv, client, bc) { deploymentOperation(it, bc) } }
-            .map { awaitConfirmation(cliEnv, client, it) }
-            .map { findBlockchainRid(cliEnv, client, client.apiVersion, it) }
+            .map { bc -> postTransaction(printer, client, bc) { deploymentOperation(it, bc) } }
+            .map { awaitConfirmation(printer, client, it) }
+            .map { findBlockchainRid(printer, client, client.apiVersion, it) }
             .collect(Collectors.toList())
             .filterNotNull()
 
@@ -58,7 +57,7 @@ internal fun createNew(
 }
 
 internal fun updateExisting(
-        cliEnv: RellCliEnv,
+        printer: (isError: Boolean, message: String) -> Unit,
         deploymentModel: DeploymentModel,
         config: ChromiaClientConfig,
         configurations: List<BlockchainConfiguration>,
@@ -82,8 +81,8 @@ internal fun updateExisting(
     }
     val deployedChains = configurations.parallelStream()
             .map { if (compressConfigurations) compressConfiguration(client, client.apiVersion, it) else it }
-            .map { bc -> postTransaction(cliEnv, client, bc) { deploymentOperation(it, bc) } }
-            .map { awaitConfirmation(cliEnv, client, it) }
+            .map { bc -> postTransaction(printer, client, bc) { deploymentOperation(it, bc) } }
+            .map { awaitConfirmation(printer, client, it) }
             .map { it.copy(blockchainRid = deploymentModel.chains[it.blockchain.name]) }
             .collect(Collectors.toList())
             .filterNotNull()

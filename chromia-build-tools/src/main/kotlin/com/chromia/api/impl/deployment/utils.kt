@@ -11,13 +11,12 @@ import net.postchain.common.BlockchainRid
 import net.postchain.common.hexStringToByteArray
 import net.postchain.common.tx.TransactionStatus
 import net.postchain.gtv.mapper.toObject
-import net.postchain.rell.api.base.RellCliEnv
 
 fun interface DeploymentOperation {
     operator fun invoke(transactionBuilder: TransactionBuilder)
 }
 
-fun postTransaction(cliEnv: RellCliEnv, client: PostchainClient, configuration: BlockchainConfiguration, operation: DeploymentOperation): BlockchainDeploymentResult {
+fun postTransaction(printer: (isError: Boolean, message: String) -> Unit, client: PostchainClient, configuration: BlockchainConfiguration, operation: DeploymentOperation): BlockchainDeploymentResult {
     val result = client
             .transactionBuilder()
             .addNop()
@@ -25,34 +24,40 @@ fun postTransaction(cliEnv: RellCliEnv, client: PostchainClient, configuration: 
                 operation(this)
             }
             .post()
-    if (result.status == TransactionStatus.REJECTED) cliEnv.error("Deployment of blockchain ${configuration.name} failed: ${result.rejectReason ?: ""}")
+
+    if (result.status == TransactionStatus.REJECTED) {
+        printer(true, "Deployment of blockchain ${configuration.name} failed: ${result.rejectReason ?: ""}")
+    }
+
     return BlockchainDeploymentResult(
             configuration,
             result.txRid,
-            success = result.status != TransactionStatus.REJECTED
+            success = result.status != TransactionStatus.REJECTED,
+            transactionResult = result
     )
 }
 
-fun awaitConfirmation(cliEnv: RellCliEnv, client: PostchainClient, partialResult: BlockchainDeploymentResult): BlockchainDeploymentResult {
+fun awaitConfirmation(printer: (isError: Boolean, message: String) -> Unit, client: PostchainClient, partialResult: BlockchainDeploymentResult): BlockchainDeploymentResult {
     if (!partialResult.success) return partialResult
     val result = client.awaitConfirmation(partialResult.txRid, client.config.statusPollCount, client.config.statusPollInterval)
     when (result.status) {
         TransactionStatus.CONFIRMED -> {
-            //chain.save(settings.targetDir, "${target}_${chain.name}_${Instant.now().toEpochMilli()}")
             return partialResult
         }
 
         TransactionStatus.REJECTED -> {
-            cliEnv.error("Deployment of blockchain ${partialResult.blockchain.name} failed: ${result.rejectReason ?: ""}")
+            printer(true, "Deployment of blockchain ${partialResult.blockchain.name} failed: ${result.rejectReason ?: ""}")
         }
 
-        TransactionStatus.WAITING -> cliEnv.print("Deployment of blockchain ${partialResult.blockchain.name} still pending, tx-rid: ${partialResult.txRid.rid}")
+        TransactionStatus.WAITING -> {
+            printer(false, "Deployment of blockchain ${partialResult.blockchain.name} still pending, on tx-rid: ${partialResult.txRid.rid},  please check the tx-rid to see if the request got rejected/accepted")
+        }
         else -> throw RuntimeException("Cannot find status for this transaction")
     }
-    return partialResult.copy(success = false)
+    return partialResult.copy(success = false, transactionResult = result)
 }
 
-fun findBlockchainRid(cliEnv: RellCliEnv, client: PostchainClient, apiVersion: Long, partialResult: BlockchainDeploymentResult): BlockchainDeploymentResult {
+fun findBlockchainRid(printer: (isError: Boolean, message: String) -> Unit, client: PostchainClient, apiVersion: Long, partialResult: BlockchainDeploymentResult): BlockchainDeploymentResult {
     if (!partialResult.success) return partialResult
     val maybeBcRid = if (apiVersion >= 8) {
         client.findBlockchainRid(partialResult.txRid.rid.hexStringToByteArray())?.let { BlockchainRid(it) }
@@ -60,10 +65,10 @@ fun findBlockchainRid(cliEnv: RellCliEnv, client: PostchainClient, apiVersion: L
         GtvToBlockchainRidFactory.calculateBlockchainRid(partialResult.blockchain.config.toObject())
     }
     if (maybeBcRid == null) {
-        cliEnv.print("Deployment of blockchain ${partialResult.blockchain.name} was proposed, tx-rid: ${partialResult.txRid.rid}")
+        printer(true, "Deployment of blockchain ${partialResult.blockchain.name} was proposed, tx-rid: ${partialResult.txRid.rid}")
         return partialResult.copy(success = false)
     }
-    cliEnv.print("Deployment of blockchain ${partialResult.blockchain.name} was successful")
+    printer(false, "Deployment of blockchain ${partialResult.blockchain.name} was successful")
     return partialResult.copy(blockchainRid = maybeBcRid)
 }
 
