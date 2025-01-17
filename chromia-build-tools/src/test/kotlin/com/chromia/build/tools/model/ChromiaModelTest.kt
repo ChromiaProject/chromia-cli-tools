@@ -7,10 +7,12 @@ import assertk.assertions.containsOnly
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import com.chromia.build.tools.compile.ValidationException
 import com.chromia.build.tools.testData
 import com.chromia.cli.model.BlockchainModel
 import com.chromia.cli.model.DefaultChromiaModelRellVersion
+import com.chromia.cli.model.exceptionSuppressingParse
 import com.chromia.cli.model.parseModel
 import net.postchain.common.hexStringToByteArray
 import net.postchain.gtv.GtvBigInteger
@@ -270,6 +272,19 @@ internal class ChromiaModelTest {
         assertThrows<ValidationException> {
             parseModel(settingsFile)
         }
+    }
+
+    @Test
+    fun `Exceptions are suppressed on faulty config`(@TempDir dir: Path) {
+        val settingsFile = File(dir.toFile(), "chromia.yml").apply {
+            writeText("""
+                blockchains:
+                     my_lib:
+                         module: main
+                         type: no_type
+            """.trimIndent())
+        }
+        assertThat(exceptionSuppressingParse(settingsFile)).isNull()
     }
 
     @Test
