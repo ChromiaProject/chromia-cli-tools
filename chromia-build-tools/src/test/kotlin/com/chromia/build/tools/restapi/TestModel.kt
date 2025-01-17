@@ -23,7 +23,7 @@ import net.postchain.crypto.sha256Digest
 import net.postchain.ebft.rest.contract.StateNodeStatus
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
-import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV2
+import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV1
 import net.postchain.gtx.Gtx
 import net.postchain.gtx.GtxQuery
 
@@ -110,7 +110,8 @@ class TestModel(
 
     override fun postTransaction(tx: ByteArray) {
         val decoded = Gtx.decode(tx)
-        val rid = decoded.gtxBody.calculateTxRid(GtvMerkleHashCalculatorV2(::sha256Digest)).let { TxRid(it) }
+        // TODO [use-new-algo] use new hash version here
+        val rid = decoded.gtxBody.calculateTxRid(GtvMerkleHashCalculatorV1(::sha256Digest)).let { TxRid(it) }
         txQueue.add(decoded)
         txMap[rid] = decoded
     }

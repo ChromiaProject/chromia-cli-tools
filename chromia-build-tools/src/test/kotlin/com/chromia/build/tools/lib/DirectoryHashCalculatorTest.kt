@@ -7,7 +7,7 @@ import net.postchain.common.hexStringToWrappedByteArray
 import net.postchain.common.wrap
 import net.postchain.crypto.sha256Digest
 import net.postchain.gtv.GtvFactory.gtv
-import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV2
+import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV1
 import net.postchain.gtv.merkleHash
 import net.postchain.rell.base.utils.RellGtxConfigConstants
 import org.junit.jupiter.api.Test
@@ -21,7 +21,8 @@ class DirectoryHashCalculatorTest {
     @TempDir
     lateinit var sourceDir: Path
 
-    val hashCalculator = GtvMerkleHashCalculatorV2(::sha256Digest)
+    // TODO [use-new-algo] use new hash version here
+    val hashCalculator = GtvMerkleHashCalculatorV1(::sha256Digest)
 
     @Test
     fun `Given set of files, rid is computed as the hash of the map of files to their content`() {
