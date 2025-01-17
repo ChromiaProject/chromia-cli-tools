@@ -1,6 +1,7 @@
 package com.chromia.cli.tools.config
 
 import com.chromia.build.tools.config.ChromiaConfigLoader
+import com.chromia.cli.model.exceptionSuppressingParse
 import com.chromia.cli.model.parseModel
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.ParameterHolder
@@ -26,6 +27,10 @@ fun CliktCommand.chromiaModelOption() = ChromiaModelOption { msg -> echo(msg, er
 // Chromia model is optional. Will not throw if model file is not found
 fun CliktCommand.optionalChromiaModelOption() = OptionalChromiaModelOption { msg -> echo(msg, err = true) }
 
+// Chromia model is optional. Will not throw if model file is not found or has errors in it
+fun CliktCommand.safeOptionalChromiaModelOption() = SafeOptionalChromiaModelOption { msg -> echo(msg, err = true) }
+
+
 // Chromia model must be found or explicitly set. Client config is read from system if not set
 fun CliktCommand.chromiaModelConfigOption() = ChromiaModelConfigOption { msg -> echo(msg, err = true) }
 
@@ -50,6 +55,15 @@ open class OptionalChromiaModelOption(logger: (String) -> Unit) : OptionGroup("C
     private val resolvedModelFile by lazy { ChromiaConfigLoader(logger).findModelFile(modelFile) }
     val projectFolder by lazy { resolvedModelFile?.parentFile }
     val model by lazy { resolvedModelFile?.let { parseModel(it) } }
+    val sourceDir get() = model?.compile?.source?.toFile()
+    val targetDir get() = model?.compile?.target?.toFile()
+}
+
+open class SafeOptionalChromiaModelOption(logger: (String) -> Unit) : OptionGroup("Configuration Properties") {
+    private val modelFile by chromiaModelOption()
+    private val resolvedModelFile by lazy { ChromiaConfigLoader(logger).findModelFile(modelFile) }
+    val projectFolder by lazy { resolvedModelFile?.parentFile }
+    val model by lazy { resolvedModelFile?.let { exceptionSuppressingParse(it) } }
     val sourceDir get() = model?.compile?.source?.toFile()
     val targetDir get() = model?.compile?.target?.toFile()
 }

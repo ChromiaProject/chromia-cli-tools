@@ -8,6 +8,14 @@ import org.yaml.snakeyaml.parser.ParserException
 
 
 fun parseModel(src: Path) = parseModel(src.toFile())
+fun exceptionSuppressingParse(src: File): ChromiaModel? {
+    return try {
+        parseModel(src)
+    } catch (e: Exception) {
+        null
+    }
+}
+
 fun parseModel(src: File): ChromiaModel {
     return try {
         val anc = loadAnchor(src, ChromiaModel.schema)
