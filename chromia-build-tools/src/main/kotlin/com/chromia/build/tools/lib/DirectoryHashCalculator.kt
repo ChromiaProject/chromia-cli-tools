@@ -5,7 +5,7 @@ import net.postchain.common.wrap
 import net.postchain.crypto.sha256Digest
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
-import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV2
+import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV1
 import net.postchain.gtv.merkleHash
 import net.postchain.rell.base.utils.RellGtxConfigConstants
 import java.nio.file.Files
@@ -22,7 +22,8 @@ import kotlin.io.path.relativeTo
  * Computes the hash of all rell files in a folder relative to it parent source folder
  */
 class DirectoryHashCalculator(private val sourceDir: Path) {
-    private val hashCalculator = GtvMerkleHashCalculatorV2(::sha256Digest)
+    // TODO [use-new-algo] use new hash version here
+    private val hashCalculator = GtvMerkleHashCalculatorV1(::sha256Digest)
 
     companion object {
         const val EOL_WINDOWS: String = "\r\n"
