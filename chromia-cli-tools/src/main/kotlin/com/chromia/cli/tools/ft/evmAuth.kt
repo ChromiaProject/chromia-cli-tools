@@ -85,7 +85,7 @@ fun CoreCliktCommand.fetchEvmSignatures(client: PostchainClient,
                 Response(OK)
             },
             webJars()
-    ).asServer(Netty(port = 0, stopMode = Immediate)).start()
+    ).asServer(Netty(port = 0)).start()
     val url = "http://localhost:${server.port()}"
     if (launchWebBrowser) {
         openWebLink(url)
