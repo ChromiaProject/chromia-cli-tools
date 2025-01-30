@@ -28,10 +28,6 @@ public final class com/chromia/api/ExtensionsKt {
 	public static final fun filterLibraries (Lcom/chromia/cli/model/ChromiaModel;Ljava/util/List;)Lcom/chromia/cli/model/ChromiaModel;
 }
 
-public abstract interface class com/chromia/api/impl/ClusterManagementFactory {
-	public abstract fun invoke (Lnet/postchain/client/core/PostchainClient;)Lnet/postchain/d1/cluster/ClusterManagement;
-}
-
 public final class com/chromia/api/impl/CompileKt {
 	public static final field BlockchainConfigurationMaxSize I
 	public static final fun compileGtv (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;)Ljava/util/List;
@@ -121,7 +117,7 @@ public class com/chromia/api/result/Named {
 }
 
 public final class com/chromia/build/tools/HeightFinder {
-	public fun <init> (Lnet/postchain/client/core/PostchainClientProvider;Lnet/postchain/client/config/PostchainClientConfig;Lnet/postchain/d1/cluster/ClusterManagement;)V
+	public fun <init> (Lnet/postchain/client/core/PostchainClientProvider;Lnet/postchain/client/config/PostchainClientConfig;Lnet/postchain/client/core/PostchainQuery;)V
 	public final fun findHeight (Lnet/postchain/client/request/Endpoint;Lnet/postchain/common/BlockchainRid;)Lcom/chromia/build/tools/HeightFinder$HeightResult;
 	public final fun findHeight (Lnet/postchain/client/request/EndpointPool;Lnet/postchain/common/BlockchainRid;)Ljava/util/Collection;
 	public final fun findSafeHeight (Lnet/postchain/common/BlockchainRid;J)J

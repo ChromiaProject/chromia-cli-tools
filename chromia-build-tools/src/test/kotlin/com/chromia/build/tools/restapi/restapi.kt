@@ -2,16 +2,16 @@ package com.chromia.build.tools.restapi
 
 import net.postchain.api.rest.model.ApiStatus
 import net.postchain.api.rest.model.TxRid
+import net.postchain.client.core.PostchainQuery
 import net.postchain.common.exception.UserMistake
 import net.postchain.common.tx.TransactionStatus
-import net.postchain.d1.cluster.ClusterManagement
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtx.GtxQuery
 import net.postchain.rell.base.model.R_LangVersion
 
 
-fun CachedModel.withClusterManagement(clusterManagement: ClusterManagement) = ClusterManagementModel(this, clusterManagement)
+fun CachedModel.withClusterManagement(directoryChain: PostchainQuery) = ClusterManagementModel(this, directoryChain)
 fun CachedModel.withCompression() = CompressableModel(this)
 
 fun CachedModel.withValidConfiguration() = object : CachedModel by this {

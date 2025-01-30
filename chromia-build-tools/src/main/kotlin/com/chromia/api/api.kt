@@ -9,7 +9,6 @@ import com.chromia.cli.model.ChromiaModel
 import com.chromia.cli.model.DeploymentModel
 import com.chromia.directory1.proposal_blockchain.BlockchainAction
 import net.postchain.client.impl.PostchainClientProviderImpl
-import net.postchain.cm.cm_api.ClusterManagementImpl
 import net.postchain.rell.api.base.RellCliEnv
 
 object ChromiaCompileApi {
@@ -43,7 +42,7 @@ object ChromiaDeploymentApi {
     }
 
     fun update(printer: (isError: Boolean, message: String) -> Unit, model: DeploymentModel, chromiaConfig: ChromiaClientConfig, configurations: List<BlockchainConfiguration>, compressConfigurations: Boolean, height: Long? = null): List<BlockchainDeploymentResult> {
-        return com.chromia.api.impl.updateExisting(printer, model, chromiaConfig, configurations, height, compressConfigurations, PostchainClientProviderImpl()) { ClusterManagementImpl(it) }
+        return com.chromia.api.impl.updateExisting(printer, model, chromiaConfig, configurations, height, compressConfigurations, PostchainClientProviderImpl())
     }
 
     fun action(model: DeploymentModel, chromiaConfig: ChromiaClientConfig, action: BlockchainAction, reason: String): Pair<Boolean, String?> {
