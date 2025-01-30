@@ -1,17 +1,18 @@
 package com.chromia.build.tools
 
+import com.chromia.directory1.cm_api.cmGetBlockchainApiUrls
 import net.postchain.client.config.PostchainClientConfig
 import net.postchain.client.core.PostchainClientProvider
+import net.postchain.client.core.PostchainQuery
 import net.postchain.client.exception.ClientError
 import net.postchain.client.request.Endpoint
 import net.postchain.client.request.EndpointPool
 import net.postchain.common.BlockchainRid
-import net.postchain.d1.cluster.ClusterManagement
 
-class HeightFinder(private val clientProvider: PostchainClientProvider, private val templateConfig: PostchainClientConfig, private val clusterManagement: ClusterManagement) {
+class HeightFinder(private val clientProvider: PostchainClientProvider, private val templateConfig: PostchainClientConfig, private val directoryChain: PostchainQuery) {
 
     fun findSafeHeight(blockchainRid: BlockchainRid, safety: Long = 10): Long {
-        return findHeight(EndpointPool.default(clusterManagement.getBlockchainApiUrls(blockchainRid).toList()), blockchainRid)
+        return findHeight(EndpointPool.default(directoryChain.cmGetBlockchainApiUrls(blockchainRid).toList()), blockchainRid)
                 .maxOf { it.height }
                 .also { if (it < 0) throw IllegalArgumentException("No height found for any node") }
                 .let { it + safety }
