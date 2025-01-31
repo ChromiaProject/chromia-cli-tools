@@ -16,3 +16,6 @@ rule_constant_detection=true
 
 # Warns about declared but unused variables (true | false)
 rule_unused_variable=true
+
+# Warns about outer joins without join conditions, which result in a Cartesian product (true | false)
+rule_outer_join_cartesian_product=true
