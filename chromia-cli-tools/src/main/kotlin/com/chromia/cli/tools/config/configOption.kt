@@ -38,7 +38,7 @@ fun CliktCommand.chromiaModelConfigOption() = ChromiaModelConfigOption { msg -> 
 fun CliktCommand.optionalChromiaModelConfigOption() = OptionalChromiaModelConfigOption { msg -> echo(msg, err = true) }
 
 open class ChromiaConfigOption(logger: (String) -> Unit) : OptionGroup("Configuration Properties") {
-    val configFile by chromiaConfigOption()
+    val configFile by chromiaConfigFileOption()
     val config by lazy { ChromiaConfigLoader(logger).loadClientConfigFile(configFile) }
 }
 
@@ -51,7 +51,7 @@ open class ChromiaModelOption(logger: (String) -> Unit) : OptionGroup("Configura
 }
 
 open class OptionalChromiaModelOption(logger: (String) -> Unit) : OptionGroup("Configuration Properties") {
-    private val modelFile by chromiaModelOption()
+    private val modelFile by chromiaModelFileOption()
     private val resolvedModelFile by lazy { ChromiaConfigLoader(logger).findModelFile(modelFile) }
     val projectFolder by lazy { resolvedModelFile?.parentFile }
     val model by lazy { resolvedModelFile?.let { parseModel(it) } }
@@ -60,7 +60,7 @@ open class OptionalChromiaModelOption(logger: (String) -> Unit) : OptionGroup("C
 }
 
 open class SafeOptionalChromiaModelOption(logger: (String) -> Unit) : OptionGroup("Configuration Properties") {
-    private val modelFile by chromiaModelOption()
+    private val modelFile by chromiaModelFileOption()
     private val resolvedModelFile by lazy { ChromiaConfigLoader(logger).findModelFile(modelFile) }
     val projectFolder by lazy { resolvedModelFile?.parentFile }
     val model by lazy { resolvedModelFile?.let { exceptionSuppressingParse(it) } }
@@ -70,7 +70,7 @@ open class SafeOptionalChromiaModelOption(logger: (String) -> Unit) : OptionGrou
 
 
 open class ChromiaModelConfigOption(logger: (String) -> Unit) : OptionGroup("Configuration Properties") {
-    val configFile by chromiaConfigOption()
+    val configFile by chromiaConfigFileOption()
     val config by lazy { ChromiaConfigLoader(logger).loadClientConfigFile(configFile) }
     val modelFile by requiredChromiaModelOption(logger)
     val model by lazy { parseModel(modelFile) }
@@ -80,27 +80,27 @@ open class ChromiaModelConfigOption(logger: (String) -> Unit) : OptionGroup("Con
 }
 
 open class OptionalChromiaModelConfigOption(logger: (String) -> Unit) : OptionGroup("Configuration Properties") {
-    val configFile by chromiaConfigOption()
+    val configFile by chromiaConfigFileOption()
     val config by lazy { ChromiaConfigLoader(logger).loadClientConfigFile(configFile) }
-    private val modelFile by chromiaModelOption()
+    private val modelFile by chromiaModelFileOption()
     val model by lazy { ChromiaConfigLoader(logger).findModelFile(modelFile)?.let { parseModel(it) } }
     val projectFolder by lazy { modelFile?.parentFile }
 }
 
 open class BlockchainOptions(logger: (String) -> Unit) : OptionGroup() {
-    private val clientConfigFile by chromiaConfigOption()
+    private val clientConfigFile by chromiaConfigFileOption()
     val config by lazy { ChromiaConfigLoader(logger).loadClientConfigFile(clientConfigFile) }
     val url by targetUrlOption()
     val blockchainRid by blockchainRidOption("Target Blockchain RID").convert { BlockchainRid.buildFromHex(it) }.required()
 }
 
-internal fun ParameterHolder.requiredChromiaModelOption(logger: (String) -> Unit) = chromiaModelOption()
+internal fun ParameterHolder.requiredChromiaModelOption(logger: (String) -> Unit) = chromiaModelFileOption()
         .defaultLazy {
             ChromiaConfigLoader(logger).findModelFile(null)
                     ?: throw PrintMessage("Project settings file not found", statusCode = 1)
         }
 
-internal fun ParameterHolder.chromiaModelOption() = option(
+fun ParameterHolder.chromiaModelFileOption() = option(
         "-s", "--settings",
         help = "Alternate path for project settings file",
         metavar = "SETTINGS",
@@ -109,7 +109,7 @@ internal fun ParameterHolder.chromiaModelOption() = option(
         .file(mustExist = true, canBeDir = false, mustBeReadable = true)
         .convert { it.absoluteFile }
 
-fun ParameterHolder.chromiaConfigOption() = option(
+fun ParameterHolder.chromiaConfigFileOption() = option(
         "-cfg", "--config",
         help = "Alternate path for client configuration file",
         metavar = "CONFIG",
