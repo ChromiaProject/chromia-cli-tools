@@ -17,10 +17,13 @@ class InMemoryIcmfReceiverSynchronizationInfrastructureExtension(private val pos
         val configuration = engine.getConfiguration()
         if (configuration is GTXModuleAware) {
             getIcmfReceiverSpecialTxExtension(configuration.module)?.let { txExt ->
-                val icmConfigs = configuration.rawConfig["icmf"]?.get("receiver")?.get("local")?.toList<IcmfReceiverSpecificBlockChainConfig>()
-                val rawIcmfReceiverConfig = icmConfigs
-                        ?: throw UserMistake("Missing configuration key icmf/receiver")
-                txExt.topics = rawIcmfReceiverConfig.map { it.topic }
+                val icmConfigs = configuration.rawConfig["icmf"]?.get("receiver") ?: throw UserMistake("Missing configuration key icmf/receiver")
+                txExt.topics = buildList {
+                    icmConfigs["local"]?.toList<IcmfReceiverSpecificBlockChainConfig>()?.map { it.topic }?.let { addAll(it) }
+                    icmConfigs["global"]?.get("topics")?.asArray()?.map { it.asString() }?.let { addAll(it) }
+                    icmConfigs["anchoring"]?.get("topics")?.asArray()?.map { it.asString() }?.let { addAll(it) }
+                    icmConfigs["directory-chain"]?.get("topics")?.asArray()?.map { it.asString() }?.let { addAll(it) }
+                }
             }
 
         }
