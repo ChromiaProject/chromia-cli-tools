@@ -88,7 +88,7 @@ class TestModel(
         TODO("Not yet implemented")
     }
 
-    override fun getTransactionInfo(txRID: TxRid): TransactionInfoExt? {
+    override fun getTransactionInfo(txRID: TxRid, includeTxData: Boolean): TransactionInfoExt? {
         TODO("Not yet implemented")
     }
 
