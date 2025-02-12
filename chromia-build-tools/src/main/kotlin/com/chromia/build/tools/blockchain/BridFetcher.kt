@@ -1,11 +1,11 @@
-package com.chromia.cli.tools.blockchain
+package com.chromia.build.tools.blockchain
 
-import java.net.ConnectException
 import net.postchain.common.BlockchainRid
 import org.http4k.core.ContentType
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method
 import org.http4k.core.Request
+import java.net.ConnectException
 
 class BridFetcher(private val httpHandler: HttpHandler, private val url: String) {
     fun fetchBlockchainRid(id: Int): BlockchainRid {
