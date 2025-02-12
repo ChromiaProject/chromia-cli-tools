@@ -28,7 +28,6 @@ import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.http4k.routing.webJars
 import org.http4k.server.Netty
-import org.http4k.server.ServerConfig.StopMode.Immediate
 import org.http4k.server.asServer
 import java.awt.Desktop
 import java.io.IOException

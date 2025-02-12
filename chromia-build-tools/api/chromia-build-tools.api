@@ -138,6 +138,11 @@ public final class com/chromia/build/tools/HeightFinder$HeightResult$OkResult : 
 	public fun <init> (J)V
 }
 
+public final class com/chromia/build/tools/blockchain/BridFetcher {
+	public fun <init> (Lkotlin/jvm/functions/Function1;Ljava/lang/String;)V
+	public final fun fetchBlockchainRid (I)Lnet/postchain/common/BlockchainRid;
+}
+
 public final class com/chromia/build/tools/compatibility/BlockchainOperations {
 	public fun <init> (JLnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/build/tools/HeightFinder;)V
 	public synthetic fun <init> (JLnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/build/tools/HeightFinder;ILkotlin/jvm/internal/DefaultConstructorMarker;)V

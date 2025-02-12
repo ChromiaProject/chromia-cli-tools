@@ -1,4 +1,4 @@
-package com.chromia.cli.tools.blockchain
+package com.chromia.build.tools.blockchain
 
 import assertk.assertThat
 import assertk.assertions.contains
