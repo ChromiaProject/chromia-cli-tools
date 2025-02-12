@@ -1,4 +1,4 @@
-package com.chromia.cli.tools.formatter
+package com.chromia.cli.base.formatter
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo

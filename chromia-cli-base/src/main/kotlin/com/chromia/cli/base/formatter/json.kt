@@ -1,13 +1,13 @@
-package com.chromia.cli.tools.formatter
+package com.chromia.cli.base.formatter
 
+import com.chromia.cli.base.mordant.CellContent
+import com.chromia.cli.base.mordant.TableBuilderInstance
 import com.github.ajalt.mordant.table.TableBuilder
 import com.google.gson.GsonBuilder
-import com.chromia.cli.tools.mordant.CellContent
-import com.chromia.cli.tools.mordant.TableBuilderInstance
 
 fun jsonTable(init: TableBuilder.() -> Unit): String {
     val tableBuilder = TableBuilderInstance().apply(init)
-    return if (tableBuilder.headerSection.rows.size > 0) {
+    return if (tableBuilder.headerSection.rows.isNotEmpty()) {
         val headers: List<String> = tableBuilder.headerSection.rows[0].cells.map { (it.content as CellContent.TextContent).text }
         val rows: List<List<String>> = tableBuilder.bodySection.rows.map { row ->
             row.cells.map { cell ->
@@ -32,4 +32,4 @@ fun jsonTable(headers: List<String>, rows: List<List<String>>): String = json(
 
 fun fixKey(key: String) = key.replace(' ', '_').replace(":", "")
 
-fun json(data: Any) = GsonBuilder().serializeNulls().setPrettyPrinting().create().toJson(data)
+fun json(data: Any): String = GsonBuilder().serializeNulls().setPrettyPrinting().create().toJson(data)
