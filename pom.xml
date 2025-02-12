@@ -42,6 +42,8 @@
         <assembly.path>${project.basedir}/src/main/assembly/targz.xml</assembly.path>
         <image.platforms>linux/amd64,linux/arm64</image.platforms>
         <gitlab.registry>registry.gitlab.com/chromaway/core-tools/chromia-cli-tools</gitlab.registry>
+        <detekt.report>xml:${project.parent.build.directory}/code-quality-reports/${project.artifactId}/detekt-report.xml</detekt.report>
+        <detekt.config>${project.parent.basedir}/detekt.yml</detekt.config>
     </properties>
 
     <repositories>
@@ -267,6 +269,31 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.ozsie</groupId>
+                    <artifactId>detekt-maven-plugin</artifactId>
+                    <version>1.23.7</version>
+                    <executions>
+                        <execution>
+                            <phase>verify</phase>
+                            <goals><goal>check</goal></goals>
+                            <configuration>
+                                <config>${detekt.config}</config>
+                                <report>
+                                    <report>${detekt.report}</report>
+                                </report>
+                                <baseline>${project.basedir}/baseline.xml</baseline>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>io.gitlab.arturbosch.detekt</groupId>
+                            <artifactId>detekt-formatting</artifactId>
+                            <version>1.23.7</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>

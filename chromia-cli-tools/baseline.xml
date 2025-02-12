@@ -1,0 +1,147 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>AnnotationOnSeparateLine:FTAuthenticatorTest.kt$FTAuthenticatorTest$@Test @Timeout(value = 30, unit = TimeUnit.SECONDS)</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$( client, null, evmAddress, "my_op", null)</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$("", null, "Query not found", null)</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$("A")</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$("Versions before release 0.4.0 are not supported, current FT4 version 0.1.1 is to old")</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$("Versions before release 0.4.0 are not supported, current FT4 version 0.2.0 is to old")</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$("data" to gtv(gtv(mapOf("id" to gtv("3".repeat(64).hexStringToByteArray())))))</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(Request(Method.POST, "$url/error") .body("the error"))</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(Request(Method.POST, "$url/signatures") .header("Content-Type", "application/json") .body("""[{"r":"0x1234","s":"0x5678","v":5}]"""))</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(arrayOf())</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(client, transactionBuilder, "my_op", listOf(gtv("foo")), evmAddress, accountId, authDescriptorId, launchWebBrowser = false)</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(descriptor, descriptor2)</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(listOf("A"), query, listOf(descriptor, descriptor2))</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(mapOf("data" to gtv(gtv(mapOf("id" to gtv("3".repeat(64).hexStringToByteArray()))))))</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(r = "1234".hexStringToWrappedByteArray(), s = "5678".hexStringToWrappedByteArray(), v = 5)</ID>
+    <ID>ArgumentListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(res.message)</ID>
+    <ID>ArgumentListWrapping:JsonTableTest.kt$JsonTableTest$( ExpectedTable)</ID>
+    <ID>ArgumentListWrapping:JsonTableTest.kt$JsonTableTest$( jsonTable( listOf("first col", "second col"), listOf(listOf("1 1", "1 2"), listOf("2 1", "2 2")) ))</ID>
+    <ID>ArgumentListWrapping:PanelHelpFormatter.kt$PanelHelpFormatter$(context, showDefaultValues = true, requiredOptionMarker = "*")</ID>
+    <ID>ArgumentListWrapping:configOption.kt$( "-cfg", "--config", help = "Alternate path for client configuration file", metavar = "CONFIG", envvar = "CHROMIA_CONFIG", )</ID>
+    <ID>ArgumentListWrapping:configOption.kt$( "-s", "--settings", help = "Alternate path for project settings file", metavar = "SETTINGS", envvar = "CHROMIA_PROJECT_SETTINGS", )</ID>
+    <ID>ArgumentListWrapping:configOption.kt$BlockchainOptions$("Target Blockchain RID")</ID>
+    <ID>ArgumentListWrapping:configOption.kt$BlockchainOptions$(it)</ID>
+    <ID>ArgumentListWrapping:evmAuth.kt$( client, listOf(opName to opArgs), evmAddress, accountId, authDescriptorId, launchWebBrowser, urlNotifier)</ID>
+    <ID>ArgumentListWrapping:evmAuth.kt$( r = it.asJsonObject.get("r").asString.drop(2).hexStringToByteArray().wrap(), s = it.asJsonObject.get("s").asString.drop(2).hexStringToByteArray().wrap(), v = it.asJsonObject.get("v").asLong)</ID>
+    <ID>ArgumentListWrapping:evmAuth.kt$("Invalid auth descriptor counter. Was the auth descriptor too close to expiration?")</ID>
+    <ID>ArgumentListWrapping:evmAuth.kt$("{{messages}}", authMessages.joinToString(separator = "") { "\"${StringEscapeUtils.escapeEcmaScript(it)}\",\n" })</ID>
+    <ID>ArgumentListWrapping:evmAuth.kt$(it)</ID>
+    <ID>ArgumentListWrapping:evmAuth.kt$(separator = "")</ID>
+    <ID>ArgumentListWrapping:ftAuth.kt$("More than one account found, please specify which one to use with --ft-account-id option", statusCode = 1)</ID>
+    <ID>ArgumentListWrapping:ftAuth.kt$("No valid account descriptor found. Operation $opName requires the flag(s): $flags, while the flag(s) of the auth descriptor is: ${authDescriptor.getFlags()}", statusCode = 1)</ID>
+    <ID>ArgumentListWrapping:ftAuth.kt$("No valid account descriptor found. User not authorized for operation $opName", statusCode = 1)</ID>
+    <ID>ArgumentListWrapping:ftAuth.kt$("Versions before release 0.4.0 are not supported, current FT4 version $version is to old", statusCode = 1)</ID>
+    <ID>ArgumentListWrapping:ftAuth.kt$(client, optionalAccountId, signer, opName, optionalAuthDescriptorId)</ID>
+    <ID>ArgumentListWrapping:json.kt$( rows.map { row -&gt; row.withIndex().associate { cell -&gt; fixKey(headers[cell.index]) to cell.value } })</ID>
+    <ID>CommentSpacing:descriptorUtils.kt$//Second argument in gtv of AuthType.S has the public key</ID>
+    <ID>CommentSpacing:descriptorUtils.kt$//Third argument in gtv of AuthType.M has the public key</ID>
+    <ID>Filename:configOption.kt$com.chromia.cli.tools.config.configOption.kt</ID>
+    <ID>Filename:descriptorUtils.kt$com.chromia.cli.tools.ft.descriptorUtils.kt</ID>
+    <ID>Filename:evmAuth.kt$com.chromia.cli.tools.ft.evmAuth.kt</ID>
+    <ID>Filename:ftAuth.kt$com.chromia.cli.tools.ft.ftAuth.kt</ID>
+    <ID>Filename:json.kt$com.chromia.cli.tools.formatter.json.kt</ID>
+    <ID>Filename:mordant.kt$com.chromia.cli.tools.mordant.mordant.kt</ID>
+    <ID>Filename:theme.kt$com.chromia.cli.tools.formatter.theme.kt</ID>
+    <ID>FinalNewline:BridFetcher.kt$com.chromia.cli.tools.blockchain.BridFetcher.kt</ID>
+    <ID>FinalNewline:ChromiaConfigWriterTest.kt$com.chromia.cli.tools.config.ChromiaConfigWriterTest.kt</ID>
+    <ID>FinalNewline:CliktCliEnv.kt$com.chromia.cli.tools.env.CliktCliEnv.kt</ID>
+    <ID>FinalNewline:PanelHelpFormatter.kt$com.chromia.cli.tools.formatter.PanelHelpFormatter.kt</ID>
+    <ID>FinalNewline:descriptorUtils.kt$com.chromia.cli.tools.ft.descriptorUtils.kt</ID>
+    <ID>ImportOrdering:BridFetcher.kt$import java.net.ConnectException import net.postchain.common.BlockchainRid import org.http4k.core.ContentType import org.http4k.core.HttpHandler import org.http4k.core.Method import org.http4k.core.Request</ID>
+    <ID>ImportOrdering:ChromiaConfigWriterTest.kt$import assertk.all import assertk.assertThat import assertk.assertions.contains import assertk.assertions.isFalse import com.chromia.build.tools.config.ChromiaConfigWriter import java.io.File import java.nio.file.Path import net.postchain.common.BlockchainRid import org.junit.jupiter.api.Test import org.junit.jupiter.api.io.TempDir</ID>
+    <ID>ImportOrdering:json.kt$import com.github.ajalt.mordant.table.TableBuilder import com.google.gson.GsonBuilder import com.chromia.cli.tools.mordant.CellContent import com.chromia.cli.tools.mordant.TableBuilderInstance</ID>
+    <ID>Indentation:FTAuthenticatorTest.kt$FTAuthenticatorTest$ </ID>
+    <ID>Indentation:JsonTableTest.kt$JsonTableTest$ </ID>
+    <ID>Indentation:PanelHelpFormatter.kt$PanelHelpFormatter$ </ID>
+    <ID>Indentation:configOption.kt$ </ID>
+    <ID>Indentation:evmAuth.kt$ </ID>
+    <ID>Indentation:ftAuth.kt$ </ID>
+    <ID>Indentation:json.kt$ </ID>
+    <ID>Indentation:mordant.kt$ </ID>
+    <ID>Indentation:mordant.kt$CellBuilderInstance$ </ID>
+    <ID>Indentation:mordant.kt$RowBuilderInstance$ </ID>
+    <ID>Indentation:mordant.kt$SectionBuilderInstance$ </ID>
+    <ID>LongParameterList:evmAuth.kt$(client: PostchainClient, operations: List&lt;Pair&lt;String, List&lt;Gtv&gt;&gt;&gt;, evmAddress: ByteArray, accountId: ByteArray, authDescriptorId: ByteArray, launchWebBrowser: Boolean = true, urlNotifier: (String) -&gt; Unit = {})</ID>
+    <ID>LongParameterList:evmAuth.kt$(client: PostchainClient, transactionBuilder: TransactionBuilder, opName: String, opArgs: List&lt;Gtv&gt;, evmAddress: ByteArray, accountId: ByteArray, authDescriptorId: ByteArray, launchWebBrowser: Boolean = true, urlNotifier: (String) -&gt; Unit = {})</ID>
+    <ID>LongParameterList:ftAuth.kt$(client: PostchainQuery, transactionBuilder: TransactionBuilder, opName: String, signer: ByteArray, optionalAccountId: String? = null, optionalAuthDescriptorId: String? = null)</ID>
+    <ID>MagicNumber:CliLauncher.kt$CliLauncher$3</ID>
+    <ID>MagicNumber:ftAuth.kt$4</ID>
+    <ID>MaxLineLength:CliLauncher.kt$CliLauncher$return "Please refer to log file for more details: ${logFolder}${File.separator}${if (name == "chr") "chromia-cli" else name}.log"</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$"ft4.get_accounts_by_signer" -&gt; gtv(mapOf("data" to gtv(gtv(mapOf("id" to gtv("3".repeat(64).hexStringToByteArray()))))))</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$assertThat(res.message).isEqualTo("Versions before release 0.4.0 are not supported, current FT4 version 0.1.1 is to old")</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$assertThat(res.message).isEqualTo("Versions before release 0.4.0 are not supported, current FT4 version 0.2.0 is to old")</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$blockchainRid = BlockchainRid("3250B9CCD1FAA489BFCC9706DE55237F102DE7A5ED66D5FE6E8EE6A20823D2BD".hexStringToByteArray())</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$on { query(eq(GET_ACCOUNT_AUTH_DESCRIPTORS_BY_SIGNER), any()) } doReturn gtv(GtvObjectMapper.toGtvDictionary(descriptor))</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$on { query(eq(GET_AUTH_MESSAGE_TEMPLATE), any()) } doReturn gtv("{blockchain_rid} auth message template {nonce}")</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$private</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$testCommand.initFtAuth { query, _ -&gt; if (query == GET_VERSION) throw ClientError("", null, "Query not found", null) else GtvNull }</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$val client: (String, Gtv) -&gt; Gtv = { query, _ -&gt; queryResponseV4MultipleDescriptors(listOf("A"), query, listOf(descriptor, descriptor2)) }</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$val signature = Signature(r = "1234".hexStringToWrappedByteArray(), s = "5678".hexStringToWrappedByteArray(), v = 5)</ID>
+    <ID>MaxLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$val testCommand = NoOpCliktCommand().context { terminal = Terminal(interactive = false) }.also { it.parse(arrayOf()) }</ID>
+    <ID>MaxLineLength:PanelHelpFormatter.kt$PanelHelpFormatter$class</ID>
+    <ID>MaxLineLength:configOption.kt$BlockchainOptions$val blockchainRid by blockchainRidOption("Target Blockchain RID").convert { BlockchainRid.buildFromHex(it) }.required()</ID>
+    <ID>MaxLineLength:evmAuth.kt$.</ID>
+    <ID>MaxLineLength:evmAuth.kt$if (counter == null) throw CliktError("Invalid auth descriptor counter. Was the auth descriptor too close to expiration?")</ID>
+    <ID>MaxLineLength:evmAuth.kt$launchWebBrowser: Boolean = true</ID>
+    <ID>MaxLineLength:ftAuth.kt$fun</ID>
+    <ID>MaxLineLength:ftAuth.kt$private</ID>
+    <ID>MaxLineLength:ftAuth.kt$return accountId to findValidAuthDescriptorIdForOperation(client, opName, accountId, signer, optionalAuthDescriptorId).data</ID>
+    <ID>MaxLineLength:ftAuth.kt$throw</ID>
+    <ID>MaxLineLength:ftAuth.kt$throw PrintMessage("No valid account descriptor found. Operation $opName requires the flag(s): $flags, while the flag(s) of the auth descriptor is: ${authDescriptor.getFlags()}", statusCode = 1)</ID>
+    <ID>MaxLineLength:ftAuth.kt$throw PrintMessage("No valid account descriptor found. User not authorized for operation $opName", statusCode = 1)</ID>
+    <ID>MaxLineLength:ftAuth.kt$throw PrintMessage("Versions before release 0.4.0 are not supported, current FT4 version $version is to old", statusCode = 1)</ID>
+    <ID>MaxLineLength:ftAuth.kt$val (accountId, authDescriptorId) = findFtAccountIdAndAuthDescriptorId(client, optionalAccountId, signer, opName, optionalAuthDescriptorId)</ID>
+    <ID>MaxLineLength:json.kt$val headers: List&lt;String&gt; = tableBuilder.headerSection.rows[0].cells.map { (it.content as CellContent.TextContent).text }</ID>
+    <ID>MaximumLineLength:CliLauncher.kt$CliLauncher$ </ID>
+    <ID>MaximumLineLength:FTAuthenticatorTest.kt$FTAuthenticatorTest$ </ID>
+    <ID>MaximumLineLength:PanelHelpFormatter.kt$PanelHelpFormatter$class</ID>
+    <ID>MaximumLineLength:configOption.kt$BlockchainOptions$ </ID>
+    <ID>MaximumLineLength:evmAuth.kt$ </ID>
+    <ID>MaximumLineLength:ftAuth.kt$ </ID>
+    <ID>MaximumLineLength:ftAuth.kt$fun</ID>
+    <ID>MaximumLineLength:ftAuth.kt$private</ID>
+    <ID>MaximumLineLength:json.kt$ </ID>
+    <ID>MultiLineIfElse:ftAuth.kt$it.first()</ID>
+    <ID>NewLineAtEndOfFile:BridFetcher.kt$com.chromia.cli.tools.blockchain.BridFetcher.kt</ID>
+    <ID>NewLineAtEndOfFile:ChromiaConfigWriterTest.kt$com.chromia.cli.tools.config.ChromiaConfigWriterTest.kt</ID>
+    <ID>NewLineAtEndOfFile:CliktCliEnv.kt$com.chromia.cli.tools.env.CliktCliEnv.kt</ID>
+    <ID>NewLineAtEndOfFile:PanelHelpFormatter.kt$com.chromia.cli.tools.formatter.PanelHelpFormatter.kt</ID>
+    <ID>NewLineAtEndOfFile:descriptorUtils.kt$com.chromia.cli.tools.ft.descriptorUtils.kt</ID>
+    <ID>NoConsecutiveBlankLines:FTAuthenticatorTest.kt$ </ID>
+    <ID>NoConsecutiveBlankLines:configOption.kt$ </ID>
+    <ID>NoConsecutiveBlankLines:descriptorUtils.kt$ </ID>
+    <ID>NoTrailingSpaces:FTAuthenticatorTest.kt$FTAuthenticatorTest$ </ID>
+    <ID>NoUnusedImports:evmAuth.kt$com.chromia.cli.tools.ft.evmAuth.kt</ID>
+    <ID>ParameterListWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(String, Gtv)</ID>
+    <ID>ParameterListWrapping:evmAuth.kt$(String)</ID>
+    <ID>ParameterListWrapping:evmAuth.kt$(client: PostchainClient, operations: List&lt;Pair&lt;String, List&lt;Gtv&gt;&gt;&gt;, evmAddress: ByteArray, accountId: ByteArray, authDescriptorId: ByteArray, launchWebBrowser: Boolean = true, urlNotifier: (String) -&gt; Unit = {})</ID>
+    <ID>ParameterListWrapping:evmAuth.kt$(client: PostchainClient, transactionBuilder: TransactionBuilder, opName: String, opArgs: List&lt;Gtv&gt;, evmAddress: ByteArray, accountId: ByteArray, authDescriptorId: ByteArray, launchWebBrowser: Boolean = true, urlNotifier: (String) -&gt; Unit = {})</ID>
+    <ID>PropertyWrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$val signature = Signature(r = "1234".hexStringToWrappedByteArray(), s = "5678".hexStringToWrappedByteArray(), v = 5)</ID>
+    <ID>SwallowedException:CliLauncher.kt$CliLauncher$e: RellCliExitException</ID>
+    <ID>SwallowedException:ftAuth.kt$e: ClientError</ID>
+    <ID>ThrowsCount:BridFetcher.kt$BridFetcher$fun fetchBlockchainRid(id: Int): BlockchainRid</ID>
+    <ID>ThrowsCount:ftAuth.kt$private fun CoreCliktCommand.accountPicker(accounts: List&lt;ByteArray&gt;, signer: ByteArray): ByteArray</ID>
+    <ID>ThrowsCount:ftAuth.kt$private fun CoreCliktCommand.findValidAuthDescriptorIdForOperation(client: PostchainQuery, opName: String, accountId: ByteArray, signer: ByteArray, optionalAuthDescriptorId: String?): WrappedByteArray</ID>
+    <ID>TooGenericExceptionThrown:BridFetcher.kt$BridFetcher$throw RuntimeException("Could not auto-detect brid from $url, reason: ${e.message}", e)</ID>
+    <ID>TooGenericExceptionThrown:BridFetcher.kt$BridFetcher$throw RuntimeException("Could not auto-detect brid from $url, reason: ${response.status}")</ID>
+    <ID>TopLevelPropertyNaming:JsonTableTest.kt$private const val ExpectedTable = """[ { "first_col": "1 1", "second_col": "1 2" }, { "first_col": "2 1", "second_col": "2 2" } ]"""</ID>
+    <ID>UnnecessaryParenthesesBeforeTrailingLambda:JsonTableTest.kt$JsonTableTest$()</ID>
+    <ID>UseRequire:descriptorUtils.kt$throw IllegalArgumentException("can only be done one Auth descriptors of type M")</ID>
+    <ID>UseRequire:descriptorUtils.kt$throw IllegalArgumentException("can only be done one Auth descriptors of type S")</ID>
+    <ID>Wrapping:CliLauncher.kt$CliLauncher$(</ID>
+    <ID>Wrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$(</ID>
+    <ID>Wrapping:FTAuthenticatorTest.kt$FTAuthenticatorTest$query(eq(GET_ACCOUNT_AUTH_DESCRIPTORS_BY_SIGNER), any())</ID>
+    <ID>Wrapping:JsonTableTest.kt$JsonTableTest$(</ID>
+    <ID>Wrapping:evmAuth.kt$"\"${StringEscapeUtils.escapeEcmaScript(it)}\",\n"</ID>
+    <ID>Wrapping:evmAuth.kt$(</ID>
+    <ID>Wrapping:ftAuth.kt$"""</ID>
+    <ID>Wrapping:ftAuth.kt$(</ID>
+    <ID>Wrapping:json.kt$(</ID>
+    <ID>Wrapping:json.kt$(it.content as CellContent.TextContent).text</ID>
+    <ID>Wrapping:mordant.kt$SectionBuilderInstance$SectionBuilder, CellStyleBuilder by CellStyleBuilderMixin()</ID>
+  </CurrentIssues>
+</SmellBaseline>

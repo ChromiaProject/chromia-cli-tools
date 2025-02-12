@@ -44,6 +44,9 @@ build:
       $MAVEN_CLI_OPTS
       --activate-profiles ci,coverage
       clean verify
+  artifacts:
+    reports:
+      codequality: [ "target/code-quality-reports/code-climate.json" ]
 
 dependency-check:
   extends: .maven-dependency-check
