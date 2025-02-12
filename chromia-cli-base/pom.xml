@@ -10,17 +10,15 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>chromia-cli-tools</artifactId>
+    <artifactId>chromia-cli-base</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
-    <name>Chromia Cli Tools</name>
+    <name>Chromia Cli Base</name>
 
     <properties>
         <revision>dev</revision>
-        <directory.source>${project.parent.build.directory}/directory-chain/src</directory.source>
     </properties>
-
 
     <build>
         <plugins>
@@ -63,20 +61,8 @@
             <artifactId>postchain-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.chromia.cli.tools</groupId>
-            <artifactId>chromia-build-tools</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.chromia.cli.tools</groupId>
-            <artifactId>chromia-cli-base</artifactId>
-        </dependency>
-        <dependency>
             <groupId>net.postchain.client</groupId>
             <artifactId>postchain-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.postchain.rell</groupId>
-            <artifactId>rell-api-base</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.ajalt.clikt</groupId>
@@ -93,11 +79,6 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.webjars.npm</groupId>
-            <artifactId>ethers</artifactId>
         </dependency>
 
         <dependency>

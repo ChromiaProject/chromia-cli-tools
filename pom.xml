@@ -9,6 +9,7 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <modules>
+        <module>chromia-cli-base</module>
         <module>chromia-cli-tools</module>
         <module>chromia-build-tools</module>
         <module>coverage-report-aggregate</module>
@@ -336,6 +337,11 @@
                 <version>5.9.1</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.chromia.cli.tools</groupId>
+                <artifactId>chromia-cli-base</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.chromia.cli.tools</groupId>

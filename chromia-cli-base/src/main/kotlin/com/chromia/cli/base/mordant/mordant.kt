@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com.chromia.cli.tools.mordant
+package com.chromia.cli.base.mordant
 
 import com.github.ajalt.mordant.rendering.BorderType
 import com.github.ajalt.mordant.rendering.OverflowWrap
