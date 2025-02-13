@@ -193,3 +193,7 @@ public synthetic class com/chromia/cli/tools/launcher/CliLauncher$WhenMappings {
 	public static final synthetic field $EnumSwitchMapping$0 [I
 }
 
+public final class com/chromia/cli/tools/util/OptionsKt {
+	public static final fun thresholdOption (Lcom/github/ajalt/clikt/core/CliktCommand;)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
+}
+
