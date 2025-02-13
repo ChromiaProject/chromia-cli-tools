@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ArgumentListWrapping:JsonTableTest.kt$JsonTableTest$( ExpectedTable)</ID>
+    <ID>ArgumentListWrapping:JsonTableTest.kt$JsonTableTest$( jsonTable( listOf("first col", "second col"), listOf(listOf("1 1", "1 2"), listOf("2 1", "2 2")) ))</ID>
+    <ID>ArgumentListWrapping:json.kt$( rows.map { row -&gt; row.withIndex().associate { cell -&gt; fixKey(headers[cell.index]) to cell.value } })</ID>
+    <ID>Filename:json.kt$com.chromia.cli.base.formatter.json.kt</ID>
+    <ID>Filename:mordant.kt$com.chromia.cli.base.mordant.mordant.kt</ID>
+    <ID>Indentation:JsonTableTest.kt$JsonTableTest$ </ID>
+    <ID>Indentation:json.kt$ </ID>
+    <ID>Indentation:mordant.kt$ </ID>
+    <ID>Indentation:mordant.kt$CellBuilderInstance$ </ID>
+    <ID>Indentation:mordant.kt$RowBuilderInstance$ </ID>
+    <ID>Indentation:mordant.kt$SectionBuilderInstance$ </ID>
+    <ID>MaxLineLength:json.kt$val headers: List&lt;String&gt; = tableBuilder.headerSection.rows[0].cells.map { (it.content as CellContent.TextContent).text }</ID>
+    <ID>MaximumLineLength:json.kt$ </ID>
+    <ID>TopLevelPropertyNaming:JsonTableTest.kt$private const val ExpectedTable = """[ { "first_col": "1 1", "second_col": "1 2" }, { "first_col": "2 1", "second_col": "2 2" } ]"""</ID>
+    <ID>UnnecessaryParenthesesBeforeTrailingLambda:JsonTableTest.kt$JsonTableTest$()</ID>
+    <ID>Wrapping:JsonTableTest.kt$JsonTableTest$(</ID>
+    <ID>Wrapping:json.kt$(</ID>
+    <ID>Wrapping:json.kt$(it.content as CellContent.TextContent).text</ID>
+    <ID>Wrapping:mordant.kt$SectionBuilderInstance$SectionBuilder, CellStyleBuilder by CellStyleBuilderMixin()</ID>
+  </CurrentIssues>
+</SmellBaseline>
