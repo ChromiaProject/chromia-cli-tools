@@ -276,11 +276,9 @@
         },
         "sync_ext": {
           "type": "array",
-          "items": [
-            {
-              "type": "string"
-            }
-          ],
+          "items": {
+            "type": "string"
+          },
           "description": "Synchronization Insfrastructure extension (ex when using ICMF)"
         },
         "configurationfactory": {
@@ -446,11 +444,9 @@
         },
         "modules": {
           "type": "array",
-          "items": [
-            {
+          "items": {
               "type": "string"
-            }
-          ],
+            },
           "description": "Additional GTX Modules"
         },
         "allowoverrides": {
