@@ -177,10 +177,13 @@ synthetic class com/chromia/cli/tools/ft/EvmAuthKt$fetchEvmSignatures$authMessag
 
 public final class com/chromia/cli/tools/ft/FtAuthKt {
 	public static final fun addFtAuthOperation (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/transaction/TransactionBuilder;[B[B)V
+	public static final fun addFtAuthenticationOp (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[B[B[B)V
+	public static synthetic fun addFtAuthenticationOp$default (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[B[B[BILjava/lang/Object;)V
 	public static final fun addFtAuthenticationOperation (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[BLjava/lang/String;Ljava/lang/String;)V
 	public static synthetic fun addFtAuthenticationOperation$default (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[BLjava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
 	public static final fun findAccountId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;[B)[B
 	public static final fun findFtAccountIdAndAuthDescriptorId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;[BLjava/lang/String;Ljava/lang/String;)Lkotlin/Pair;
+	public static final fun findFtAccountIdWithAuthDescriptorId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;[B[BLjava/lang/String;[B)Lkotlin/Pair;
 	public static final fun initFtAuth (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;)V
 }
 

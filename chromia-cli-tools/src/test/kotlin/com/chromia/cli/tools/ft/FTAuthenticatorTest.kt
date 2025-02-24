@@ -20,7 +20,6 @@ import com.chromia.directory1.lib.ft4.utils.PagedResult
 import com.chromia.directory1.lib.ft4.version.GET_VERSION
 import com.github.ajalt.clikt.core.CliktError
 import com.github.ajalt.clikt.core.NoOpCliktCommand
-import com.github.ajalt.clikt.core.PrintMessage
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.parse
 import com.github.ajalt.clikt.core.terminal
@@ -68,7 +67,7 @@ class FTAuthenticatorTest {
     @Test
     fun validV1AuthDescriptor() {
         val pubKey = PubKey("1".repeat(64).hexStringToByteArray())
-        val res = assertThrows<PrintMessage> {
+        val res = assertThrows<CliktError> {
             testCommand.initFtAuth { query, _ -> queryResponseV1(pubKey, listOf("A"), query) }
         }
         assertThat(res.message).isEqualTo("Versions before release 0.4.0 are not supported, current FT4 version 0.1.1 is to old")
@@ -77,7 +76,7 @@ class FTAuthenticatorTest {
     @Test
     fun validV2AuthDescriptor() {
         val pubKey = PubKey("1".repeat(64).hexStringToByteArray())
-        val res = assertThrows<PrintMessage> {
+        val res = assertThrows<CliktError> {
             testCommand.initFtAuth { query, _ -> queryResponseV2(pubKey, listOf("A"), query) }
         }
         assertThat(res.message).isEqualTo("Versions before release 0.4.0 are not supported, current FT4 version 0.2.0 is to old")
@@ -101,7 +100,7 @@ class FTAuthenticatorTest {
 
         val transactionBuilder = mock<TransactionBuilder>()
         assertDoesNotThrow {
-            testCommand.addFtAuthenticationOperation(client, transactionBuilder, "my_op", pubKey.data, null)
+            testCommand.addFtAuthenticationOp(client, transactionBuilder, "my_op", pubKey.data, null)
         }
         verify(transactionBuilder).ftAuthOperation(accountId, authDescriptorId)
     }
@@ -132,7 +131,7 @@ class FTAuthenticatorTest {
 
         val transactionBuilder = mock<TransactionBuilder>()
         assertDoesNotThrow {
-            testCommand.addFtAuthenticationOperation(client, transactionBuilder, "my_op", pubKey.data, null)
+            testCommand.addFtAuthenticationOp(client, transactionBuilder, "my_op", pubKey.data, null)
         }
         verify(transactionBuilder).ftAuthOperation(accountId, authDescriptorId)
     }
@@ -156,7 +155,7 @@ class FTAuthenticatorTest {
 
         val transactionBuilder = mock<TransactionBuilder>()
         assertDoesNotThrow {
-            testCommand.addFtAuthenticationOperation(client, transactionBuilder, "my_op", pubKey.data, null)
+            testCommand.addFtAuthenticationOp(client, transactionBuilder, "my_op", pubKey.data, null)
         }
         verify(transactionBuilder).ftAuthOperation(accountId, authDescriptorId)
     }
@@ -191,7 +190,7 @@ class FTAuthenticatorTest {
         }
         testCommand.initFtAuth(client)
 
-        val (accountId2, authDescriptorId2) = testCommand.findFtAccountIdAndAuthDescriptorId(
+        val (accountId2, authDescriptorId2) = testCommand.findFtAccountIdWithAuthDescriptorId(
                 client,
                 null,
                 evmAddress,
@@ -246,7 +245,7 @@ class FTAuthenticatorTest {
         }
         testCommand.initFtAuth(client)
 
-        val (accountId2, authDescriptorId2) = testCommand.findFtAccountIdAndAuthDescriptorId(
+        val (accountId2, authDescriptorId2) = testCommand.findFtAccountIdWithAuthDescriptorId(
                 client,
                 null,
                 evmAddress,
