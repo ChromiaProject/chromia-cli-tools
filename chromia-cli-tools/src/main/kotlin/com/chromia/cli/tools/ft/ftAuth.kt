@@ -9,15 +9,14 @@ import com.chromia.directory1.lib.ft4.external.auth.getAuthFlags
 import com.chromia.directory1.lib.ft4.utils.PagedResult
 import com.chromia.directory1.lib.ft4.version.getVersion
 import com.github.ajalt.clikt.core.Abort
+import com.github.ajalt.clikt.core.CliktError
 import com.github.ajalt.clikt.core.CoreCliktCommand
-import com.github.ajalt.clikt.core.PrintMessage
 import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.mordant.input.interactiveSelectList
 import net.postchain.client.core.PostchainQuery
 import net.postchain.client.exception.ClientError
 import net.postchain.client.transaction.TransactionBuilder
 import net.postchain.common.hexStringToByteArray
-import net.postchain.common.hexStringToWrappedByteArray
 import net.postchain.common.toHex
 import net.postchain.common.types.WrappedByteArray
 import net.postchain.common.wrap
@@ -26,29 +25,74 @@ fun CoreCliktCommand.initFtAuth(client: PostchainQuery) {
     val version = try {
         client.getVersion()
     } catch (e: ClientError) {
-        throw PrintMessage("Dapp is not FT4 compatible: ${e.errorMessage}", statusCode = 1)
+        throw CliktError("Dapp is not FT4 compatible: ${e.errorMessage}")
     }
     // 0.0.* -> 0.3.*
     if (version.matches(Regex("^0\\.[0-3]\\.(0|[1-9]\\d*).*"))) {
-        throw PrintMessage("Versions before release 0.4.0 are not supported, current FT4 version $version is to old", statusCode = 1)
+        throw CliktError("Versions before release 0.4.0 are not supported, current FT4 version $version is to old")
     }
 }
 
-fun CoreCliktCommand.addFtAuthenticationOperation(client: PostchainQuery, transactionBuilder: TransactionBuilder, opName: String, signer: ByteArray, optionalAccountId: String? = null, optionalAuthDescriptorId: String? = null) {
-    val (accountId, authDescriptorId) = findFtAccountIdAndAuthDescriptorId(client, optionalAccountId, signer, opName, optionalAuthDescriptorId)
+fun CoreCliktCommand.addFtAuthenticationOperation(
+        client: PostchainQuery,
+        transactionBuilder: TransactionBuilder,
+        opName: String,
+        signer: ByteArray,
+        optionalAccountId: String? = null,
+        optionalAuthDescriptorId: String? = null
+) {
+    addFtAuthenticationOp(
+            client, transactionBuilder, opName, signer, optionalAccountId?.hexStringToByteArray(),
+            optionalAuthDescriptorId?.hexStringToByteArray()
+    )
+}
+
+fun CoreCliktCommand.addFtAuthenticationOp(
+        client: PostchainQuery,
+        transactionBuilder: TransactionBuilder,
+        opName: String,
+        signer: ByteArray,
+        optionalAccountId: ByteArray? = null,
+        optionalAuthDescriptorId: ByteArray? = null
+) {
+    val (accountId, authDescriptorId) = findFtAccountIdWithAuthDescriptorId(client, optionalAccountId, signer, opName,
+            optionalAuthDescriptorId)
     addFtAuthOperation(transactionBuilder, accountId, authDescriptorId)
 }
 
-fun CoreCliktCommand.findFtAccountIdAndAuthDescriptorId(client: PostchainQuery, optionalAccountId: String?, signer: ByteArray, opName: String, optionalAuthDescriptorId: String?): Pair<ByteArray, ByteArray> {
-    val accountId = optionalAccountId?.hexStringToByteArray() ?: findAccountId(client, signer)
-    return accountId to findValidAuthDescriptorIdForOperation(client, opName, accountId, signer, optionalAuthDescriptorId).data
+fun CoreCliktCommand.findFtAccountIdAndAuthDescriptorId(
+        client: PostchainQuery,
+        optionalAccountId: String?,
+        signer: ByteArray,
+        opName: String,
+        optionalAuthDescriptorId: String?
+): Pair<ByteArray, ByteArray> = findFtAccountIdWithAuthDescriptorId(
+        client, optionalAccountId?.hexStringToByteArray(), signer, opName,
+        optionalAuthDescriptorId?.hexStringToByteArray()
+)
+
+fun CoreCliktCommand.findFtAccountIdWithAuthDescriptorId(
+        client: PostchainQuery,
+        optionalAccountId: ByteArray?,
+        signer: ByteArray,
+        opName: String,
+        optionalAuthDescriptorId: ByteArray?
+): Pair<ByteArray, ByteArray> {
+    val accountId = optionalAccountId ?: findAccountId(client, signer)
+    return accountId to findValidAuthDescriptorIdForOperation(
+            client, opName, accountId, signer, optionalAuthDescriptorId
+    ).data
 }
 
-private fun findAuthDescriptors(descriptors: List<Ft4GetAccountAuthDescriptorsBySignerResult>, optionalAuthDescriptorId: String?, signer: ByteArray): List<Ft4GetAccountAuthDescriptorsBySignerResult> {
+private fun findAuthDescriptors(
+        descriptors: List<Ft4GetAccountAuthDescriptorsBySignerResult>,
+        optionalAuthDescriptorId: ByteArray?,
+        signer: ByteArray
+): List<Ft4GetAccountAuthDescriptorsBySignerResult> {
     return descriptors.filter { descriptor ->
         when {
-            !optionalAuthDescriptorId.isNullOrEmpty() -> {
-                descriptor.id == optionalAuthDescriptorId.hexStringToWrappedByteArray()
+            optionalAuthDescriptorId != null && optionalAuthDescriptorId.isNotEmpty() -> {
+                descriptor.id == optionalAuthDescriptorId.wrap()
             }
 
             descriptor.authType == AuthType.S -> {
@@ -62,19 +106,25 @@ private fun findAuthDescriptors(descriptors: List<Ft4GetAccountAuthDescriptorsBy
             }
 
             else -> {
-                throw PrintMessage("Authtype: ${descriptor.authType} is not supported in FTAuthenticator")
+                throw CliktError("Authtype: ${descriptor.authType} is not supported in FTAuthenticator")
             }
         }
     }
 }
 
-private fun CoreCliktCommand.findValidAuthDescriptorIdForOperation(client: PostchainQuery, opName: String, accountId: ByteArray, signer: ByteArray, optionalAuthDescriptorId: String?): WrappedByteArray {
+private fun CoreCliktCommand.findValidAuthDescriptorIdForOperation(
+        client: PostchainQuery,
+        opName: String,
+        accountId: ByteArray,
+        signer: ByteArray,
+        optionalAuthDescriptorId: ByteArray?
+): WrappedByteArray {
     val flags = client.getAuthFlags(opName)
     val authDescriptors = client.getAccountAuthDescriptorsBySigner(accountId, signer = signer)
 
     val authDescriptorsCandidates = findAuthDescriptors(authDescriptors, optionalAuthDescriptorId, signer)
     val authDescriptor = if (authDescriptorsCandidates.isEmpty()) {
-        throw PrintMessage("No valid account descriptor found. User not authorized for operation $opName", statusCode = 1)
+        throw CliktError("No valid account descriptor found. User not authorized for operation $opName")
     } else if (authDescriptorsCandidates.size == 1) {
         authDescriptorsCandidates.first()
     } else if (terminal.terminalInfo.inputInteractive) {
@@ -95,7 +145,11 @@ private fun CoreCliktCommand.findValidAuthDescriptorIdForOperation(client: Postc
     }
 
     if (!isValid(flags, authDescriptor)) {
-        throw PrintMessage("No valid account descriptor found. Operation $opName requires the flag(s): $flags, while the flag(s) of the auth descriptor is: ${authDescriptor.getFlags()}", statusCode = 1)
+        throw CliktError(
+                """No valid account descriptor found. 
+                    |Operation $opName requires the flag(s): $flags, 
+                    |while the flag(s) of the auth descriptor is: ${authDescriptor.getFlags()}""".trimMargin()
+        )
     }
     return authDescriptor.id
 }
@@ -114,7 +168,7 @@ private fun PagedResult.getAccountIds() = this.data.map { it.asDict()["id"]!!.as
 
 private fun CoreCliktCommand.accountPicker(accounts: List<ByteArray>, signer: ByteArray): ByteArray {
     return accounts.let {
-        if (it.isEmpty()) throw PrintMessage("No FT4 Account found for signer: ${signer.toHex()}", statusCode = 1)
+        if (it.isEmpty()) throw CliktError("No FT4 Account found for signer: ${signer.toHex()}")
         if (it.size == 1) it.first()
         else if (terminal.terminalInfo.inputInteractive) {
             terminal.interactiveSelectList(
@@ -124,12 +178,15 @@ private fun CoreCliktCommand.accountPicker(accounts: List<ByteArray>, signer: By
                     ?.hexStringToByteArray()
                     ?: throw Abort()
         } else {
-            throw PrintMessage("More than one account found, please specify which one to use with --ft-account-id option",
-                    statusCode = 1)
+            throw CliktError("More than one account found, please specify which one to use with --ft-account-id option")
         }
     }
 }
 
-fun CoreCliktCommand.addFtAuthOperation(transactionBuilder: TransactionBuilder, accountId: ByteArray, authDescriptorId: ByteArray) {
+fun CoreCliktCommand.addFtAuthOperation(
+        transactionBuilder: TransactionBuilder,
+        accountId: ByteArray,
+        authDescriptorId: ByteArray
+) {
     transactionBuilder.ftAuthOperation(accountId, authDescriptorId)
 }
