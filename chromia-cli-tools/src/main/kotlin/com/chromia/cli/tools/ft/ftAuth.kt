@@ -105,7 +105,7 @@ private fun isValid(requiredFlags: List<String>, authDescriptor: Ft4GetAccountAu
     return flags.containsAll(requiredFlags)
 }
 
-private fun CoreCliktCommand.findAccountId(client: PostchainQuery, signer: ByteArray): ByteArray {
+fun CoreCliktCommand.findAccountId(client: PostchainQuery, signer: ByteArray): ByteArray {
     val accounts = client.getAccountsBySigner(signer, 100, null).getAccountIds()
     return accountPicker(accounts, signer)
 }
