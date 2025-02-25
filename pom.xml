@@ -19,12 +19,12 @@
 
     <properties>
         <revision>dev</revision>
-        <codegen.version>0.16.1</codegen.version>
-        <postchain.version>3.27.4</postchain.version>
+        <codegen.version>0.16.2</codegen.version>
+        <postchain.version>3.27.8</postchain.version>
         <postchain.client.version>3.23.4</postchain.client.version>
-        <rell.version>0.14.6</rell.version>
-        <rell.dokka.version>0.2.9</rell.dokka.version>
-        <rell.toolbox.version>0.4.12</rell.toolbox.version>
+        <rell.version>0.14.7</rell.version>
+        <rell.dokka.version>0.2.10</rell.dokka.version>
+        <rell.toolbox.version>0.4.13</rell.toolbox.version>
         <eif.version>0.8.0</eif.version>
         <directory.chain.version>1.74.0</directory.chain.version>
         <directory.source>${project.build.directory}/directory-chain/src</directory.source>
