@@ -9,10 +9,9 @@ import net.postchain.crypto.KeyPair
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables
+import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
-import kotlin.io.path.createDirectories
-import kotlin.io.path.createDirectory
 
 class ChromiaConfigTest {
     val pubKey = "02CCF1F5FF6A6E5C9A6E89716A67BC77BECEF4DA804BD3BCE3105D96EB3D1AD765"
@@ -32,9 +31,8 @@ class ChromiaConfigTest {
         }
     }
 
-
     @Test
-    fun `Global Keystore key gets overridden by manual reference`(@TempDir dir: Path) {
+    fun `Global Keystore key gets overridden by manual reference having pub and priv key`(@TempDir dir: Path) {
         val test = dir.resolve("sub")
         testData(dir) {
             secret {
@@ -44,7 +42,28 @@ class ChromiaConfigTest {
         EnvironmentVariables("CHROMIA_HOME", dir.absolutePathString()).execute {
             ChromiaKeyStore(keyIdName).saveKeyPair(keyPair)
             ChromiaConfigWriter.global.setKeyId(keyIdName)
-            val clientConfig = ChromiaConfigLoader { _ -> }.loadClientConfigFile(test.resolve(".chromia/config").toFile())
+            val clientConfig = ChromiaConfigLoader { _ -> }.loadClientConfigFile(
+                test.resolve(".chromia/config").toFile()
+            )
+            assertThat(clientConfig.signers.size).isEqualTo(1)
+            assertThat(clientConfig.signers.first().pubKey.hex()).isEqualTo(TestDataBuilder.keyPair.pubKey.hex())
+            assertThat(clientConfig.signers.first().privKey.hex()).isEqualTo(TestDataBuilder.keyPair.privKey.hex())
+        }
+    }
+
+    @Test
+    fun `Global Keystore key gets overridden by manual reference having key id`(@TempDir dir: Path) {
+        val test = dir.resolve("sub")
+        val explicitKeyId = "explicitKeyId"
+        File(test.toFile(), "/config").also {
+            it.parentFile.mkdirs()
+        }.writeText("key.id = $explicitKeyId")
+
+        EnvironmentVariables("CHROMIA_HOME", dir.absolutePathString()).execute {
+            ChromiaKeyStore(explicitKeyId).saveKeyPair(TestDataBuilder.keyPair)
+            ChromiaKeyStore(keyIdName).saveKeyPair(keyPair)
+            ChromiaConfigWriter.global.setKeyId(keyIdName)
+            val clientConfig = ChromiaConfigLoader { _ -> }.loadClientConfigFile(test.resolve("config").toFile())
             assertThat(clientConfig.signers.size).isEqualTo(1)
             assertThat(clientConfig.signers.first().pubKey.hex()).isEqualTo(TestDataBuilder.keyPair.pubKey.hex())
             assertThat(clientConfig.signers.first().privKey.hex()).isEqualTo(TestDataBuilder.keyPair.privKey.hex())

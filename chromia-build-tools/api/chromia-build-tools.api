@@ -222,6 +222,7 @@ public final class com/chromia/build/tools/config/ChromiaClientConfig {
 	public final fun setDeployment (Lcom/chromia/cli/model/DeploymentModel;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
 	public final fun setSigner ([Lnet/postchain/crypto/KeyPair;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
 	public final fun setSignerFromSecret (Ljava/nio/file/Path;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
+	public final fun setSignerUsingKeyId (Ljava/lang/String;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
 }
 
 public final class com/chromia/build/tools/config/ChromiaClientConfig$Companion {
