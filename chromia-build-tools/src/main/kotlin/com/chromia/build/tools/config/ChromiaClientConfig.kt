@@ -1,8 +1,7 @@
 package com.chromia.build.tools.config
 
+import com.chromia.build.tools.keystore.ChromiaKeyStore
 import com.chromia.cli.model.DeploymentModel
-import java.nio.file.Path
-import kotlin.io.path.absolutePathString
 import net.postchain.client.config.PostchainClientConfig
 import net.postchain.client.core.PostchainClientProvider
 import net.postchain.client.request.EndpointPool
@@ -11,9 +10,11 @@ import net.postchain.common.PropertiesFileLoader
 import net.postchain.crypto.KeyPair
 import org.apache.commons.configuration2.Configuration
 import org.apache.commons.configuration2.PropertiesConfiguration
+import java.nio.file.Path
+import kotlin.io.path.absolutePathString
 
 class ChromiaClientConfig private constructor(
-        private var config: PostchainClientConfig
+    private var config: PostchainClientConfig
 ) {
     val blockchainRid get() = config.blockchainRid
     val signers get() = config.signers
@@ -39,6 +40,11 @@ class ChromiaClientConfig private constructor(
         }
     }
 
+    fun setSignerUsingKeyId(keyId: String) = apply {
+        ChromiaKeyStore(keyId).findKeyPair()?.let { setSigner(it) }
+            ?: throw IllegalArgumentException("Key with ID '$keyId' not found")
+    }
+
     fun setDeployment(deploymentModel: DeploymentModel) = apply {
         setBrid(deploymentModel.blockchainRid)
         setApiUrls(*deploymentModel.urls.toTypedArray())
@@ -52,13 +58,12 @@ class ChromiaClientConfig private constructor(
         val EMPTY = from(PropertiesConfiguration())
 
         fun from(config: Configuration): ChromiaClientConfig = PropertiesConfiguration()
-                .apply {
-                    copy(config)
-                    if (!config.containsKey("api.url")) setProperty("api.url", DEFAULT_API_URL)
-                    if (!config.containsKey("brid")) setProperty("brid", BlockchainRid.ZERO_RID)
-                }
-                .let { PostchainClientConfig.fromConfiguration(it) }
-                .let { ChromiaClientConfig(it) }
-
+            .apply {
+                copy(config)
+                if (!config.containsKey("api.url")) setProperty("api.url", DEFAULT_API_URL)
+                if (!config.containsKey("brid")) setProperty("brid", BlockchainRid.ZERO_RID)
+            }
+            .let { PostchainClientConfig.fromConfiguration(it) }
+            .let { ChromiaClientConfig(it) }
     }
 }

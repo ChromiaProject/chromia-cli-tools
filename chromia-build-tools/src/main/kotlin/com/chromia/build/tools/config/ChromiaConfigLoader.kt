@@ -1,11 +1,10 @@
 package com.chromia.build.tools.config
 
 import com.chromia.build.tools.keystore.ChromiaKeyStore
-import java.io.File
 import net.postchain.common.PropertiesFileLoader
 import org.apache.commons.configuration2.Configuration
 import org.apache.commons.configuration2.PropertiesConfiguration
-
+import java.io.File
 
 class ChromiaConfigLoader(private val logger: (String) -> Unit) {
 
@@ -16,6 +15,8 @@ class ChromiaConfigLoader(private val logger: (String) -> Unit) {
         private const val DEFAULT_CONFIG_MODEL_FILENAME = "config.yml"
         private val chromiaHome
             get() = System.getenv("CHROMIA_HOME") ?: (System.getProperty("user.home") + "/.chromia")
+
+        private val SENSITIVE_PROPERTY_FILE_KEYS = setOf("pubkey", "privkey")
 
         fun globalConfigurationFile() = File("$chromiaHome/config")
         fun localConfigurationFile() = File(DEFAULT_CONFIG_FILENAME)
@@ -44,20 +45,35 @@ class ChromiaConfigLoader(private val logger: (String) -> Unit) {
         }
 
         loadFromFileIfExists(localConfigurationFile(), config)
-        if (config.containsKey("key.id")) {
+
+        val explicitConfig = PropertiesConfiguration().apply {
+            loadFromFileIfExists(file, this)
+        }
+        val keysExplicitlyProvided = SENSITIVE_PROPERTY_FILE_KEYS.all(explicitConfig::containsKey)
+        config.copy(explicitConfig)
+
+        if (config.containsKey("key.id") && !keysExplicitlyProvided) {
             ChromiaKeyStore(config.getString("key.id")).findKeyPair()?.let {
                 config.setProperty("pubkey", it.pubKey.hex())
                 config.setProperty("privkey", it.privKey.hex())
             }
         }
-        loadFromFileIfExists(file, config)
         return config
     }
 
     private fun loadFromFileIfExists(file: File?, config: Configuration) {
         if (file != null && file.exists()) {
             val c = PropertiesFileLoader.load(file.absolutePath)
-            c.keys.forEach { key -> config.setProperty(key, c.getProperty(key)) }
+            c.keys.forEach { key ->
+                if (key in SENSITIVE_PROPERTY_FILE_KEYS) {
+                    logger(
+                        "SECURITY WARNING: The property '$key' contains sensitive information and is deprecated. " +
+                            "This method of storing sensitive data will be removed in the future. " +
+                            "Please migrate to using a key ID or store this data in a secret file instead. "
+                    )
+                }
+                config.setProperty(key, c.getProperty(key))
+            }
         }
     }
 
