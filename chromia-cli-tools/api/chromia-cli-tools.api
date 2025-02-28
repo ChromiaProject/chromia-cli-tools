@@ -161,14 +161,16 @@ public final class com/chromia/cli/tools/ft/DescriptorUtilsKt {
 public final class com/chromia/cli/tools/ft/EvmAuthKt {
 	public static final fun addEvmAuthOperation (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;)V
 	public static synthetic fun addEvmAuthOperation$default (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun addEvmSignaturesOperation (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;)V
+	public static synthetic fun addEvmSignaturesOperation$default (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 	public static final fun fetchEvmSignatures (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;)Ljava/util/List;
 	public static synthetic fun fetchEvmSignatures$default (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/util/List;
 	public static final fun openWebLink (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Ljava/lang/String;)V
 	public static final fun terminalWebLink (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Ljava/lang/String;)V
 }
 
-synthetic class com/chromia/cli/tools/ft/EvmAuthKt$fetchEvmSignatures$authMessages$1$nonce$1 : kotlin/jvm/internal/FunctionAdapter, net/postchain/crypto/Digester {
-	public static final field INSTANCE Lcom/chromia/cli/tools/ft/EvmAuthKt$fetchEvmSignatures$authMessages$1$nonce$1;
+synthetic class com/chromia/cli/tools/ft/EvmAuthKt$fetchAuthMessage$nonce$1 : kotlin/jvm/internal/FunctionAdapter, net/postchain/crypto/Digester {
+	public static final field INSTANCE Lcom/chromia/cli/tools/ft/EvmAuthKt$fetchAuthMessage$nonce$1;
 	public final fun digest ([B)[B
 	public final fun equals (Ljava/lang/Object;)Z
 	public final fun getFunctionDelegate ()Lkotlin/Function;
@@ -185,6 +187,21 @@ public final class com/chromia/cli/tools/ft/FtAuthKt {
 	public static final fun findFtAccountIdAndAuthDescriptorId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;[BLjava/lang/String;Ljava/lang/String;)Lkotlin/Pair;
 	public static final fun findFtAccountIdWithAuthDescriptorId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;[B[BLjava/lang/String;[B)Lkotlin/Pair;
 	public static final fun initFtAuth (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;)V
+}
+
+public final class com/chromia/cli/tools/ft/OperationDescriptor {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Z)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/util/List;Z)Lcom/chromia/cli/tools/ft/OperationDescriptor;
+	public static synthetic fun copy$default (Lcom/chromia/cli/tools/ft/OperationDescriptor;Ljava/lang/String;Ljava/util/List;ZILjava/lang/Object;)Lcom/chromia/cli/tools/ft/OperationDescriptor;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getForEvmSignatures ()Z
+	public final fun getOpArgs ()Ljava/util/List;
+	public final fun getOpName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public class com/chromia/cli/tools/launcher/CliLauncher : com/github/ajalt/clikt/core/NoOpCliktCommand {

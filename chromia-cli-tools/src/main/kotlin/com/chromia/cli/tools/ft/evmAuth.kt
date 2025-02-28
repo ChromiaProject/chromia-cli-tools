@@ -3,6 +3,7 @@ package com.chromia.cli.tools.ft
 import com.chromia.directory1.lib.ft4.core.auth.Signature
 import com.chromia.directory1.lib.ft4.external.accounts.getAuthDescriptorCounter
 import com.chromia.directory1.lib.ft4.external.auth.evmAuthOperation
+import com.chromia.directory1.lib.ft4.external.auth.evmSignaturesOperation
 import com.chromia.directory1.lib.ft4.external.auth.getAuthMessageTemplate
 import com.github.ajalt.clikt.core.CliktError
 import com.github.ajalt.clikt.core.CoreCliktCommand
@@ -35,43 +36,74 @@ import java.net.URI
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutionException
 
-fun CoreCliktCommand.addEvmAuthOperation(client: PostchainClient, transactionBuilder: TransactionBuilder,
-                                         opName: String, opArgs: List<Gtv>, evmAddress: ByteArray,
-                                         accountId: ByteArray, authDescriptorId: ByteArray,
-                                         launchWebBrowser: Boolean = true, urlNotifier: (String) -> Unit = {}) {
+fun CoreCliktCommand.addEvmAuthOperation(
+        client: PostchainClient,
+        transactionBuilder: TransactionBuilder,
+        opName: String,
+        opArgs: List<Gtv>,
+        evmAddress: ByteArray,
+        accountId: ByteArray,
+        authDescriptorId: ByteArray,
+        launchWebBrowser: Boolean = true,
+        urlNotifier: (String) -> Unit = {},
+) {
     val encodedSignatures = fetchEvmSignatures(
-            client, listOf(opName to opArgs), evmAddress,
-            accountId, authDescriptorId,
-            launchWebBrowser, urlNotifier)
+            client,
+            listOf(OperationDescriptor(opName, opArgs, forEvmSignatures = false)),
+            evmAddress,
+            accountId,
+            authDescriptorId,
+            launchWebBrowser,
+            urlNotifier
+    )
     transactionBuilder.evmAuthOperation(accountId, authDescriptorId, encodedSignatures)
 }
 
-fun CoreCliktCommand.fetchEvmSignatures(client: PostchainClient,
-                                        operations: List<Pair<String, List<Gtv>>>,
-                                        evmAddress: ByteArray,
-                                        accountId: ByteArray, authDescriptorId: ByteArray,
-                                        launchWebBrowser: Boolean = true, urlNotifier: (String) -> Unit = {}): List<Signature> {
-    val authMessages = operations.map { (opName, opArgs) ->
-        val authMessageTemplate = client.getAuthMessageTemplate(opName, gtv(opArgs))
-        val counter = client.getAuthDescriptorCounter(accountId, authDescriptorId)
-        if (counter == null) throw CliktError("Invalid auth descriptor counter. Was the auth descriptor too close to expiration?")
-        // TODO [use-new-algo] use new hash version here
-        val nonce = gtv(listOf(
-                gtv(client.config.blockchainRid),
-                gtv(opName),
-                gtv(opArgs),
-                gtv(counter),
-        )).merkleHash(GtvMerkleHashCalculatorV1(::sha256Digest))
-        authMessageTemplate
-                .replace("{blockchain_rid}", client.config.blockchainRid.toHex().uppercase())
-                .replace("{nonce}", nonce.toHex().uppercase())
-                .replace("{account_id}", accountId.toHex().uppercase())
-                .replace("{auth_descriptor_id}", authDescriptorId.toHex().uppercase())
-    }
+fun CoreCliktCommand.addEvmSignaturesOperation(
+        client: PostchainClient,
+        transactionBuilder: TransactionBuilder,
+        opName: String,
+        opArgs: List<Gtv>,
+        evmAddress: ByteArray,
+        accountId: ByteArray,
+        authDescriptorId: ByteArray,
+        launchWebBrowser: Boolean = true,
+        urlNotifier: (String) -> Unit = {},
+) {
+    val encodedSignatures = fetchEvmSignatures(
+            client,
+            listOf(OperationDescriptor(opName, opArgs, forEvmSignatures = true)),
+            evmAddress,
+            accountId,
+            authDescriptorId,
+            launchWebBrowser,
+            urlNotifier
+    )
+    transactionBuilder.evmSignaturesOperation(listOf(evmAddress), encodedSignatures)
+}
+
+data class OperationDescriptor(
+        val opName: String,
+        val opArgs: List<Gtv>,
+        val forEvmSignatures: Boolean
+)
+
+fun CoreCliktCommand.fetchEvmSignatures(
+        client: PostchainClient,
+        operations: List<OperationDescriptor>,
+        evmAddress: ByteArray,
+        accountId: ByteArray,
+        authDescriptorId: ByteArray,
+        launchWebBrowser: Boolean = true,
+        urlNotifier: (String) -> Unit = {}
+): List<Signature> {
+    val authMessages = operations.map { fetchAuthMessage(client, accountId, authDescriptorId, it) }
 
     val html = this::class.java.getResource("/com/chromia/cli/tools/evm_auth/index.html")!!.readText()
             .replace("{{address}}", "0x${evmAddress.toHex()}")
-            .replace("{{messages}}", authMessages.joinToString(separator = "") { "\"${StringEscapeUtils.escapeEcmaScript(it)}\",\n" })
+            .replace("{{messages}}", authMessages.joinToString(separator = "") {
+                "\"${StringEscapeUtils.escapeEcmaScript(it)}\",\n"
+            })
     val signaturesFuture = CompletableFuture<String>()
     val server = routes(
             "/" bind GET to { Response(OK).header("Content-Type", "text/html").body(html) },
@@ -104,6 +136,34 @@ fun CoreCliktCommand.fetchEvmSignatures(client: PostchainClient,
                 s = it.asJsonObject.get("s").asString.drop(2).hexStringToByteArray().wrap(),
                 v = it.asJsonObject.get("v").asLong)
     }
+}
+
+private fun fetchAuthMessage(
+        client: PostchainClient,
+        accountId: ByteArray,
+        authDescriptorId: ByteArray,
+        op: OperationDescriptor,
+): String {
+    val authMessageTemplate = client.getAuthMessageTemplate(op.opName, gtv(op.opArgs))
+    val counter = if (op.forEvmSignatures) {
+        0
+    } else {
+        client.getAuthDescriptorCounter(accountId, authDescriptorId) ?: throw CliktError(
+                "Invalid auth descriptor counter. Was the auth descriptor too close to expiration?"
+        )
+    }
+    // TODO [use-new-algo] use new hash version here
+    val nonce = gtv(listOf(
+            gtv(client.config.blockchainRid),
+            gtv(op.opName),
+            gtv(op.opArgs),
+            gtv(counter),
+    )).merkleHash(GtvMerkleHashCalculatorV1(::sha256Digest))
+    return authMessageTemplate
+            .replace("{blockchain_rid}", client.config.blockchainRid.toHex().uppercase())
+            .replace("{nonce}", nonce.toHex().uppercase())
+            .replace("{account_id}", accountId.toHex().uppercase())
+            .replace("{auth_descriptor_id}", authDescriptorId.toHex().uppercase())
 }
 
 fun CoreCliktCommand.openWebLink(url: String) {
