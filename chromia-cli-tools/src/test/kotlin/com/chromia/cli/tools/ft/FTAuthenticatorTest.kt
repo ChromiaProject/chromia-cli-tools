@@ -15,6 +15,7 @@ import com.chromia.directory1.lib.ft4.external.accounts.GET_AUTH_DESCRIPTOR_COUN
 import com.chromia.directory1.lib.ft4.external.auth.GET_AUTH_FLAGS
 import com.chromia.directory1.lib.ft4.external.auth.GET_AUTH_MESSAGE_TEMPLATE
 import com.chromia.directory1.lib.ft4.external.auth.evmAuthOperation
+import com.chromia.directory1.lib.ft4.external.auth.evmSignaturesOperation
 import com.chromia.directory1.lib.ft4.external.auth.ftAuthOperation
 import com.chromia.directory1.lib.ft4.utils.PagedResult
 import com.chromia.directory1.lib.ft4.version.GET_VERSION
@@ -55,12 +56,15 @@ import java.util.concurrent.TimeUnit
 
 class FTAuthenticatorTest {
 
-    val testCommand = NoOpCliktCommand().context { terminal = Terminal(interactive = false) }.also { it.parse(arrayOf()) }
+    val testCommand = NoOpCliktCommand().context { terminal = Terminal(interactive = false) }.also {
+        it.parse(arrayOf())
+    }
 
     @Test
     fun incompatibleDappTest() {
         assertThrows<CliktError> {
-            testCommand.initFtAuth { query, _ -> if (query == GET_VERSION) throw ClientError("", null, "Query not found", null) else GtvNull }
+            testCommand.initFtAuth { query, _ -> if (query == GET_VERSION)
+                throw ClientError("", null, "Query not found", null) else GtvNull }
         }
     }
 
@@ -70,7 +74,9 @@ class FTAuthenticatorTest {
         val res = assertThrows<CliktError> {
             testCommand.initFtAuth { query, _ -> queryResponseV1(pubKey, listOf("A"), query) }
         }
-        assertThat(res.message).isEqualTo("Versions before release 0.4.0 are not supported, current FT4 version 0.1.1 is to old")
+        assertThat(res.message).isEqualTo(
+                "Versions before release 0.4.0 are not supported, current FT4 version 0.1.1 is to old"
+        )
     }
 
     @Test
@@ -79,7 +85,9 @@ class FTAuthenticatorTest {
         val res = assertThrows<CliktError> {
             testCommand.initFtAuth { query, _ -> queryResponseV2(pubKey, listOf("A"), query) }
         }
-        assertThat(res.message).isEqualTo("Versions before release 0.4.0 are not supported, current FT4 version 0.2.0 is to old")
+        assertThat(res.message).isEqualTo(
+                "Versions before release 0.4.0 are not supported, current FT4 version 0.2.0 is to old"
+        )
     }
 
     @Test
@@ -126,7 +134,9 @@ class FTAuthenticatorTest {
                 rules = GtvNull,
                 accountId = accountId.wrap()
         )
-        val client: (String, Gtv) -> Gtv = { query, _ -> queryResponseV4MultipleDescriptors(listOf("A"), query, listOf(descriptor, descriptor2)) }
+        val client: (String, Gtv) -> Gtv = { query, _ ->
+            queryResponseV4MultipleDescriptors(listOf("A"), query, listOf(descriptor, descriptor2))
+        }
         testCommand.initFtAuth(client)
 
         val transactionBuilder = mock<TransactionBuilder>()
@@ -175,7 +185,8 @@ class FTAuthenticatorTest {
         )
         val client = mock<PostchainClient> {
             on { config } doReturn PostchainClientConfig(
-                    blockchainRid = BlockchainRid("3250B9CCD1FAA489BFCC9706DE55237F102DE7A5ED66D5FE6E8EE6A20823D2BD".hexStringToByteArray()),
+                    blockchainRid = BlockchainRid(
+                            "3250B9CCD1FAA489BFCC9706DE55237F102DE7A5ED66D5FE6E8EE6A20823D2BD".hexStringToByteArray()),
                     endpointPool = mock(),
             )
             on { query(eq(GET_VERSION), any()) } doReturn gtv("0.4.0")
@@ -183,9 +194,11 @@ class FTAuthenticatorTest {
                     nextCursor = null,
                     data = listOf(gtv((mapOf("id" to gtv(descriptor.accountId)))))
             ))
-            on { query(eq(GET_ACCOUNT_AUTH_DESCRIPTORS_BY_SIGNER), any()) } doReturn gtv(GtvObjectMapper.toGtvDictionary(descriptor))
+            on { query(eq(GET_ACCOUNT_AUTH_DESCRIPTORS_BY_SIGNER), any()) } doReturn
+                    gtv(GtvObjectMapper.toGtvDictionary(descriptor))
             on { query(eq(GET_AUTH_FLAGS), any()) } doReturn gtv(listOf(gtv("A")))
-            on { query(eq(GET_AUTH_MESSAGE_TEMPLATE), any()) } doReturn gtv("{blockchain_rid} auth message template {nonce}")
+            on { query(eq(GET_AUTH_MESSAGE_TEMPLATE), any()) } doReturn
+                    gtv("{blockchain_rid} auth message template {nonce}")
             on { query(eq(GET_AUTH_DESCRIPTOR_COUNTER), any()) } doReturn gtv(17)
         }
         testCommand.initFtAuth(client)
@@ -199,7 +212,8 @@ class FTAuthenticatorTest {
         assertThat(accountId2).isEqualTo(accountId)
         assertThat(authDescriptorId2).isEqualTo(authDescriptorId)
 
-        val signature = Signature(r = "1234".hexStringToWrappedByteArray(), s = "5678".hexStringToWrappedByteArray(), v = 5)
+        val signature = Signature(
+                r = "1234".hexStringToWrappedByteArray(), s = "5678".hexStringToWrappedByteArray(), v = 5)
 
         val transactionBuilder = mock<TransactionBuilder>()
         assertDoesNotThrow {
@@ -230,7 +244,8 @@ class FTAuthenticatorTest {
         )
         val client = mock<PostchainClient> {
             on { config } doReturn PostchainClientConfig(
-                    blockchainRid = BlockchainRid("3250B9CCD1FAA489BFCC9706DE55237F102DE7A5ED66D5FE6E8EE6A20823D2BD".hexStringToByteArray()),
+                    blockchainRid = BlockchainRid(
+                            "3250B9CCD1FAA489BFCC9706DE55237F102DE7A5ED66D5FE6E8EE6A20823D2BD".hexStringToByteArray()),
                     endpointPool = mock(),
             )
             on { query(eq(GET_VERSION), any()) } doReturn gtv("0.4.0")
@@ -238,9 +253,11 @@ class FTAuthenticatorTest {
                     nextCursor = null,
                     data = listOf(gtv((mapOf("id" to gtv(descriptor.accountId)))))
             ))
-            on { query(eq(GET_ACCOUNT_AUTH_DESCRIPTORS_BY_SIGNER), any()) } doReturn gtv(GtvObjectMapper.toGtvDictionary(descriptor))
+            on { query(eq(GET_ACCOUNT_AUTH_DESCRIPTORS_BY_SIGNER), any()) } doReturn
+                    gtv(GtvObjectMapper.toGtvDictionary(descriptor))
             on { query(eq(GET_AUTH_FLAGS), any()) } doReturn gtv(listOf(gtv("A")))
-            on { query(eq(GET_AUTH_MESSAGE_TEMPLATE), any()) } doReturn gtv("{blockchain_rid} auth message template {nonce}")
+            on { query(eq(GET_AUTH_MESSAGE_TEMPLATE), any()) } doReturn
+                    gtv("{blockchain_rid} auth message template {nonce}")
             on { query(eq(GET_AUTH_DESCRIPTOR_COUNTER), any()) } doReturn gtv(17)
         }
         testCommand.initFtAuth(client)
@@ -267,6 +284,65 @@ class FTAuthenticatorTest {
         verifyNoInteractions(transactionBuilder)
     }
 
+    @Test @Timeout(value = 30, unit = TimeUnit.SECONDS)
+    fun evmSignaturesSuccess() {
+        val evmAddress = "183B9875AC828CE1A56D5152874B2833AC8ABB63".hexStringToByteArray()
+        val accountId = "5".repeat(64).hexStringToByteArray()
+        val authDescriptorId = "6".repeat(64).hexStringToByteArray()
+        val descriptor = Ft4GetAccountAuthDescriptorsBySignerResult(
+                id = authDescriptorId.wrap(),
+                args = gtv(gtv(gtv("A")), gtv(evmAddress)),
+                created = System.currentTimeMillis(),
+                authType = AuthType.S,
+                rules = GtvNull,
+                accountId = accountId.wrap()
+        )
+        val client = mock<PostchainClient> {
+            on { config } doReturn PostchainClientConfig(
+                    blockchainRid = BlockchainRid(
+                            "3250B9CCD1FAA489BFCC9706DE55237F102DE7A5ED66D5FE6E8EE6A20823D2BD".hexStringToByteArray()),
+                    endpointPool = mock(),
+            )
+            on { query(eq(GET_VERSION), any()) } doReturn gtv("0.4.0")
+            on { query(eq(GET_ACCOUNTS_BY_SIGNER), any()) } doReturn GtvObjectMapper.toGtvDictionary(PagedResult(
+                    nextCursor = null,
+                    data = listOf(gtv((mapOf("id" to gtv(descriptor.accountId)))))
+            ))
+            on { query(eq(GET_ACCOUNT_AUTH_DESCRIPTORS_BY_SIGNER), any()) } doReturn
+                    gtv(GtvObjectMapper.toGtvDictionary(descriptor))
+            on { query(eq(GET_AUTH_FLAGS), any()) } doReturn gtv(listOf(gtv("A")))
+            on { query(eq(GET_AUTH_MESSAGE_TEMPLATE), any()) } doReturn
+                    gtv("{blockchain_rid} auth message template {nonce}")
+            on { query(eq(GET_AUTH_DESCRIPTOR_COUNTER), any()) } doReturn gtv(17)
+        }
+        testCommand.initFtAuth(client)
+
+        val (accountId2, authDescriptorId2) = testCommand.findFtAccountIdWithAuthDescriptorId(
+                client,
+                null,
+                evmAddress,
+                "my_op",
+                null)
+        assertThat(accountId2).isEqualTo(accountId)
+        assertThat(authDescriptorId2).isEqualTo(authDescriptorId)
+
+        val signature = Signature(
+                r = "1234".hexStringToWrappedByteArray(), s = "5678".hexStringToWrappedByteArray(), v = 5)
+
+        val transactionBuilder = mock<TransactionBuilder>()
+        assertDoesNotThrow {
+            testCommand.addEvmSignaturesOperation(client, transactionBuilder, "my_op", listOf(gtv("foo")), evmAddress,
+                    accountId, authDescriptorId, launchWebBrowser = false) { url ->
+                val response = ApacheClient()(Request(Method.POST, "$url/signatures")
+                        .header("Content-Type", "application/json")
+                        .body("""[{"r":"0x1234","s":"0x5678","v":5}]"""))
+                assertThat(response.status.successful).isTrue()
+            }
+        }
+
+        verify(transactionBuilder).evmSignaturesOperation(listOf(evmAddress), listOf(signature))
+    }
+
     private fun queryResponseV1(pubKey: PubKey, flags: List<String>, query: String): Gtv {
         return when (query) {
             "ft4.get_version" -> gtv("0.1.1")
@@ -288,7 +364,8 @@ class FTAuthenticatorTest {
     private fun queryResponseV2(pubKey: PubKey, flags: List<String>, query: String): Gtv {
         return when (query) {
             "ft4.get_version" -> gtv("0.2.0")
-            "ft4.get_accounts_by_signer" -> gtv(mapOf("data" to gtv(gtv(mapOf("id" to gtv("3".repeat(64).hexStringToByteArray()))))))
+            "ft4.get_accounts_by_signer" ->
+                gtv(mapOf("data" to gtv(gtv(mapOf("id" to gtv("3".repeat(64).hexStringToByteArray()))))))
             "ft4.get_account_auth_descriptors_by_signer" -> gtv(mapOf("data" to gtv(gtv(mapOf(
                     "id" to gtv("5".repeat(64).hexStringToByteArray()),
                     "args" to gtv(gtv(gtv("A")), gtv(pubKey.data)),
@@ -303,7 +380,9 @@ class FTAuthenticatorTest {
         }
     }
 
-    private fun queryResponseV4(flags: List<String>, query: String, authDescriptor: Ft4GetAccountAuthDescriptorsBySignerResult): Gtv {
+    private fun queryResponseV4(
+            flags: List<String>, query: String, authDescriptor: Ft4GetAccountAuthDescriptorsBySignerResult
+    ): Gtv {
         return when (query) {
             GET_VERSION -> gtv("0.4.0")
             GET_ACCOUNTS_BY_SIGNER -> GtvObjectMapper.toGtvDictionary(PagedResult(
@@ -317,7 +396,9 @@ class FTAuthenticatorTest {
         }
     }
 
-    private fun queryResponseV4MultipleDescriptors(flags: List<String>, query: String, authDescriptors: List<Ft4GetAccountAuthDescriptorsBySignerResult>): Gtv {
+    private fun queryResponseV4MultipleDescriptors(
+            flags: List<String>, query: String, authDescriptors: List<Ft4GetAccountAuthDescriptorsBySignerResult>
+    ): Gtv {
         return when (query) {
             GET_VERSION -> gtv("0.4.0")
             GET_ACCOUNTS_BY_SIGNER -> GtvObjectMapper.toGtvDictionary(PagedResult(
