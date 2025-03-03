@@ -6,7 +6,7 @@ import org.apache.commons.configuration2.Configuration
 import org.apache.commons.configuration2.PropertiesConfiguration
 import java.io.File
 
-class ChromiaConfigLoader(private val logger: (String) -> Unit) {
+class ChromiaConfigLoader(private val logger: (String) -> Unit, val suppressKeyStorageDeprecationWarning: Boolean = false) {
 
     companion object {
         private const val DEFAULT_CONFIG_FILENAME = ".chromia/config"
@@ -64,7 +64,7 @@ class ChromiaConfigLoader(private val logger: (String) -> Unit) {
     private fun loadFromFileIfExists(file: File?, config: Configuration) {
         if (file != null && file.exists()) {
             val c = PropertiesFileLoader.load(file.absolutePath)
-            if (allSensitiveKeysExist(c)) {
+            if (allSensitiveKeysExist(c) && !suppressKeyStorageDeprecationWarning) {
                 logger(
                     """
                     WARNING: The properties ${SENSITIVE_PROPERTY_FILE_KEYS.joinToString { "'$it'" }} are currently marked as deprecated.
