@@ -49,7 +49,7 @@ class ChromiaConfigLoader(private val logger: (String) -> Unit) {
         val explicitConfig = PropertiesConfiguration().apply {
             loadFromFileIfExists(file, this)
         }
-        val keysExplicitlyProvided = SENSITIVE_PROPERTY_FILE_KEYS.all(explicitConfig::containsKey)
+        val keysExplicitlyProvided = allSensitiveKeysExist(explicitConfig)
         config.copy(explicitConfig)
 
         if (config.containsKey("key.id") && !keysExplicitlyProvided) {
@@ -64,17 +64,24 @@ class ChromiaConfigLoader(private val logger: (String) -> Unit) {
     private fun loadFromFileIfExists(file: File?, config: Configuration) {
         if (file != null && file.exists()) {
             val c = PropertiesFileLoader.load(file.absolutePath)
+            if (allSensitiveKeysExist(c)) {
+                logger(
+                    """
+                    WARNING: The properties ${SENSITIVE_PROPERTY_FILE_KEYS.joinToString { "'$it'" }} are currently marked as deprecated.
+                    We're standardizing our key management approach. This method of storing keys will be removed in future versions.
+                    Please migrate to using a key ID or store this data in a secret file instead.
+                    """.trimIndent()
+                )
+            }
+
             c.keys.forEach { key ->
-                if (key in SENSITIVE_PROPERTY_FILE_KEYS) {
-                    logger(
-                        "SECURITY WARNING: The property '$key' contains sensitive information and is deprecated. " +
-                            "This method of storing sensitive data will be removed in the future. " +
-                            "Please migrate to using a key ID or store this data in a secret file instead. "
-                    )
-                }
                 config.setProperty(key, c.getProperty(key))
             }
         }
+    }
+
+    private fun allSensitiveKeysExist(c: Configuration): Boolean {
+        return SENSITIVE_PROPERTY_FILE_KEYS.all { c.containsKey(it) }
     }
 
     fun findModelFile(explicitFile: File?): File? {
