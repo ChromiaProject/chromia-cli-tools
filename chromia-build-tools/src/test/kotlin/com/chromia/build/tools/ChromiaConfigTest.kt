@@ -6,11 +6,13 @@ import assertk.assertions.doesNotContain
 import assertk.assertions.isEqualTo
 import com.chromia.build.tools.config.ChromiaConfigLoader
 import com.chromia.build.tools.config.ChromiaConfigWriter
+import com.chromia.build.tools.config.SUPPRESS_KEY_STORAGE_DEPRECATION_WARNING_SYSTEM_PROPERTY
 import com.chromia.build.tools.keystore.ChromiaKeyStore
 import net.postchain.crypto.KeyPair
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables
+import uk.org.webcompere.systemstubs.properties.SystemProperties
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
@@ -26,7 +28,7 @@ class ChromiaConfigTest {
         EnvironmentVariables("CHROMIA_HOME", dir.absolutePathString()).execute {
             ChromiaKeyStore(keyIdName).saveKeyPair(keyPair)
             ChromiaConfigWriter.global.setKeyId(keyIdName)
-            val clientConfig = ChromiaConfigLoader({ _ -> }).loadClientConfigFile()
+            val clientConfig = ChromiaConfigLoader { _ -> }.loadClientConfigFile()
             assertThat(clientConfig.signers.size).isEqualTo(1)
             assertThat(clientConfig.signers.first().pubKey.hex()).isEqualTo(pubKey)
             assertThat(clientConfig.signers.first().privKey.hex()).isEqualTo(privKey)
@@ -44,7 +46,7 @@ class ChromiaConfigTest {
         EnvironmentVariables("CHROMIA_HOME", dir.absolutePathString()).execute {
             ChromiaKeyStore(keyIdName).saveKeyPair(keyPair)
             ChromiaConfigWriter.global.setKeyId(keyIdName)
-            val clientConfig = ChromiaConfigLoader({ _ -> }).loadClientConfigFile(
+            val clientConfig = ChromiaConfigLoader { _ -> }.loadClientConfigFile(
                 test.resolve(".chromia/config").toFile()
             )
             assertThat(clientConfig.signers.size).isEqualTo(1)
@@ -65,7 +67,7 @@ class ChromiaConfigTest {
             ChromiaKeyStore(explicitKeyId).saveKeyPair(TestDataBuilder.keyPair)
             ChromiaKeyStore(keyIdName).saveKeyPair(keyPair)
             ChromiaConfigWriter.global.setKeyId(keyIdName)
-            val clientConfig = ChromiaConfigLoader({ _ -> }).loadClientConfigFile(test.resolve("config").toFile())
+            val clientConfig = ChromiaConfigLoader { _ -> }.loadClientConfigFile(test.resolve("config").toFile())
             assertThat(clientConfig.signers.size).isEqualTo(1)
             assertThat(clientConfig.signers.first().pubKey.hex()).isEqualTo(TestDataBuilder.keyPair.pubKey.hex())
             assertThat(clientConfig.signers.first().privKey.hex()).isEqualTo(TestDataBuilder.keyPair.privKey.hex())
@@ -98,7 +100,7 @@ class ChromiaConfigTest {
     }
 
     @Test
-    fun `Logging warning skipped when suppressKeyStorageDeprecationWarning is true`(@TempDir dir: Path) {
+    fun `Logging warning skipped when suppression system property is set to true`(@TempDir dir: Path) {
         val test = dir.resolve("sub")
         testData(dir) {
             secret {
@@ -111,10 +113,9 @@ class ChromiaConfigTest {
             Unit
         }
         EnvironmentVariables("CHROMIA_HOME", dir.absolutePathString()).execute {
-            ChromiaConfigLoader(
-                logger,
-                suppressKeyStorageDeprecationWarning = true
-            ).loadClientConfigFile(test.resolve(".chromia/config").toFile())
+            SystemProperties(SUPPRESS_KEY_STORAGE_DEPRECATION_WARNING_SYSTEM_PROPERTY, "true").execute {
+                ChromiaConfigLoader(logger).loadClientConfigFile(test.resolve(".chromia/config").toFile())
+            }
             assertThat(output).doesNotContain(
                 """
                     WARNING: The properties 'pubkey', 'privkey' are currently marked as deprecated.
