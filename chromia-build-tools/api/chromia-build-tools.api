@@ -232,10 +232,8 @@ public final class com/chromia/build/tools/config/ChromiaClientConfig$Companion 
 
 public final class com/chromia/build/tools/config/ChromiaConfigLoader {
 	public static final field Companion Lcom/chromia/build/tools/config/ChromiaConfigLoader$Companion;
-	public fun <init> (Lkotlin/jvm/functions/Function1;Z)V
-	public synthetic fun <init> (Lkotlin/jvm/functions/Function1;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlin/jvm/functions/Function1;)V
 	public final fun findModelFile (Ljava/io/File;)Ljava/io/File;
-	public final fun getSuppressKeyStorageDeprecationWarning ()Z
 	public final fun loadClientConfigFile (Ljava/io/File;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
 	public static synthetic fun loadClientConfigFile$default (Lcom/chromia/build/tools/config/ChromiaConfigLoader;Ljava/io/File;ILjava/lang/Object;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
 	public final fun loadProperties (Ljava/io/File;)Lorg/apache/commons/configuration2/Configuration;
@@ -245,6 +243,10 @@ public final class com/chromia/build/tools/config/ChromiaConfigLoader {
 public final class com/chromia/build/tools/config/ChromiaConfigLoader$Companion {
 	public final fun globalConfigurationFile ()Ljava/io/File;
 	public final fun localConfigurationFile ()Ljava/io/File;
+}
+
+public final class com/chromia/build/tools/config/ChromiaConfigLoaderKt {
+	public static final field SUPPRESS_KEY_STORAGE_DEPRECATION_WARNING_SYSTEM_PROPERTY Ljava/lang/String;
 }
 
 public final class com/chromia/build/tools/config/ChromiaConfigWriter {
