@@ -102,7 +102,7 @@ open class CliLauncher(val name: String) : NoOpCliktCommand(name = name) {
     }
 
     private fun logFolderMessage(): String {
-        val logFolder = System.getProperty("CHR_LOG_FOLDER") ?: "/usr/app/logs"
+        val logFolder = System.getProperty("CHR_LOG_FOLDER") ?: "logs"
         return "Please refer to log file for more details: ${logFolder}${File.separator}${if (name == "chr") "chromia-cli" else name}.log"
     }
 }
