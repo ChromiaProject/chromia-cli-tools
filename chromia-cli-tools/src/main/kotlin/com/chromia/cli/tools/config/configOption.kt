@@ -1,5 +1,6 @@
 package com.chromia.cli.tools.config
 
+import com.chromia.build.tools.config.ChromiaClientConfig
 import com.chromia.build.tools.config.ChromiaConfigLoader
 import com.chromia.cli.model.exceptionSuppressingParse
 import com.chromia.cli.model.parseModel
@@ -7,6 +8,8 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.ParameterHolder
 import com.github.ajalt.clikt.core.PrintMessage
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
+import com.github.ajalt.clikt.parameters.groups.mutuallyExclusiveOptions
+import com.github.ajalt.clikt.parameters.groups.single
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.defaultLazy
@@ -128,3 +131,29 @@ enum class ConfigurationFormat {
 
 fun ParameterHolder.configurationFormatOption() = option("-f", "--format", help = "Blockchain configuration format")
         .enum<ConfigurationFormat>().default(ConfigurationFormat.XML)
+
+sealed class KeyPairSource {
+    data class KeyId(val name: String) : KeyPairSource()
+    data class SecretFile(val file: File) : KeyPairSource()
+}
+
+fun ParameterHolder.secretOption() =
+        option("--secret", help = "Path to secret file (pubkey/privkey)")
+                .file(canBeDir = false, mustExist = true, mustBeReadable = true)
+
+fun ParameterHolder.keyIdOption() =
+        option("--key-id", help = "Key ID of the keypair to use", metavar = "KEY_ID")
+
+fun ParameterHolder.keyPairSourceOption() = mutuallyExclusiveOptions(
+        name = "Key pair source",
+        option1 = secretOption().convert { KeyPairSource.SecretFile(it) },
+        option2 = keyIdOption().convert { KeyPairSource.KeyId(it) },
+).single()
+
+fun ChromiaClientConfig.configureSigners(keyPairSource: KeyPairSource?) {
+    when (keyPairSource) {
+        is KeyPairSource.SecretFile -> setSignerFromSecret(keyPairSource.file.toPath())
+        is KeyPairSource.KeyId -> setSignerUsingKeyId(keyPairSource.name)
+        null -> {}
+    }
+}
