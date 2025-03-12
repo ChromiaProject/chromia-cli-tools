@@ -18,6 +18,7 @@ import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.createFile
+import kotlin.io.path.writeText
 
 class ChromiaConfigTest {
     val pubKey = "02CCF1F5FF6A6E5C9A6E89716A67BC77BECEF4DA804BD3BCE3105D96EB3D1AD765"
@@ -133,21 +134,38 @@ class ChromiaConfigTest {
         val emptyFile = dir.resolve("file_name").createFile()
         testData(dir)
 
-        val output = mutableListOf<String>()
-        val logger = { message: String ->
-            output.add(message)
-            Unit
+        EnvironmentVariables("CHROMIA_HOME", dir.absolutePathString()).execute {
+            val config = ChromiaConfigLoader {}.loadClientConfigFile(dir.resolve(".chromia/config").toFile())
+            val throwable = assertThrows<UserMistake> { config.setSignerFromSecret(emptyFile) }
+
+            assertThat(throwable.message!!).isEqualTo(
+                "Secret file: $emptyFile does not contain 'pubkey' and/or 'privkey' properties"
+            )
         }
+    }
+
+    @Test
+    fun `Setting signer from secret file`(@TempDir dir: Path) {
+        testData(dir)
+        val keyPair = KeyPair.of(
+            "033E413F79EEAD0EE3A576A2FB11035DB4A7CDC07FECB712C351C044149DB887DF",
+            "BD227609F796226107CDB507C91229A3129A8867426ECD372EFE7E2285316C54"
+
+        )
+        val secretFile = dir.resolve(".secret")
+        secretFile.writeText(
+            """
+            privkey=${keyPair.privKey}
+            pubkey=${keyPair.pubKey}
+            """.trimIndent()
+        )
 
         EnvironmentVariables("CHROMIA_HOME", dir.absolutePathString()).execute {
-            SystemProperties(SUPPRESS_KEY_STORAGE_DEPRECATION_WARNING_SYSTEM_PROPERTY, "true").execute {
-                val config = ChromiaConfigLoader(logger).loadClientConfigFile(dir.resolve(".chromia/config").toFile())
-                val throwable = assertThrows<UserMistake> { config.setSignerFromSecret(emptyFile) }
+            val config = ChromiaConfigLoader {}.loadClientConfigFile(dir.resolve(".chromia/config").toFile())
+            config.setSignerFromSecret(secretFile)
 
-                assertThat(throwable.message!!).isEqualTo(
-                    "Secret file: $emptyFile does not contain 'pubkey' and/or 'privkey' properties"
-                )
-            }
+            assertThat(config.signers.size).isEqualTo(1)
+            assertThat(config.signers.first()).isEqualTo(keyPair)
         }
     }
 }
