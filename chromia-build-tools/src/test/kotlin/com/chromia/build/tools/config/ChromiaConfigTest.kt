@@ -1,21 +1,23 @@
-package com.chromia.build.tools
+package com.chromia.build.tools.config
 
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.doesNotContain
 import assertk.assertions.isEqualTo
-import com.chromia.build.tools.config.ChromiaConfigLoader
-import com.chromia.build.tools.config.ChromiaConfigWriter
-import com.chromia.build.tools.config.SUPPRESS_KEY_STORAGE_DEPRECATION_WARNING_SYSTEM_PROPERTY
+import com.chromia.build.tools.TestDataBuilder
 import com.chromia.build.tools.keystore.ChromiaKeyStore
+import com.chromia.build.tools.testData
+import net.postchain.common.exception.UserMistake
 import net.postchain.crypto.KeyPair
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables
 import uk.org.webcompere.systemstubs.properties.SystemProperties
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
+import kotlin.io.path.createFile
 
 class ChromiaConfigTest {
     val pubKey = "02CCF1F5FF6A6E5C9A6E89716A67BC77BECEF4DA804BD3BCE3105D96EB3D1AD765"
@@ -123,6 +125,29 @@ class ChromiaConfigTest {
                     Please migrate to using a key ID or store this data in a secret file instead.
                 """.trimIndent()
             )
+        }
+    }
+
+    @Test
+    fun `Should throw when setting signer from secret file that don't contain keypair`(@TempDir dir: Path) {
+        val emptyFile = dir.resolve("file_name").createFile()
+        testData(dir)
+
+        val output = mutableListOf<String>()
+        val logger = { message: String ->
+            output.add(message)
+            Unit
+        }
+
+        EnvironmentVariables("CHROMIA_HOME", dir.absolutePathString()).execute {
+            SystemProperties(SUPPRESS_KEY_STORAGE_DEPRECATION_WARNING_SYSTEM_PROPERTY, "true").execute {
+                val config = ChromiaConfigLoader(logger).loadClientConfigFile(dir.resolve(".chromia/config").toFile())
+                val throwable = assertThrows<UserMistake> { config.setSignerFromSecret(emptyFile) }
+
+                assertThat(throwable.message!!).isEqualTo(
+                    "Secret file: $emptyFile does not contain 'pubkey' and/or 'privkey' properties"
+                )
+            }
         }
     }
 }
