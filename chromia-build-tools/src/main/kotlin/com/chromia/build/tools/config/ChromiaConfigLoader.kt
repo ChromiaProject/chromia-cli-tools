@@ -58,7 +58,7 @@ class ChromiaConfigLoader(private val logger: (String) -> Unit) {
             ChromiaKeyStore(config.getString("key.id")).findKeyPair()?.let {
                 config.setProperty("pubkey", it.pubKey.hex())
                 config.setProperty("privkey", it.privKey.hex())
-            }
+            } ?: throw IllegalArgumentException("Key with ID '${config.getString("key.id")}' not found")
         }
         return config
     }
