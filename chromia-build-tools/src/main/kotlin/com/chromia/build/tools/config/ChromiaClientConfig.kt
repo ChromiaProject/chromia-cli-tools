@@ -7,6 +7,7 @@ import net.postchain.client.core.PostchainClientProvider
 import net.postchain.client.request.EndpointPool
 import net.postchain.common.BlockchainRid
 import net.postchain.common.PropertiesFileLoader
+import net.postchain.common.exception.UserMistake
 import net.postchain.crypto.KeyPair
 import org.apache.commons.configuration2.Configuration
 import org.apache.commons.configuration2.PropertiesConfiguration
@@ -37,6 +38,8 @@ class ChromiaClientConfig private constructor(
         val secretProps = PropertiesFileLoader.load(path.absolutePathString())
         if (secretProps.containsKey("pubkey") && secretProps.containsKey("privkey")) {
             setSigner(KeyPair.of(secretProps.getString("pubkey"), secretProps.getString("privkey")))
+        } else {
+            throw UserMistake("Secret file: $path does not contain 'pubkey' and/or 'privkey' properties")
         }
     }
 
