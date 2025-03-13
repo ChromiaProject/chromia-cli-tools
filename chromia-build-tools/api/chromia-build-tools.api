@@ -213,7 +213,7 @@ public final class com/chromia/build/tools/config/ChromiaClientConfig {
 	public static final field DEFAULT_API_URL Ljava/lang/String;
 	public synthetic fun <init> (Lnet/postchain/client/config/PostchainClientConfig;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun client (Lnet/postchain/client/core/PostchainClientProvider;)Lnet/postchain/client/core/PostchainClient;
-	public final fun getApiUrls ()Ljava/lang/String;
+	public final fun getApiUrls ()Ljava/util/List;
 	public final fun getBlockchainRid ()Lnet/postchain/common/BlockchainRid;
 	public final fun getEndpointPool ()Lnet/postchain/client/request/EndpointPool;
 	public final fun getSigners ()Ljava/util/List;

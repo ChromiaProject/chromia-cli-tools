@@ -21,7 +21,7 @@ class ChromiaClientConfig private constructor(
     val blockchainRid get() = config.blockchainRid
     val signers get() = config.signers
     val endpointPool get() = config.endpointPool
-    val apiUrls get() = config.endpointPool.joinToString(",") { it.url }
+    val apiUrls get() = config.endpointPool.map { it.url }
 
     fun setBrid(blockchainRid: BlockchainRid) = apply {
         config = config.copy(blockchainRid = blockchainRid)
