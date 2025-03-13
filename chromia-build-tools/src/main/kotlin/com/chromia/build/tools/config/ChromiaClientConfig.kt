@@ -45,7 +45,7 @@ class ChromiaClientConfig private constructor(
 
     fun setSignerUsingKeyId(keyId: String) = apply {
         ChromiaKeyStore(keyId).findKeyPair()?.let { setSigner(it) }
-            ?: throw IllegalArgumentException("Key with ID '$keyId' not found")
+            ?: throw UserMistake("Key with ID '$keyId' not found")
     }
 
     fun setDeployment(deploymentModel: DeploymentModel) = apply {

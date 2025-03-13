@@ -88,7 +88,7 @@ class ChromiaConfigTest {
             ChromiaKeyStore(keyIdName).saveKeyPair(keyPair)
             ChromiaConfigWriter.global.setKeyId(keyIdName)
 
-            val throwable = assertThrows<IllegalArgumentException> {
+            val throwable = assertThrows<UserMistake> {
                 ChromiaConfigLoader { _ -> }.loadClientConfigFile(test.resolve("config").toFile())
             }
             assertThat(throwable.message!!).isEqualTo("Key with ID 'bogus_key_id' not found")

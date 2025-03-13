@@ -2,6 +2,7 @@ package com.chromia.build.tools.config
 
 import com.chromia.build.tools.keystore.ChromiaKeyStore
 import net.postchain.common.PropertiesFileLoader
+import net.postchain.common.exception.UserMistake
 import org.apache.commons.configuration2.Configuration
 import org.apache.commons.configuration2.PropertiesConfiguration
 import java.io.File
@@ -58,7 +59,7 @@ class ChromiaConfigLoader(private val logger: (String) -> Unit) {
             ChromiaKeyStore(config.getString("key.id")).findKeyPair()?.let {
                 config.setProperty("pubkey", it.pubKey.hex())
                 config.setProperty("privkey", it.privKey.hex())
-            } ?: throw IllegalArgumentException("Key with ID '${config.getString("key.id")}' not found")
+            } ?: throw UserMistake("Key with ID '${config.getString("key.id")}' not found")
         }
         return config
     }
