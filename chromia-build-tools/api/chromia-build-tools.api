@@ -217,7 +217,7 @@ public final class com/chromia/build/tools/config/ChromiaClientConfig {
 	public final fun getBlockchainRid ()Lnet/postchain/common/BlockchainRid;
 	public final fun getEndpointPool ()Lnet/postchain/client/request/EndpointPool;
 	public final fun getSigners ()Ljava/util/List;
-	public final fun setApiUrls ([Ljava/lang/String;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
+	public final fun setApiUrls (Ljava/util/List;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
 	public final fun setBrid (Lnet/postchain/common/BlockchainRid;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
 	public final fun setDeployment (Lcom/chromia/cli/model/DeploymentModel;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
 	public final fun setSigner ([Lnet/postchain/crypto/KeyPair;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
