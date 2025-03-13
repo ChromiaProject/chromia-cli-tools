@@ -3,6 +3,7 @@ package com.chromia.build.tools.config
 import com.chromia.build.tools.keystore.ChromiaKeyStore
 import com.chromia.cli.model.DeploymentModel
 import net.postchain.client.config.PostchainClientConfig
+import net.postchain.client.config.PostchainClientConfig.Companion.fromConfiguration
 import net.postchain.client.core.PostchainClientProvider
 import net.postchain.client.request.EndpointPool
 import net.postchain.common.BlockchainRid
@@ -26,8 +27,8 @@ class ChromiaClientConfig private constructor(
         config = config.copy(blockchainRid = blockchainRid)
     }
 
-    fun setApiUrls(vararg url: String) = apply {
-        config = config.copy(endpointPool = EndpointPool.default(url.toList()))
+    fun setApiUrls(urls: List<String>) = apply {
+        config = config.copy(endpointPool = EndpointPool.default(urls))
     }
 
     fun setSigner(vararg keyPair: KeyPair) = apply {
@@ -50,7 +51,7 @@ class ChromiaClientConfig private constructor(
 
     fun setDeployment(deploymentModel: DeploymentModel) = apply {
         setBrid(deploymentModel.blockchainRid)
-        setApiUrls(*deploymentModel.urls.toTypedArray())
+        setApiUrls(deploymentModel.urls)
     }
 
     fun client(provider: PostchainClientProvider) = provider.createClient(config)
@@ -66,7 +67,7 @@ class ChromiaClientConfig private constructor(
                 if (!config.containsKey("api.url")) setProperty("api.url", DEFAULT_API_URL)
                 if (!config.containsKey("brid")) setProperty("brid", BlockchainRid.ZERO_RID)
             }
-            .let { PostchainClientConfig.fromConfiguration(it) }
+            .let { fromConfiguration(it) }
             .let { ChromiaClientConfig(it) }
     }
 }
