@@ -8,6 +8,7 @@ import net.postchain.client.core.TransactionInfo
 import net.postchain.client.core.TransactionResult
 import net.postchain.client.core.TxRid
 import net.postchain.client.core.Version
+import net.postchain.client.impl.PostchainClientImpl
 import net.postchain.client.transaction.TransactionBuilder
 import net.postchain.common.BlockchainRid
 import net.postchain.common.rest.HighestBlockHeightAnchoringCheck
@@ -33,10 +34,12 @@ open class TestClient(
         val blockHeight: () -> Long,
         private val testConfiguration: TestConfiguration = TestConfiguration()
 ) : PostchainClient {
-    private val hashCalculator = makeMerkleHashCalculator(config.merkleHashVersion.toLong())
+    override val merkleHashCalculator =
+            makeMerkleHashCalculator(if (config.merkleHashVersion == 0) 2 else config.merkleHashVersion.toLong())
 
     override fun blockAtHeight(height: Long): BlockDetail = TODO("Not yet implemented")
     override fun blockByRid(blockRid: BlockRid): BlockDetail = TODO("Not yet implemented")
+    override fun getFeatures(blockchainRIDHex: String): PostchainClientImpl.BlockchainFeatures = TODO("Not yet implemented")
     override fun awaitConfirmation(txRid: TxRid, retries: Int, pollInterval: Duration): TransactionResult =
             TransactionResult(txRid, TransactionStatus.CONFIRMED, null, null)
 
@@ -63,7 +66,7 @@ open class TestClient(
             testConfiguration.txResultFactory(testConfiguration.txs.size).also { testConfiguration.txs.add(tx) }
 
     override fun transactionBuilder() = TransactionBuilder(
-            this, config.blockchainRid, config.signers.map { it.pubKey.data }, hashCalculator, config.signers.map { it.sigMaker(Secp256K1CryptoSystem()) }
+            this, config.blockchainRid, config.signers.map { it.pubKey.data }, merkleHashCalculator, config.signers.map { it.sigMaker(Secp256K1CryptoSystem()) }
     )
 
     override fun transactionBuilder(signers: List<KeyPair>) = TODO("Not yet implemented")

@@ -34,10 +34,12 @@ import net.postchain.common.hexStringToByteArray
 import net.postchain.common.hexStringToWrappedByteArray
 import net.postchain.common.wrap
 import net.postchain.crypto.PubKey
+import net.postchain.crypto.sha256Digest
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtv.GtvNull
 import net.postchain.gtv.mapper.GtvObjectMapper
+import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV2
 import org.http4k.client.ApacheClient
 import org.http4k.core.Method
 import org.http4k.core.Request
@@ -189,6 +191,7 @@ class FTAuthenticatorTest {
                             "3250B9CCD1FAA489BFCC9706DE55237F102DE7A5ED66D5FE6E8EE6A20823D2BD".hexStringToByteArray()),
                     endpointPool = mock(),
             )
+            on { merkleHashCalculator } doReturn GtvMerkleHashCalculatorV2(::sha256Digest)
             on { query(eq(GET_VERSION), any()) } doReturn gtv("0.4.0")
             on { query(eq(GET_ACCOUNTS_BY_SIGNER), any()) } doReturn GtvObjectMapper.toGtvDictionary(PagedResult(
                     nextCursor = null,
@@ -248,6 +251,7 @@ class FTAuthenticatorTest {
                             "3250B9CCD1FAA489BFCC9706DE55237F102DE7A5ED66D5FE6E8EE6A20823D2BD".hexStringToByteArray()),
                     endpointPool = mock(),
             )
+            on { merkleHashCalculator } doReturn GtvMerkleHashCalculatorV2(::sha256Digest)
             on { query(eq(GET_VERSION), any()) } doReturn gtv("0.4.0")
             on { query(eq(GET_ACCOUNTS_BY_SIGNER), any()) } doReturn GtvObjectMapper.toGtvDictionary(PagedResult(
                     nextCursor = null,
@@ -303,6 +307,7 @@ class FTAuthenticatorTest {
                             "3250B9CCD1FAA489BFCC9706DE55237F102DE7A5ED66D5FE6E8EE6A20823D2BD".hexStringToByteArray()),
                     endpointPool = mock(),
             )
+            on { merkleHashCalculator } doReturn GtvMerkleHashCalculatorV2(::sha256Digest)
             on { query(eq(GET_VERSION), any()) } doReturn gtv("0.4.0")
             on { query(eq(GET_ACCOUNTS_BY_SIGNER), any()) } doReturn GtvObjectMapper.toGtvDictionary(PagedResult(
                     nextCursor = null,
