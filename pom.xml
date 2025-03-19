@@ -29,7 +29,7 @@
         <directory.chain.version>1.74.0</directory.chain.version>
         <directory.source>${project.build.directory}/directory-chain/src</directory.source>
 
-        <jgit.version>6.9.0.202403050737-r</jgit.version>
+        <jgit.version>7.1.0.202411261347-r</jgit.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>2.0.0</kotlin.version>
