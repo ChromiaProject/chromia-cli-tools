@@ -15,10 +15,8 @@ import net.postchain.client.transaction.TransactionBuilder
 import net.postchain.common.hexStringToByteArray
 import net.postchain.common.toHex
 import net.postchain.common.wrap
-import net.postchain.crypto.sha256Digest
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
-import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV1
 import net.postchain.gtv.merkleHash
 import org.apache.commons.text.StringEscapeUtils
 import org.http4k.core.Method.GET
@@ -152,13 +150,12 @@ private fun fetchAuthMessage(
                 "Invalid auth descriptor counter. Was the auth descriptor too close to expiration?"
         )
     }
-    // TODO [use-new-algo] use new hash version here
     val nonce = gtv(listOf(
             gtv(client.config.blockchainRid),
             gtv(op.opName),
             gtv(op.opArgs),
             gtv(counter),
-    )).merkleHash(GtvMerkleHashCalculatorV1(::sha256Digest))
+    )).merkleHash(client.merkleHashCalculator)
     return authMessageTemplate
             .replace("{blockchain_rid}", client.config.blockchainRid.toHex().uppercase())
             .replace("{nonce}", nonce.toHex().uppercase())

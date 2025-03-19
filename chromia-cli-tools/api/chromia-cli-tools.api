@@ -224,14 +224,6 @@ public final class com/chromia/cli/tools/ft/EvmAuthKt {
 	public static final fun terminalWebLink (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Ljava/lang/String;)V
 }
 
-synthetic class com/chromia/cli/tools/ft/EvmAuthKt$fetchAuthMessage$nonce$1 : kotlin/jvm/internal/FunctionAdapter, net/postchain/crypto/Digester {
-	public static final field INSTANCE Lcom/chromia/cli/tools/ft/EvmAuthKt$fetchAuthMessage$nonce$1;
-	public final fun digest ([B)[B
-	public final fun equals (Ljava/lang/Object;)Z
-	public final fun getFunctionDelegate ()Lkotlin/Function;
-	public final fun hashCode ()I
-}
-
 public final class com/chromia/cli/tools/ft/FtAuthKt {
 	public static final fun addFtAuthOperation (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/transaction/TransactionBuilder;[B[B)V
 	public static final fun addFtAuthenticationOp (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[B[B[B)V
