@@ -4,10 +4,14 @@ import com.chromia.cli.model.DefaultChromiaModelRellVersion
 import net.postchain.api.rest.BlockHeight
 import net.postchain.api.rest.BlockSignature
 import net.postchain.api.rest.BlockchainNodeState
+import net.postchain.api.rest.InfraVersion
 import net.postchain.api.rest.TransactionsCount
+import net.postchain.api.rest.Version
+import net.postchain.api.rest.model.ApiRejectedTransaction
 import net.postchain.api.rest.model.ApiStatus
 import net.postchain.api.rest.model.TxRid
 import net.postchain.base.ConfirmationProof
+import net.postchain.base.configuration.KEY_FEATURES
 import net.postchain.common.BlockchainRid
 import net.postchain.common.exception.NotFound
 import net.postchain.common.tx.TransactionStatus
@@ -22,14 +26,17 @@ import net.postchain.crypto.PubKey
 import net.postchain.crypto.sha256Digest
 import net.postchain.ebft.rest.contract.StateNodeStatus
 import net.postchain.gtv.Gtv
+import net.postchain.gtv.GtvEncoder
 import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV1
 import net.postchain.gtx.Gtx
 import net.postchain.gtx.GtxQuery
+import java.time.Instant
 
 class TestModel(
         override val blockchainRid: BlockchainRid = BlockchainRid.buildRepeat(1),
         override val chainIID: Long = 0,
+        val merkleHashVersion: Long = 1,
 ) : CachedModel {
     override val queryCacheTtlSeconds: Long = 0
     override var live: Boolean = true
@@ -47,9 +54,9 @@ class TestModel(
         TODO("Not yet implemented")
     }
 
-    override fun getBlockchainConfiguration(height: Long): ByteArray? {
-        TODO("Not yet implemented")
-    }
+    override fun getBlockchainConfiguration(height: Long): ByteArray? =
+            GtvEncoder.encodeGtv(gtv(mapOf(KEY_FEATURES to
+                    gtv(mapOf("merkle_hash_version" to gtv(merkleHashVersion))))))
 
     override fun getBlockchainNodeState(): BlockchainNodeState {
         TODO("Not yet implemented")
@@ -79,9 +86,29 @@ class TestModel(
         TODO("Not yet implemented")
     }
 
+    override fun getVersion(): Version {
+        TODO("Not yet implemented")
+    }
+
+    override fun getInfrastructureVersion(): InfraVersion {
+        TODO("Not yet implemented")
+    }
+
     override fun getStatus(txRID: TxRid): ApiStatus {
         val tx = txMap[txRID]
         return ApiStatus(tx?.let { TransactionStatus.CONFIRMED } ?: TransactionStatus.UNKNOWN)
+    }
+
+    override fun getWaitingTransactions(): List<TxRid> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getWaitingTransaction(txRID: TxRid): Pair<ByteArray, Instant>? {
+        TODO("Not yet implemented")
+    }
+
+    override fun getRejectedTransactions(): List<ApiRejectedTransaction> {
+        TODO("Not yet implemented")
     }
 
     override fun getTransaction(txRID: TxRid): ByteArray? {
