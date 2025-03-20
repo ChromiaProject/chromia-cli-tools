@@ -50,6 +50,7 @@ class ChromiaClientConfig private constructor(
     }
 
     fun setDeployment(deploymentModel: DeploymentModel) = apply {
+        require(deploymentModel.blockchainRid != null) { "blockchainRid must be set" }
         setBrid(deploymentModel.blockchainRid)
         setApiUrls(deploymentModel.urls)
     }
