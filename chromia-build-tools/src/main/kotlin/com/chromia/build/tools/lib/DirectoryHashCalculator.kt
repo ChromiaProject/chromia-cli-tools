@@ -5,7 +5,7 @@ import net.postchain.common.wrap
 import net.postchain.crypto.sha256Digest
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
-import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV1
+import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV2
 import net.postchain.gtv.merkleHash
 import net.postchain.rell.base.utils.RellGtxConfigConstants
 import java.nio.file.Files
@@ -22,8 +22,7 @@ import kotlin.io.path.relativeTo
  * Computes the hash of all rell files in a folder relative to it parent source folder
  */
 class DirectoryHashCalculator(private val sourceDir: Path) {
-    // TODO [use-new-algo] use new hash version here
-    private val hashCalculator = GtvMerkleHashCalculatorV1(::sha256Digest)
+    private val hashCalculator = GtvMerkleHashCalculatorV2(::sha256Digest)
 
     companion object {
         const val EOL_WINDOWS: String = "\r\n"
@@ -34,7 +33,9 @@ class DirectoryHashCalculator(private val sourceDir: Path) {
      * Computes the rid (hash) of the contents of a folder.
      **/
     fun compute(dir: Path, strategy: RidStrategy): WrappedByteArray {
-        val filesStream = Files.walk(dir).filter { it.extension == "rell" }.map { it.relativeTo(sourceDir) to it.readText().replace(EOL_WINDOWS, EOL_UNIX) }
+        val filesStream = Files.walk(dir).filter { it.extension == "rell" }.map {
+            it.relativeTo(sourceDir) to it.readText().replace(EOL_WINDOWS, EOL_UNIX)
+        }
         return gtv(RellGtxConfigConstants.SOURCES_KEY to strategy.reduce(filesStream))
                 .merkleHash(hashCalculator)
                 .wrap()
@@ -45,16 +46,21 @@ class DirectoryHashCalculator(private val sourceDir: Path) {
 
         companion object {
             /**
-             * Given a files structure like `src/lib/foo/a.rell`, `src/lib/foo/b.rell`, it computes the hash of the files as an ordered list
+             * Given a files structure like `src/lib/foo/a.rell`, `src/lib/foo/b.rell`,
+             * it computes the hash of the files as an ordered list
              * `[<a.rell-content>, <b.rell-content>]`
              */
-            val LIST = RidStrategy { s -> gtv(s.sorted(Comparator.comparing { it.first }).map { gtv(it.second) }.collect(toList())) }
+            val LIST = RidStrategy { s ->
+                gtv(s.sorted(Comparator.comparing { it.first }).map { gtv(it.second) }.collect(toList()))
+            }
 
             /**
              * Given a files structure like `src/lib/foo/module.rell`, it computes the hash of the files as a map
              * `lib/foo/module.rell -> <content>`
              */
-            val MAP = RidStrategy { s -> gtv(s.collect(toMap({ it.first.pathString.replace("\\", "/") }, { gtv(it.second) }))) }
+            val MAP = RidStrategy { s ->
+                gtv(s.collect(toMap({ it.first.pathString.replace("\\", "/") }, { gtv(it.second) })))
+            }
         }
     }
 }
