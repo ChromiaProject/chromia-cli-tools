@@ -8,10 +8,9 @@ import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtv.mapper.GtvObjectMapper
 import net.postchain.gtv.mapper.Name
-import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV1
+import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV2
 import net.postchain.gtv.merkleHash
 
-//Implementation taken from: https://gitlab.com/chromaway/core-tools/management-console/-/blob/6ff79ec5fd9bd8fcd59c0cbe25f589ed4ba45ae4/src/main/kotlin/net/postchain/mc/cli/util/BlockchainConfigurationCompressor.kt
 object BlockchainConfigurationCompressor {
     private const val COMPRESSED_ROOTS_CONFIG_KEY = "compressed_roots"
     private const val GTX_CONFIG_KEY = "gtx"
@@ -19,8 +18,7 @@ object BlockchainConfigurationCompressor {
     private const val RELL_SOURCES_CONFIG_KEY = "sources"
 
     private val RELL_SOURCES_PATH = listOf(GTX_CONFIG_KEY, RELL_CONFIG_KEY, RELL_SOURCES_CONFIG_KEY)
-    // TODO [use-new-algo] use new hash version here
-    private val merkleHashCalculator = GtvMerkleHashCalculatorV1(::sha256Digest)
+    private val merkleHashCalculator = GtvMerkleHashCalculatorV2(::sha256Digest)
 
     fun compress(client: PostchainClient, configuration: Gtv, apiVersion: Long): Gtv {
         if (apiVersion < 27) return configuration

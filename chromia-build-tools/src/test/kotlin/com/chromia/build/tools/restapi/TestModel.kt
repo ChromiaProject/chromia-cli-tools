@@ -23,12 +23,11 @@ import net.postchain.core.block.BlockDetailsTruncated
 import net.postchain.core.block.BlockQueryHeightFilter
 import net.postchain.core.block.BlockQueryTimeFilter
 import net.postchain.crypto.PubKey
-import net.postchain.crypto.sha256Digest
 import net.postchain.ebft.rest.contract.StateNodeStatus
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvEncoder
 import net.postchain.gtv.GtvFactory.gtv
-import net.postchain.gtv.merkle.GtvMerkleHashCalculatorV1
+import net.postchain.gtv.merkle.makeMerkleHashCalculator
 import net.postchain.gtx.Gtx
 import net.postchain.gtx.GtxQuery
 import java.time.Instant
@@ -42,6 +41,9 @@ class TestModel(
     override var live: Boolean = true
     override val txQueue = mutableListOf<Gtx>()
     override val txMap = mutableMapOf<TxRid, Gtx>()
+
+    private val merkleHashCalculator = makeMerkleHashCalculator(merkleHashVersion)
+
     override fun confirmBlock(blockRID: BlockRid): BlockSignature? {
         TODO("Not yet implemented")
     }
@@ -137,8 +139,7 @@ class TestModel(
 
     override fun postTransaction(tx: ByteArray) {
         val decoded = Gtx.decode(tx)
-        // TODO [use-new-algo] use new hash version here
-        val rid = decoded.gtxBody.calculateTxRid(GtvMerkleHashCalculatorV1(::sha256Digest)).let { TxRid(it) }
+        val rid = decoded.gtxBody.calculateTxRid(merkleHashCalculator).let { TxRid(it) }
         txQueue.add(decoded)
         txMap[rid] = decoded
     }

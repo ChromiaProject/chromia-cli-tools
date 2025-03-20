@@ -606,7 +606,6 @@
     <ID>SpacingAroundParens:InMemoryIcmfReceiverSpecialTxExtension.kt$InMemoryIcmfReceiverSpecialTxExtension$)</ID>
     <ID>SpacingBetweenDeclarationsWithAnnotations:ChromiaCompileApiTest.kt$ChromiaCompileApiTest$@TempDir lateinit var dir: Path</ID>
     <ID>SpacingBetweenDeclarationsWithAnnotations:ChromiaCompileResult.kt$ChromiaCompileResult$@Deprecated("Use the new api instead", ReplaceWith("BlockchainConfiguration.save(target.toPath(), fileName)", "com.chromia.api.result.BlockchainConfiguration")) fun save(target: File, fileName: String = name)</ID>
-    <ID>SpacingBetweenDeclarationsWithComments:BlockchainConfigurationCompressor.kt$BlockchainConfigurationCompressor$// TODO [use-new-algo] use new hash version here</ID>
     <ID>SpreadOperator:ChromiaClientConfig.kt$ChromiaClientConfig$(*deploymentModel.urls.toTypedArray())</ID>
     <ID>SpreadOperator:configuration.kt$( *gtvConfig.asDict().toList().toTypedArray(), "signers" to gtv(signer.map { gtv(it) }) )</ID>
     <ID>SpreadOperator:transform.kt$(tail.first(), *tail.drop(1).toTypedArray())</ID>
