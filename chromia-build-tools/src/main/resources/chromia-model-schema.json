@@ -360,14 +360,13 @@
     "deployment": {
       "type": "object",
       "required": [
-        "brid",
         "url"
       ],
       "description": "Deployment target",
       "additionalProperties": false,
       "properties": {
         "brid": {
-          "type": "string",
+          "type": ["string", "null"],
           "pattern": "^(x\"[0-9A-Fa-f]{64}\")|([0-9A-Fa-f]{64})$",
           "description": "Blockchain RID for the target network's management chain"
         },

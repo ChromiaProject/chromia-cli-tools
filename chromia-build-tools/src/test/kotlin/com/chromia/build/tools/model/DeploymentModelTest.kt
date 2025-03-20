@@ -6,6 +6,7 @@ import com.chromia.build.tools.testData
 import com.chromia.cli.model.parseModel
 import net.postchain.common.BlockchainRid
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 
@@ -59,5 +60,24 @@ internal class DeploymentModelTest {
         }
         val model = parseModel(dir.resolve("chromia.yml").toFile())
         assertThat(model.deployments["foo"]!!.chains.keys.size).isEqualTo(2)
+    }
+
+    @Test
+    fun `can parse model in deployed chains without brid`(@TempDir dir: Path) {
+        testData(dir) {
+            config {
+                deployments("""
+                deployments:
+                    foo:
+                        url: "http://foo.com"
+                        chains:
+                            bc2: x"615175A2847D739C2CD0EC27339E8128549E513654069E2912A7E3C3E7032DB5"
+                """.trimIndent())
+            }
+        }
+
+        assertDoesNotThrow {
+            parseModel(dir.resolve("chromia.yml").toFile())
+        }
     }
 }
