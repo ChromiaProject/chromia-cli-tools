@@ -21,7 +21,7 @@
         <revision>dev</revision>
         <codegen.version>0.16.2</codegen.version>
         <postchain.version>3.28.9</postchain.version>
-        <postchain.client.version>3.26.5</postchain.client.version>
+        <postchain.client.version>3.27.0</postchain.client.version>
         <rell.version>0.14.7</rell.version>
         <rell.dokka.version>0.2.10</rell.dokka.version>
         <rell.toolbox.version>0.4.13</rell.toolbox.version>
