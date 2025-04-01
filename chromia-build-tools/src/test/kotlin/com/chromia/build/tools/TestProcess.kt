@@ -10,6 +10,7 @@ import java.io.File
 import java.io.InputStreamReader
 import java.time.Duration
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 
 class TestProcess private constructor(processBuilder: ProcessBuilder, startCondition: String?, wholeOutput: String?,
                                       shouldFinish: Boolean, expectedExitCode: Int, timeout: Duration,
@@ -118,7 +119,18 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
 
                         env.forEach { (k, v) -> environment()[k] = v }
                     }
-            return TestProcess(pb, startCondition, wholeOutput, shouldFinish, exitCode, timeout, verbose, input, binaryInput).use(onCompleted)
+            return TestProcess(
+                    pb, startCondition, wholeOutput, shouldFinish, exitCode, timeout, verbose, input, binaryInput
+            ).use {
+                if (verbose) {
+                    thread(isDaemon = true) {
+                        while (true) {
+                            println(it.reader.readLine() ?: break)
+                        }
+                    }
+                }
+                onCompleted(it)
+            }
         }
     }
 }
