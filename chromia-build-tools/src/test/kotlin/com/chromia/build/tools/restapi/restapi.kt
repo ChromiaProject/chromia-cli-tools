@@ -30,7 +30,7 @@ fun CachedModel.withRellVersion(version: R_LangVersion) = withQuery("rell.get_re
 fun CachedModel.withQuery(name: String, response: Gtv) = withQuery(name) { response }
 
 fun CachedModel.withStatus(status: TransactionStatus, reason: String) = object : CachedModel by this {
-    override fun getStatus(txRID: TxRid) = ApiStatus(status, reason)
+    override fun getStatus(txRID: TxRid) = ApiStatus(status, reason, System.currentTimeMillis())
 }
 
 fun CachedModel.withQuery(name: String, response: (GtxQuery) -> Gtv) = object : CachedModel by this {

@@ -32,7 +32,7 @@ class BlockchainOperations(private val apiVersion: Long, private val builder: Tr
             when {
                 apiVersion < 2 -> builder.proposeConfigurationOperation(myPubkey, blockchainRid, configData)
                 apiVersion < 5 && clusterName != "system" -> builder.proposeConfigurationAtOperation(myPubkey, blockchainRid, configData, heightChecker!!.findSafeHeight(blockchainRid), false, "")
-                else -> builder.proposeConfigurationOperation(myPubkey, blockchainRid, configData, "")
+                else -> builder.proposeConfigurationOperation(myPubkey, blockchainRid, configData, "", null)
             }
         } else {
             when {
