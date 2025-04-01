@@ -1149,18 +1149,19 @@ public final class com/chromia/directory1/common/queries/BlockchainSignersInfo {
 }
 
 public final class com/chromia/directory1/common/queries/ClusterData {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;)V
 	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/util/List;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Z
-	public final fun component4 ()Ljava/lang/Long;
+	public final fun component4 ()Ljava/lang/Boolean;
 	public final fun component5 ()Ljava/lang/Long;
 	public final fun component6 ()Ljava/lang/Long;
 	public final fun component7 ()Ljava/lang/Long;
 	public final fun component8 ()Ljava/lang/Long;
-	public final fun component9 ()Ljava/util/List;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;)Lcom/chromia/directory1/common/queries/ClusterData;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/common/queries/ClusterData;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/common/queries/ClusterData;
+	public final fun component9 ()Ljava/lang/Long;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;)Lcom/chromia/directory1/common/queries/ClusterData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/common/queries/ClusterData;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/common/queries/ClusterData;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getClusterUnits ()Ljava/lang/Long;
 	public final fun getContainerUnitsAvailable ()Ljava/lang/Long;
@@ -1169,6 +1170,7 @@ public final class com/chromia/directory1/common/queries/ClusterData {
 	public final fun getGovernor ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getNumberOfNodes ()Ljava/lang/Long;
+	public final fun getOperational ()Ljava/lang/Boolean;
 	public final fun getSubnodeImages ()Ljava/util/List;
 	public fun hashCode ()I
 	public final fun isOperational ()Z
@@ -1203,6 +1205,7 @@ public final class com/chromia/directory1/common/queries/Common_queriesKt {
 	public static final field GET_CONTAINERS Ljava/lang/String;
 	public static final field GET_CONTAINER_BLOCKCHAIN Ljava/lang/String;
 	public static final field GET_CONTAINER_DATA Ljava/lang/String;
+	public static final field GET_DEVELOPERS Ljava/lang/String;
 	public static final field GET_IMPORTING_FOREIGN_BLOCKCHAIN_INFO Ljava/lang/String;
 	public static final field GET_MOVING_BLOCKCHAIN_INFO Ljava/lang/String;
 	public static final field GET_NODE Ljava/lang/String;
@@ -1255,6 +1258,7 @@ public final class com/chromia/directory1/common/queries/Common_queriesKt {
 	public static final fun getContainerBlockchain (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Ljava/util/List;
 	public static final fun getContainerData (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Lcom/chromia/directory1/common/queries/ContainerData;
 	public static final fun getContainers (Lnet/postchain/client/core/PostchainQuery;)Ljava/util/List;
+	public static final fun getDevelopers (Lnet/postchain/client/core/PostchainQuery;)Ljava/util/List;
 	public static final fun getImportingForeignBlockchainInfo (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/BlockchainRid;)Lcom/chromia/directory1/model/ImportingForeignBlockchain;
 	public static final fun getMovingBlockchainInfo (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/BlockchainRid;)Lcom/chromia/directory1/common/queries/GetMovingBlockchainInfoResult;
 	public static final fun getNode (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/crypto/PubKey;)Lnet/postchain/common/types/RowId;
@@ -1399,21 +1403,6 @@ public final class com/chromia/directory1/common/queries/GetClusterSubnodeImages
 	public final fun getDigest ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getUrl ()Ljava/lang/String;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/chromia/directory1/common/queries/GetClustersResult {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Z)V
-	public final fun component1 ()Ljava/lang/String;
-	public final fun component2 ()Ljava/lang/String;
-	public final fun component3 ()Z
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Z)Lcom/chromia/directory1/common/queries/GetClustersResult;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/common/queries/GetClustersResult;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Lcom/chromia/directory1/common/queries/GetClustersResult;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getGovernor ()Ljava/lang/String;
-	public final fun getName ()Ljava/lang/String;
-	public final fun getOperational ()Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -1686,8 +1675,35 @@ public final class com/chromia/directory1/common/queries/SubnodeImageData {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/chromia/directory1/common_proposal/CommonProposalData {
+	public fun <init> (Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/common_proposal/CommonProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/common_proposal/CommonProposalState;Ljava/lang/Long;Ljava/lang/Long;)V
+	public final fun component1 ()Lnet/postchain/common/types/RowId;
+	public final fun component2 ()J
+	public final fun component3 ()Lcom/chromia/directory1/common_proposal/CommonProposalType;
+	public final fun component4 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Lcom/chromia/directory1/common_proposal/CommonProposalState;
+	public final fun component7 ()Ljava/lang/Long;
+	public final fun component8 ()Ljava/lang/Long;
+	public final fun copy (Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/common_proposal/CommonProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/common_proposal/CommonProposalState;Ljava/lang/Long;Ljava/lang/Long;)Lcom/chromia/directory1/common_proposal/CommonProposalData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/common_proposal/CommonProposalData;Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/common_proposal/CommonProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/common_proposal/CommonProposalState;Ljava/lang/Long;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/common_proposal/CommonProposalData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getApplyAt ()Ljava/lang/Long;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getId ()Lnet/postchain/common/types/RowId;
+	public final fun getProposedBy ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getScheduledAt ()Ljava/lang/Long;
+	public final fun getState ()Lcom/chromia/directory1/common_proposal/CommonProposalState;
+	public final fun getTimestamp ()J
+	public final fun getType ()Lcom/chromia/directory1/common_proposal/CommonProposalType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/chromia/directory1/common_proposal/CommonProposalState : java/lang/Enum, net/postchain/gtv/mapper/ToGtv {
 	public static final field APPROVED Lcom/chromia/directory1/common_proposal/CommonProposalState;
+	public static final field DELAYED Lcom/chromia/directory1/common_proposal/CommonProposalState;
+	public static final field FAILED Lcom/chromia/directory1/common_proposal/CommonProposalState;
 	public static final field PENDING Lcom/chromia/directory1/common_proposal/CommonProposalState;
 	public static final field REJECTED Lcom/chromia/directory1/common_proposal/CommonProposalState;
 	public static final field REVOKED Lcom/chromia/directory1/common_proposal/CommonProposalState;
@@ -1698,6 +1714,7 @@ public final class com/chromia/directory1/common_proposal/CommonProposalState : 
 }
 
 public final class com/chromia/directory1/common_proposal/CommonProposalType : java/lang/Enum, net/postchain/gtv/mapper/ToGtv {
+	public static final field common_voter_set_update Lcom/chromia/directory1/common_proposal/CommonProposalType;
 	public static final field ec_cluster_change_tag Lcom/chromia/directory1/common_proposal/CommonProposalType;
 	public static final field ec_cluster_create Lcom/chromia/directory1/common_proposal/CommonProposalType;
 	public static final field ec_constants_update Lcom/chromia/directory1/common_proposal/CommonProposalType;
@@ -1710,6 +1727,9 @@ public final class com/chromia/directory1/common_proposal/CommonProposalType : j
 	public static final field ec_tag_update Lcom/chromia/directory1/common_proposal/CommonProposalType;
 	public static final field ec_transfer_chromia_foundation_funds Lcom/chromia/directory1/common_proposal/CommonProposalType;
 	public static final field ec_voter_set_update Lcom/chromia/directory1/common_proposal/CommonProposalType;
+	public static final field tc_propose_constants Lcom/chromia/directory1/common_proposal/CommonProposalType;
+	public static final field tc_propose_token Lcom/chromia/directory1/common_proposal/CommonProposalType;
+	public static final field tc_propose_token_bridge Lcom/chromia/directory1/common_proposal/CommonProposalType;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public fun toGtv ()Lnet/postchain/gtv/Gtv;
 	public static fun valueOf (Ljava/lang/String;)Lcom/chromia/directory1/common_proposal/CommonProposalType;
@@ -1726,13 +1746,17 @@ public final class com/chromia/directory1/common_proposal/CommonProposalVoteType
 }
 
 public final class com/chromia/directory1/common_proposal/CommonProposalVoter {
-	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;Z)V
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;ZLnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;)V
 	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component2 ()Z
-	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;Z)Lcom/chromia/directory1/common_proposal/CommonProposalVoter;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/common_proposal/CommonProposalVoter;Lnet/postchain/common/types/WrappedByteArray;ZILjava/lang/Object;)Lcom/chromia/directory1/common_proposal/CommonProposalVoter;
+	public final fun component3 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component4 ()Ljava/lang/Long;
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;ZLnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;)Lcom/chromia/directory1/common_proposal/CommonProposalVoter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/common_proposal/CommonProposalVoter;Lnet/postchain/common/types/WrappedByteArray;ZLnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/common_proposal/CommonProposalVoter;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOpIndex ()Ljava/lang/Long;
 	public final fun getPubkey ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getTxRid ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getVote ()Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -1775,44 +1799,27 @@ public final class com/chromia/directory1/common_proposal/Common_proposalKt {
 	public static final field GET_COMMON_PUBKEY_VOTES Ljava/lang/String;
 	public static final field GET_COMMON_VOTER_SETS Ljava/lang/String;
 	public static final field GET_COMMON_VOTER_SET_MEMBERS Ljava/lang/String;
+	public static final field GET_PROPOSALS_BY_PROPOSER Ljava/lang/String;
 	public static final field GET_RELEVANT_COMMON_PROPOSALS Ljava/lang/String;
 	public static final field MAKE_COMMON_VOTE Ljava/lang/String;
 	public static final field MAKE_COMMON_VOTE_V65 Ljava/lang/String;
+	public static final field RETRACT_COMMON_VOTE Ljava/lang/String;
 	public static final field REVOKE_COMMON_PROPOSAL Ljava/lang/String;
 	public static final field REVOKE_COMMON_PROPOSAL_V65 Ljava/lang/String;
-	public static final fun getCommonProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/common_proposal/GetCommonProposalResult;
+	public static final fun getCommonProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/common_proposal/CommonProposalData;
 	public static final fun getCommonProposalVoterInfo (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Ljava/util/List;
 	public static final fun getCommonProposalVotingResults (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/common_proposal/CommonProposalVotingResults;
 	public static final fun getCommonProposalsRange (Lnet/postchain/client/core/PostchainQuery;JJZ)Ljava/util/List;
 	public static final fun getCommonPubkeyVotes (Lnet/postchain/client/core/PostchainQuery;JJLnet/postchain/crypto/PubKey;)Ljava/util/List;
 	public static final fun getCommonVoterSetMembers (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Ljava/util/List;
 	public static final fun getCommonVoterSets (Lnet/postchain/client/core/PostchainQuery;)Ljava/util/List;
+	public static final fun getProposalsByProposer (Lnet/postchain/client/core/PostchainQuery;[B)Ljava/util/List;
 	public static final fun getRelevantCommonProposals (Lnet/postchain/client/core/PostchainQuery;JJZ[B)Ljava/util/List;
 	public static final fun makeCommonVoteOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/crypto/PubKey;Lnet/postchain/common/types/RowId;Z)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun makeCommonVoteV65Operation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/common/types/RowId;Z)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun retractCommonVoteOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/common/types/RowId;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun revokeCommonProposalOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/crypto/PubKey;Lnet/postchain/common/types/RowId;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun revokeCommonProposalV65Operation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/common/types/RowId;)Lnet/postchain/client/transaction/TransactionBuilder;
-}
-
-public final class com/chromia/directory1/common_proposal/GetCommonProposalResult {
-	public fun <init> (Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/common_proposal/CommonProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/common_proposal/CommonProposalState;)V
-	public final fun component1 ()Lnet/postchain/common/types/RowId;
-	public final fun component2 ()J
-	public final fun component3 ()Lcom/chromia/directory1/common_proposal/CommonProposalType;
-	public final fun component4 ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun component5 ()Ljava/lang/String;
-	public final fun component6 ()Lcom/chromia/directory1/common_proposal/CommonProposalState;
-	public final fun copy (Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/common_proposal/CommonProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/common_proposal/CommonProposalState;)Lcom/chromia/directory1/common_proposal/GetCommonProposalResult;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/common_proposal/GetCommonProposalResult;Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/common_proposal/CommonProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/common_proposal/CommonProposalState;ILjava/lang/Object;)Lcom/chromia/directory1/common_proposal/GetCommonProposalResult;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDescription ()Ljava/lang/String;
-	public final fun getId ()Lnet/postchain/common/types/RowId;
-	public final fun getProposedBy ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun getState ()Lcom/chromia/directory1/common_proposal/CommonProposalState;
-	public final fun getTimestamp ()J
-	public final fun getType ()Lcom/chromia/directory1/common_proposal/CommonProposalType;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/chromia/directory1/common_proposal/GetCommonProposalsRangeResult {
@@ -1858,6 +1865,25 @@ public final class com/chromia/directory1/common_proposal/GetCommonVoterSetsResu
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/chromia/directory1/common_proposal/GetProposalsByProposerResult {
+	public fun <init> (Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/common_proposal/CommonProposalType;Ljava/lang/String;Lcom/chromia/directory1/common_proposal/CommonProposalState;)V
+	public final fun component1 ()Lnet/postchain/common/types/RowId;
+	public final fun component2 ()J
+	public final fun component3 ()Lcom/chromia/directory1/common_proposal/CommonProposalType;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Lcom/chromia/directory1/common_proposal/CommonProposalState;
+	public final fun copy (Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/common_proposal/CommonProposalType;Ljava/lang/String;Lcom/chromia/directory1/common_proposal/CommonProposalState;)Lcom/chromia/directory1/common_proposal/GetProposalsByProposerResult;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/common_proposal/GetProposalsByProposerResult;Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/common_proposal/CommonProposalType;Ljava/lang/String;Lcom/chromia/directory1/common_proposal/CommonProposalState;ILjava/lang/Object;)Lcom/chromia/directory1/common_proposal/GetProposalsByProposerResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getId ()Lnet/postchain/common/types/RowId;
+	public final fun getState ()Lcom/chromia/directory1/common_proposal/CommonProposalState;
+	public final fun getTimestamp ()J
+	public final fun getType ()Lcom/chromia/directory1/common_proposal/CommonProposalType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/chromia/directory1/common_proposal/GetRelevantCommonProposalsResult {
 	public fun <init> (Lnet/postchain/common/types/RowId;Lcom/chromia/directory1/common_proposal/CommonProposalType;Lcom/chromia/directory1/common_proposal/CommonProposalState;)V
 	public final fun component1 ()Lnet/postchain/common/types/RowId;
@@ -1873,22 +1899,63 @@ public final class com/chromia/directory1/common_proposal/GetRelevantCommonPropo
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/chromia/directory1/delay/DelayKt {
+public final class com/chromia/directory1/common_proposal/voter_set_proposal/CommonVoterSetUpdateData {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Long;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/Long;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/Long;Ljava/util/List;Ljava/util/List;)Lcom/chromia/directory1/common_proposal/voter_set_proposal/CommonVoterSetUpdateData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/common_proposal/voter_set_proposal/CommonVoterSetUpdateData;Ljava/lang/String;Ljava/lang/Long;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/common_proposal/voter_set_proposal/CommonVoterSetUpdateData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAddMember ()Ljava/util/List;
+	public final fun getRemoveMember ()Ljava/util/List;
+	public final fun getThreshold ()Ljava/lang/Long;
+	public final fun getVoterSet ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/common_proposal/voter_set_proposal/Common_proposal_voter_set_proposalKt {
+	public static final field GET_VOTER_SET_UPDATE_PROPOSAL Ljava/lang/String;
+	public static final field PROPOSE_UPDATE_VOTER_SET Ljava/lang/String;
+	public static final fun getVoterSetUpdateProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/common_proposal/voter_set_proposal/CommonVoterSetUpdateData;
+	public static final fun proposeUpdateVoterSetOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/lang/Long;Ljava/util/List;Ljava/util/List;)Lnet/postchain/client/transaction/TransactionBuilder;
+}
+
+public final class com/chromia/directory1/common_vault_dapp_details/Common_vault_dapp_detailsKt {
+	public static final field FIND_DAPP_DETAILS Ljava/lang/String;
+	public static final fun findDappDetails (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;Ljava/util/List;)Lnet/postchain/gtv/Gtv;
+}
+
+public final class com/chromia/directory1/common_vault_dapp_details/DappContentType : java/lang/Enum, net/postchain/gtv/mapper/ToGtv {
+	public static final field icon Lcom/chromia/directory1/common_vault_dapp_details/DappContentType;
+	public static final field landscape Lcom/chromia/directory1/common_vault_dapp_details/DappContentType;
+	public static final field portrait Lcom/chromia/directory1/common_vault_dapp_details/DappContentType;
+	public static final field promotional Lcom/chromia/directory1/common_vault_dapp_details/DappContentType;
+	public static final field video Lcom/chromia/directory1/common_vault_dapp_details/DappContentType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public fun toGtv ()Lnet/postchain/gtv/Gtv;
+	public static fun valueOf (Ljava/lang/String;)Lcom/chromia/directory1/common_vault_dapp_details/DappContentType;
+	public static fun values ()[Lcom/chromia/directory1/common_vault_dapp_details/DappContentType;
+}
+
+public final class com/chromia/directory1/delay/blockchain_config_delay/Delay_blockchain_config_delayKt {
 	public static final field GET_BLOCKCHAINS_WITH_ACTIVE_DELAYED_PROPOSALS Ljava/lang/String;
 	public static final field LIST_DELAYED_BLOCKCHAIN_CONFIGS Ljava/lang/String;
 	public static final fun getBlockchainsWithActiveDelayedProposals (Lnet/postchain/client/core/PostchainQuery;)Ljava/util/List;
 	public static final fun listDelayedBlockchainConfigs (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/BlockchainRid;)Ljava/util/List;
 }
 
-public final class com/chromia/directory1/delay/DelayedBlockchainProposalData {
+public final class com/chromia/directory1/delay/blockchain_config_delay/DelayedBlockchainProposalData {
 	public fun <init> (Lnet/postchain/common/types/RowId;Lcom/chromia/directory1/proposal/ProposalType;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/Long;)V
 	public final fun component1 ()Lnet/postchain/common/types/RowId;
 	public final fun component2 ()Lcom/chromia/directory1/proposal/ProposalType;
 	public final fun component3 ()Lcom/chromia/directory1/proposal/ProposalState;
 	public final fun component4 ()Ljava/lang/Long;
 	public final fun component5 ()Ljava/lang/Long;
-	public final fun copy (Lnet/postchain/common/types/RowId;Lcom/chromia/directory1/proposal/ProposalType;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/Long;)Lcom/chromia/directory1/delay/DelayedBlockchainProposalData;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/delay/DelayedBlockchainProposalData;Lnet/postchain/common/types/RowId;Lcom/chromia/directory1/proposal/ProposalType;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/delay/DelayedBlockchainProposalData;
+	public final fun copy (Lnet/postchain/common/types/RowId;Lcom/chromia/directory1/proposal/ProposalType;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/Long;)Lcom/chromia/directory1/delay/blockchain_config_delay/DelayedBlockchainProposalData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/delay/blockchain_config_delay/DelayedBlockchainProposalData;Lnet/postchain/common/types/RowId;Lcom/chromia/directory1/proposal/ProposalType;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/delay/blockchain_config_delay/DelayedBlockchainProposalData;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getApplyAt ()Ljava/lang/Long;
 	public final fun getDelay ()Ljava/lang/Long;
@@ -1915,21 +1982,19 @@ public final class com/chromia/directory1/economy_chain/BridgeAnomalyDetectorDat
 }
 
 public final class com/chromia/directory1/economy_chain/BridgeLeaseData {
-	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;JLjava/lang/String;ZLjava/lang/String;Ljava/lang/String;)V
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;JLjava/lang/String;Ljava/lang/String;Z)V
 	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component2 ()J
 	public final fun component3 ()Ljava/lang/String;
-	public final fun component4 ()Z
-	public final fun component5 ()Ljava/lang/String;
-	public final fun component6 ()Ljava/lang/String;
-	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;JLjava/lang/String;ZLjava/lang/String;Ljava/lang/String;)Lcom/chromia/directory1/economy_chain/BridgeLeaseData;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/BridgeLeaseData;Lnet/postchain/common/types/WrappedByteArray;JLjava/lang/String;ZLjava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/BridgeLeaseData;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Z
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;JLjava/lang/String;Ljava/lang/String;Z)Lcom/chromia/directory1/economy_chain/BridgeLeaseData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/BridgeLeaseData;Lnet/postchain/common/types/WrappedByteArray;JLjava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/BridgeLeaseData;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getBlockchainRid ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getBridgeContract ()Ljava/lang/String;
-	public final fun getContainerName ()Ljava/lang/String;
+	public final fun getEnabled ()Z
 	public final fun getEvmNetworkId ()J
-	public final fun getExpired ()Z
 	public final fun getValidatorContract ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -1948,23 +2013,61 @@ public final class com/chromia/directory1/economy_chain/ClusterCreationStatus : 
 }
 
 public final class com/chromia/directory1/economy_chain/ClusterData {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;Ljava/lang/Long;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/Boolean;
 	public final fun component4 ()Ljava/lang/Long;
 	public final fun component5 ()Ljava/lang/Long;
 	public final fun component6 ()Ljava/util/List;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;)Lcom/chromia/directory1/economy_chain/ClusterData;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/ClusterData;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/ClusterData;
+	public final fun component7 ()Ljava/lang/Long;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;Ljava/lang/Long;)Lcom/chromia/directory1/economy_chain/ClusterData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/ClusterData;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/util/List;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/ClusterData;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getClusterUnits ()Ljava/lang/Long;
 	public final fun getExtraStorage ()Ljava/lang/Long;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getNumberOfNodes ()Ljava/lang/Long;
 	public final fun getSubnodeImages ()Ljava/util/List;
 	public final fun getTagName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public final fun isOperational ()Ljava/lang/Boolean;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/economy_chain/ContainerAndBridgeLeaseData {
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;JLjava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V
+	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component2 ()J
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Z
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Z
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;JLjava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)Lcom/chromia/directory1/economy_chain/ContainerAndBridgeLeaseData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/ContainerAndBridgeLeaseData;Lnet/postchain/common/types/WrappedByteArray;JLjava/lang/String;ZLjava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/ContainerAndBridgeLeaseData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBlockchainRid ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getBridgeContract ()Ljava/lang/String;
+	public final fun getContainerName ()Ljava/lang/String;
+	public final fun getEnabled ()Z
+	public final fun getEvmNetworkId ()J
+	public final fun getExpired ()Z
+	public final fun getValidatorContract ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/economy_chain/ContainerLeaseOwnershipTransferOfferData {
+	public fun <init> (Ljava/lang/String;Lnet/postchain/common/types/WrappedByteArray;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun copy (Ljava/lang/String;Lnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/economy_chain/ContainerLeaseOwnershipTransferOfferData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/ContainerLeaseOwnershipTransferOfferData;Ljava/lang/String;Lnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/ContainerLeaseOwnershipTransferOfferData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContainerName ()Ljava/lang/String;
+	public final fun getReceiverAccountId ()Lnet/postchain/common/types/WrappedByteArray;
+	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -1985,18 +2088,6 @@ public final class com/chromia/directory1/economy_chain/ContainerTicketData {
 	public final fun getType ()Lcom/chromia/directory1/economy_chain/TicketType;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/chromia/directory1/economy_chain/DappContentType : java/lang/Enum, net/postchain/gtv/mapper/ToGtv {
-	public static final field icon Lcom/chromia/directory1/economy_chain/DappContentType;
-	public static final field landscape Lcom/chromia/directory1/economy_chain/DappContentType;
-	public static final field portrait Lcom/chromia/directory1/economy_chain/DappContentType;
-	public static final field promotional Lcom/chromia/directory1/economy_chain/DappContentType;
-	public static final field video Lcom/chromia/directory1/economy_chain/DappContentType;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public fun toGtv ()Lnet/postchain/gtv/Gtv;
-	public static fun valueOf (Ljava/lang/String;)Lcom/chromia/directory1/economy_chain/DappContentType;
-	public static fun values ()[Lcom/chromia/directory1/economy_chain/DappContentType;
 }
 
 public final class com/chromia/directory1/economy_chain/EconomyConstantsData {
@@ -2083,6 +2174,7 @@ public final class com/chromia/directory1/economy_chain/EconomyNodeMetrics {
 }
 
 public final class com/chromia/directory1/economy_chain/Economy_chainKt {
+	public static final field ACCEPT_CONTAINER_LEASE_OWNERSHIP_TRANSFER_OFFER Ljava/lang/String;
 	public static final field ADD_BRIDGE_LEASE Ljava/lang/String;
 	public static final field API_VERSION Ljava/lang/String;
 	public static final field ASSIGN_SUBNODE_IMAGE_TO_CONTAINER Ljava/lang/String;
@@ -2097,7 +2189,7 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final field DISABLE_TRANSFER_MEMO Ljava/lang/String;
 	public static final field DOES_ACCOUNT_REQUIRE_MEMO Ljava/lang/String;
 	public static final field ENABLE_TRANSFER_MEMO Ljava/lang/String;
-	public static final field FIND_DAPP_DETAILS Ljava/lang/String;
+	public static final field GET_ACCOUNTS_WITH_NATIVE_STAKE Ljava/lang/String;
 	public static final field GET_ALL_BRIDGE_LEASES_FOR_BLOCKCHAIN Ljava/lang/String;
 	public static final field GET_ALL_BRIDGE_LEASES_FOR_CONTAINER Ljava/lang/String;
 	public static final field GET_ASSIGN_SUBNODE_IMAGE_TO_CONTAINER_TICKET_BY_ID Ljava/lang/String;
@@ -2114,15 +2206,16 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final field GET_CLUSTER_CHANGE_TAG_PROPOSAL Ljava/lang/String;
 	public static final field GET_CLUSTER_CREATE_PROPOSAL Ljava/lang/String;
 	public static final field GET_CLUSTER_CREATION_STATUS Ljava/lang/String;
+	public static final field GET_CONTAINER_LEASE_OWNERSHIP_TRANSFER_OFFER Ljava/lang/String;
 	public static final field GET_CREATE_CONTAINER_TICKET_BY_ID Ljava/lang/String;
 	public static final field GET_CREATE_CONTAINER_TICKET_BY_TRANSACTION Ljava/lang/String;
 	public static final field GET_DAPP_PROVIDER_CREATION_COST Ljava/lang/String;
 	public static final field GET_ECONOMY_CONSTANTS Ljava/lang/String;
+	public static final field GET_ECONOMY_CONSTANTS_PROPOSAL Ljava/lang/String;
 	public static final field GET_ECONOMY_METRICS Ljava/lang/String;
 	public static final field GET_ECONOMY_METRICS_PER_NODE Ljava/lang/String;
 	public static final field GET_ECONOMY_METRICS_PER_PROVIDER_NODES Ljava/lang/String;
 	public static final field GET_ECONONY_CONSTANTS_PROPOSAL Ljava/lang/String;
-	public static final field GET_EC_VOTER_SET_UPDATE_PROPOSAL Ljava/lang/String;
 	public static final field GET_FT4_ACCOUNT_IDS Ljava/lang/String;
 	public static final field GET_LEASES_BY_ACCOUNT Ljava/lang/String;
 	public static final field GET_LEASE_BY_CONTAINER_NAME Ljava/lang/String;
@@ -2150,31 +2243,36 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final field GET_TAGS Ljava/lang/String;
 	public static final field GET_TAG_BY_NAME Ljava/lang/String;
 	public static final field GET_TAG_PROPOSAL Ljava/lang/String;
+	public static final field GET_TICKET_BY_ID Ljava/lang/String;
+	public static final field GET_TICKET_BY_TRANSACTION Ljava/lang/String;
 	public static final field GET_TOTAL_PROVISIONAL_STAKE Ljava/lang/String;
 	public static final field GET_TOTAL_PROVISIONAL_STAKE_ACCOUNTS Ljava/lang/String;
 	public static final field GET_UPGRADE_CONTAINER_TICKET_BY_ID Ljava/lang/String;
 	public static final field GET_UPGRADE_CONTAINER_TICKET_BY_TRANSACTION Ljava/lang/String;
 	public static final field INIT Ljava/lang/String;
 	public static final field MEMO Ljava/lang/String;
+	public static final field OFFER_CONTAINER_LEASE_OWNERSHIP_TRANSFER Ljava/lang/String;
 	public static final field PROPOSE_MINTING Ljava/lang/String;
 	public static final field PROPOSE_PRICE_ORACLE_RATE Ljava/lang/String;
 	public static final field PROPOSE_STAKING_REQUIREMENT_CONSTANTS Ljava/lang/String;
 	public static final field PROPOSE_SYSTEM_PROVIDER_ECONOMY_CONSTANTS Ljava/lang/String;
 	public static final field PROPOSE_TRANSFER_CHROMIA_FOUNDATION_FUNDS Ljava/lang/String;
-	public static final field PROPOSE_UPDATE_EC_VOTER_SET Ljava/lang/String;
 	public static final field RAS_STAKING Ljava/lang/String;
 	public static final field REGISTER_DAPP_PROVIDER Ljava/lang/String;
 	public static final field REGISTER_DAPP_PROVIDER_WITH_PAYMENT Ljava/lang/String;
 	public static final field REMOVE_BRIDGE_LEASE Ljava/lang/String;
+	public static final field REMOVE_CONTAINER_LEASE_OWNERSHIP_TRANSFER_OFFER Ljava/lang/String;
 	public static final field REMOVE_TAG Ljava/lang/String;
 	public static final field RENEW_CONTAINER Ljava/lang/String;
 	public static final field RESET_PROVIDER_REWARD_DEBT Ljava/lang/String;
 	public static final field SET_PROVIDER_STAKING_ACCOUNT Ljava/lang/String;
+	public static final field SET_PROVIDER_STAKING_ACCOUNT_FT4 Ljava/lang/String;
 	public static final field STAKING_CANCEL_WITHDRAWAL Ljava/lang/String;
 	public static final field STAKING_DELEGATE Ljava/lang/String;
 	public static final field STAKING_DEPOSIT_NATIVE Ljava/lang/String;
-	public static final field STAKING_GET_ALL_SHARED_REWARDS_PAID Ljava/lang/String;
+	public static final field STAKING_GET_ALL_REWARDS_PAID Ljava/lang/String;
 	public static final field STAKING_GET_BALANCE Ljava/lang/String;
+	public static final field STAKING_GET_BALANCE_ON_NETWORK Ljava/lang/String;
 	public static final field STAKING_GET_CANNOT_CHANGE_BEFORE Ljava/lang/String;
 	public static final field STAKING_GET_CURRENT_DELEGATE Ljava/lang/String;
 	public static final field STAKING_GET_CURRENT_DELEGATE_ON_NETWORK Ljava/lang/String;
@@ -2188,6 +2286,7 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final field STAKING_GET_SHARED_REWARDS_PAID Ljava/lang/String;
 	public static final field STAKING_GET_TOTAL_DELEGATION_TO Ljava/lang/String;
 	public static final field STAKING_GET_WITHDRAWAL_TIME Ljava/lang/String;
+	public static final field STAKING_ORACLE_WITHDRAWAL_REQUEST Ljava/lang/String;
 	public static final field STAKING_REQUEST_WITHDRAWAL Ljava/lang/String;
 	public static final field STAKING_REWARDS_CLAIMABLE_FOR Ljava/lang/String;
 	public static final field STAKING_REWARDS_FOR Ljava/lang/String;
@@ -2202,8 +2301,10 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final field UPDATE_BRIDGE_LEASE Ljava/lang/String;
 	public static final field UPDATE_CHROMIA_FOUNDATION_VOTER_SET Ljava/lang/String;
 	public static final field UPDATE_ECONOMY_CONSTANTS Ljava/lang/String;
+	public static final field UPDATE_EVM_SUPPLY Ljava/lang/String;
 	public static final field UPDATE_TAG Ljava/lang/String;
 	public static final field UPGRADE_CONTAINER Ljava/lang/String;
+	public static final fun acceptContainerLeaseOwnershipTransferOfferOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun addBridgeLeaseOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;JLjava/lang/String;Ljava/lang/String;Z)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun apiVersion (Lnet/postchain/client/core/PostchainQuery;)J
 	public static final fun assignSubnodeImageToContainerOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
@@ -2218,7 +2319,7 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final fun disableTransferMemoOperation (Lnet/postchain/client/transaction/TransactionBuilder;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun doesAccountRequireMemo (Lnet/postchain/client/core/PostchainQuery;[B)Z
 	public static final fun enableTransferMemoOperation (Lnet/postchain/client/transaction/TransactionBuilder;)Lnet/postchain/client/transaction/TransactionBuilder;
-	public static final fun findDappDetails (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;Ljava/util/List;)Lnet/postchain/gtv/Gtv;
+	public static final fun getAccountsWithNativeStake (Lnet/postchain/client/core/PostchainQuery;JLjava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getAllBridgeLeasesForBlockchain (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/BlockchainRid;)Ljava/util/List;
 	public static final fun getAllBridgeLeasesForContainer (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Ljava/util/List;
 	public static final fun getAssignSubnodeImageToContainerTicketById (Lnet/postchain/client/core/PostchainQuery;J)Lcom/chromia/directory1/economy_chain/ContainerTicketData;
@@ -2226,8 +2327,8 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final fun getAvailableSubnodeImagesForAllClusters (Lnet/postchain/client/core/PostchainQuery;)Ljava/util/List;
 	public static final fun getAvailableSubnodeImagesForCluster (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Ljava/util/List;
 	public static final fun getBalance (Lnet/postchain/client/core/PostchainQuery;[B)Ljava/math/BigInteger;
-	public static final fun getBlockchainsWithBridgeAndAnomalyDetection (Lnet/postchain/client/core/PostchainQuery;)Ljava/util/List;
-	public static final fun getBridgeLeaseForBlockchain (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/BlockchainRid;J)Lcom/chromia/directory1/economy_chain/BridgeLeaseData;
+	public static final fun getBlockchainsWithBridgeAndAnomalyDetection (Lnet/postchain/client/core/PostchainQuery;Z)Ljava/util/List;
+	public static final fun getBridgeLeaseForBlockchain (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/BlockchainRid;J)Lcom/chromia/directory1/economy_chain/ContainerAndBridgeLeaseData;
 	public static final fun getChrAsset (Lnet/postchain/client/core/PostchainQuery;)Lcom/chromia/directory1/economy_chain/GetChrAssetResult;
 	public static final fun getChromiaFoundationVoterSetInfo (Lnet/postchain/client/core/PostchainQuery;)Lcom/chromia/directory1/economy_chain/GetChromiaFoundationVoterSetInfoResult;
 	public static final fun getClusterByName (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Lcom/chromia/directory1/economy_chain/ClusterData;
@@ -2235,11 +2336,12 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final fun getClusterCreateProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/economy_chain/PendingClusterData;
 	public static final fun getClusterCreationStatus (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Lcom/chromia/directory1/economy_chain/ClusterCreationStatus;
 	public static final fun getClusters (Lnet/postchain/client/core/PostchainQuery;)Ljava/util/List;
+	public static final fun getContainerLeaseOwnershipTransferOffer (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Lcom/chromia/directory1/economy_chain/ContainerLeaseOwnershipTransferOfferData;
 	public static final fun getCreateContainerTicketById (Lnet/postchain/client/core/PostchainQuery;J)Lcom/chromia/directory1/economy_chain/ContainerTicketData;
 	public static final fun getCreateContainerTicketByTransaction (Lnet/postchain/client/core/PostchainQuery;[B)Lcom/chromia/directory1/economy_chain/ContainerTicketData;
 	public static final fun getDappProviderCreationCost (Lnet/postchain/client/core/PostchainQuery;)J
-	public static final fun getEcVoterSetUpdateProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/economy_chain/GetEcVoterSetUpdateProposalResult;
 	public static final fun getEconomyConstants (Lnet/postchain/client/core/PostchainQuery;)Lcom/chromia/directory1/economy_chain/EconomyConstantsData;
+	public static final fun getEconomyConstantsProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/economy_chain/PendingEconomyConstantsData;
 	public static final fun getEconomyMetrics (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/crypto/PubKey;)Lcom/chromia/directory1/economy_chain/EconomyMetrics;
 	public static final fun getEconomyMetricsPerNode (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/crypto/PubKey;)Lcom/chromia/directory1/economy_chain/EconomyNodeMetrics;
 	public static final fun getEconomyMetricsPerProviderNodes (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/crypto/PubKey;)Ljava/util/List;
@@ -2271,31 +2373,36 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final fun getTagByName (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Lcom/chromia/directory1/economy_chain/TagData;
 	public static final fun getTagProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/economy_chain/TagData;
 	public static final fun getTags (Lnet/postchain/client/core/PostchainQuery;)Ljava/util/List;
+	public static final fun getTicketById (Lnet/postchain/client/core/PostchainQuery;J)Lcom/chromia/directory1/economy_chain/TicketData;
+	public static final fun getTicketByTransaction (Lnet/postchain/client/core/PostchainQuery;[B)Lcom/chromia/directory1/economy_chain/TicketData;
 	public static final fun getTotalProvisionalStake (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/economy_chain/Network;)J
 	public static final fun getTotalProvisionalStakeAccounts (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/economy_chain/Network;)J
 	public static final fun getUpgradeContainerTicketById (Lnet/postchain/client/core/PostchainQuery;J)Lcom/chromia/directory1/economy_chain/ContainerTicketData;
 	public static final fun getUpgradeContainerTicketByTransaction (Lnet/postchain/client/core/PostchainQuery;[B)Lcom/chromia/directory1/economy_chain/ContainerTicketData;
 	public static final fun initOperation (Lnet/postchain/client/transaction/TransactionBuilder;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun memoOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun offerContainerLeaseOwnershipTransferOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[B)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeMintingOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BJ[B)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposePriceOracleRateOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/util/List;)Lnet/postchain/client/transaction/TransactionBuilder;
-	public static final fun proposeStakingRequirementConstantsOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun proposeStakingRequirementConstantsOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/Boolean;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeSystemProviderEconomyConstantsOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/Long;Ljava/math/BigDecimal;Ljava/math/BigDecimal;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeTransferChromiaFoundationFundsOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BJ[B)Lnet/postchain/client/transaction/TransactionBuilder;
-	public static final fun proposeUpdateEcVoterSetOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/lang/Long;Ljava/util/List;Ljava/util/List;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun rasStakingOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLcom/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor;Lcom/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun registerDappProviderOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[B)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun registerDappProviderWithPaymentOperation (Lnet/postchain/client/transaction/TransactionBuilder;[B)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun removeBridgeLeaseOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/common/BlockchainRid;J)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun removeContainerLeaseOwnershipTransferOfferOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun removeTagOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun renewContainerOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;J)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun resetProviderRewardDebtOperation (Lnet/postchain/client/transaction/TransactionBuilder;[B)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun setProviderStakingAccountFt4Operation (Lnet/postchain/client/transaction/TransactionBuilder;[B)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun setProviderStakingAccountOperation (Lnet/postchain/client/transaction/TransactionBuilder;[B[B)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun stakingCancelWithdrawalOperation (Lnet/postchain/client/transaction/TransactionBuilder;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun stakingDelegateOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/crypto/PubKey;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun stakingDepositNativeOperation (Lnet/postchain/client/transaction/TransactionBuilder;J[B)Lnet/postchain/client/transaction/TransactionBuilder;
-	public static final fun stakingGetAllSharedRewardsPaid (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/Long;Ljava/lang/Long;)J
+	public static final fun stakingGetAllRewardsPaid (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/Long;Ljava/lang/Long;)Lcom/chromia/directory1/economy_chain/StakingGetAllRewardsPaidResult;
 	public static final fun stakingGetBalance (Lnet/postchain/client/core/PostchainQuery;[B)J
+	public static final fun stakingGetBalanceOnNetwork (Lnet/postchain/client/core/PostchainQuery;[BLcom/chromia/directory1/economy_chain/Network;)J
 	public static final fun stakingGetCannotChangeBefore (Lnet/postchain/client/core/PostchainQuery;)J
 	public static final fun stakingGetCurrentDelegate (Lnet/postchain/client/core/PostchainQuery;[B)[B
 	public static final fun stakingGetCurrentDelegateOnNetwork (Lnet/postchain/client/core/PostchainQuery;[BLcom/chromia/directory1/economy_chain/Network;)[B
@@ -2309,6 +2416,7 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final fun stakingGetSharedRewardsPaid (Lnet/postchain/client/core/PostchainQuery;[B[BLjava/lang/Long;)J
 	public static final fun stakingGetTotalDelegationTo (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/crypto/PubKey;Lcom/chromia/directory1/economy_chain/Network;)J
 	public static final fun stakingGetWithdrawalTime (Lnet/postchain/client/core/PostchainQuery;[BLcom/chromia/directory1/economy_chain/Network;)Ljava/lang/Long;
+	public static final fun stakingOracleWithdrawalRequestOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BJ)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun stakingRequestWithdrawalOperation (Lnet/postchain/client/transaction/TransactionBuilder;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun stakingRewardsClaimableFor (Lnet/postchain/client/core/PostchainQuery;[B)J
 	public static final fun stakingRewardsFor (Lnet/postchain/client/core/PostchainQuery;[B)J
@@ -2322,9 +2430,10 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final fun transferToPoolOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/math/BigInteger;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun updateBridgeLeaseOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/common/BlockchainRid;JLjava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun updateChromiaFoundationVoterSetOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLjava/lang/Long;Ljava/util/List;Ljava/util/List;)Lnet/postchain/client/transaction/TransactionBuilder;
-	public static final fun updateEconomyConstantsOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/Long;Ljava/lang/Long;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/math/BigDecimal;)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun updateEconomyConstantsOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/Long;Ljava/lang/Long;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/lang/Long;)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun updateEvmSupplyOperation (Lnet/postchain/client/transaction/TransactionBuilder;J[BLjava/math/BigInteger;Z)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun updateTagOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;)Lnet/postchain/client/transaction/TransactionBuilder;
-	public static final fun upgradeContainerOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;JJLjava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun upgradeContainerOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;JJLjava/lang/String;J)Lnet/postchain/client/transaction/TransactionBuilder;
 }
 
 public final class com/chromia/directory1/economy_chain/GetChrAssetResult {
@@ -2369,25 +2478,8 @@ public final class com/chromia/directory1/economy_chain/GetChromiaFoundationVote
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/chromia/directory1/economy_chain/GetEcVoterSetUpdateProposalResult {
-	public fun <init> (Ljava/lang/String;Ljava/lang/Long;Ljava/util/List;Ljava/util/List;)V
-	public final fun component1 ()Ljava/lang/String;
-	public final fun component2 ()Ljava/lang/Long;
-	public final fun component3 ()Ljava/util/List;
-	public final fun component4 ()Ljava/util/List;
-	public final fun copy (Ljava/lang/String;Ljava/lang/Long;Ljava/util/List;Ljava/util/List;)Lcom/chromia/directory1/economy_chain/GetEcVoterSetUpdateProposalResult;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/GetEcVoterSetUpdateProposalResult;Ljava/lang/String;Ljava/lang/Long;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/GetEcVoterSetUpdateProposalResult;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getAddMember ()Ljava/util/List;
-	public final fun getRemoveMember ()Ljava/util/List;
-	public final fun getThreshold ()Ljava/lang/Long;
-	public final fun getVoterSet ()Ljava/lang/String;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class com/chromia/directory1/economy_chain/LeaseData {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;JJJZZLjava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;JJJZZLjava/lang/String;Ljava/util/List;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()J
@@ -2396,10 +2488,12 @@ public final class com/chromia/directory1/economy_chain/LeaseData {
 	public final fun component6 ()Z
 	public final fun component7 ()Z
 	public final fun component8 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;JJJZZLjava/lang/String;)Lcom/chromia/directory1/economy_chain/LeaseData;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/LeaseData;Ljava/lang/String;Ljava/lang/String;JJJZZLjava/lang/String;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/LeaseData;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;JJJZZLjava/lang/String;Ljava/util/List;)Lcom/chromia/directory1/economy_chain/LeaseData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/LeaseData;Ljava/lang/String;Ljava/lang/String;JJJZZLjava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/LeaseData;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAutoRenew ()Z
+	public final fun getBridgeLeases ()Ljava/util/List;
 	public final fun getClusterName ()Ljava/lang/String;
 	public final fun getContainerName ()Ljava/lang/String;
 	public final fun getContainerUnits ()J
@@ -2628,22 +2722,39 @@ public final class com/chromia/directory1/economy_chain/ProviderPerformanceMetri
 }
 
 public final class com/chromia/directory1/economy_chain/ProviderStakingStatus {
-	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;JJZLjava/lang/Long;Ljava/lang/Long;)V
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;JJJJZLjava/lang/Long;Ljava/lang/Long;)V
 	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component2 ()J
 	public final fun component3 ()J
-	public final fun component4 ()Z
-	public final fun component5 ()Ljava/lang/Long;
-	public final fun component6 ()Ljava/lang/Long;
-	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;JJZLjava/lang/Long;Ljava/lang/Long;)Lcom/chromia/directory1/economy_chain/ProviderStakingStatus;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/ProviderStakingStatus;Lnet/postchain/common/types/WrappedByteArray;JJZLjava/lang/Long;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/ProviderStakingStatus;
+	public final fun component4 ()J
+	public final fun component5 ()J
+	public final fun component6 ()Z
+	public final fun component7 ()Ljava/lang/Long;
+	public final fun component8 ()Ljava/lang/Long;
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;JJJJZLjava/lang/Long;Ljava/lang/Long;)Lcom/chromia/directory1/economy_chain/ProviderStakingStatus;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/ProviderStakingStatus;Lnet/postchain/common/types/WrappedByteArray;JJJJZLjava/lang/Long;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/ProviderStakingStatus;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getApproved ()Z
 	public final fun getDaysSinceLastApproved ()Ljava/lang/Long;
 	public final fun getDaysUntilRewardStops ()Ljava/lang/Long;
 	public final fun getOwnStakingChr ()J
+	public final fun getRequiredOwnStakingChr ()J
+	public final fun getRequiredTotalStakingChr ()J
 	public final fun getStakingAccountId ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getTotalStakingChr ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/economy_chain/StakingGetAllRewardsPaidResult {
+	public fun <init> (JJ)V
+	public final fun component1 ()J
+	public final fun component2 ()J
+	public final fun copy (JJ)Lcom/chromia/directory1/economy_chain/StakingGetAllRewardsPaidResult;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/StakingGetAllRewardsPaidResult;JJILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/StakingGetAllRewardsPaidResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSharedRewards ()J
+	public final fun getStakingRewards ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -2691,6 +2802,23 @@ public final class com/chromia/directory1/economy_chain/TagData {
 	public final fun getExtraStoragePrice ()J
 	public final fun getName ()Ljava/lang/String;
 	public final fun getScuPrice ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/economy_chain/TicketData {
+	public fun <init> (JLcom/chromia/directory1/economy_chain/TicketType;Lcom/chromia/directory1/economy_chain/TicketState;Ljava/lang/String;)V
+	public final fun component1 ()J
+	public final fun component2 ()Lcom/chromia/directory1/economy_chain/TicketType;
+	public final fun component3 ()Lcom/chromia/directory1/economy_chain/TicketState;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (JLcom/chromia/directory1/economy_chain/TicketType;Lcom/chromia/directory1/economy_chain/TicketState;Ljava/lang/String;)Lcom/chromia/directory1/economy_chain/TicketData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/TicketData;JLcom/chromia/directory1/economy_chain/TicketType;Lcom/chromia/directory1/economy_chain/TicketState;Ljava/lang/String;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/TicketData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getErrorMessage ()Ljava/lang/String;
+	public final fun getState ()Lcom/chromia/directory1/economy_chain/TicketState;
+	public final fun getTicketId ()J
+	public final fun getType ()Lcom/chromia/directory1/economy_chain/TicketType;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -2767,6 +2895,19 @@ public final class com/chromia/directory1/lib/auth/Lib_authKt {
 public final class com/chromia/directory1/lib/eif/version/Lib_eif_versionKt {
 	public static final field API_VERSION Ljava/lang/String;
 	public static final fun apiVersion (Lnet/postchain/client/core/PostchainQuery;)J
+}
+
+public final class com/chromia/directory1/lib/ft4/core/accounts/Account {
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;)V
+	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/core/accounts/Account;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/core/accounts/Account;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/core/accounts/Account;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor {
@@ -2947,6 +3088,53 @@ public final class com/chromia/directory1/lib/ft4/core/accounts/strategies/trans
 	public static final fun rasTransferOpenOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor;Lcom/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor;)Lnet/postchain/client/transaction/TransactionBuilder;
 }
 
+public final class com/chromia/directory1/lib/ft4/core/assets/AssetFilter {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/core/assets/AssetFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/core/assets/AssetFilter;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/core/assets/AssetFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIds ()Ljava/util/List;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSymbol ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/core/assets/BalanceFilter {
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Lcom/chromia/directory1/lib/ft4/core/assets/BalanceFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/core/assets/BalanceFilter;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/core/assets/BalanceFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccountIds ()Ljava/util/List;
+	public final fun getAssetIds ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/core/assets/CrosschainTransferHistoryEntryFilter {
+	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/Long;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/lang/Long;
+	public final fun copy (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/Long;)Lcom/chromia/directory1/lib/ft4/core/assets/CrosschainTransferHistoryEntryFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/core/assets/CrosschainTransferHistoryEntryFilter;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/core/assets/CrosschainTransferHistoryEntryFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccountIds ()Ljava/util/List;
+	public final fun getAssetIds ()Ljava/util/List;
+	public final fun getOpIndex ()Ljava/lang/Long;
+	public final fun getTransactionRids ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/chromia/directory1/lib/ft4/core/assets/Filter {
 	public fun <init> (Lcom/chromia/directory1/lib/ft4/core/assets/TransferType;)V
 	public final fun component1 ()Lcom/chromia/directory1/lib/ft4/core/assets/TransferType;
@@ -2959,21 +3147,44 @@ public final class com/chromia/directory1/lib/ft4/core/assets/Filter {
 }
 
 public final class com/chromia/directory1/lib/ft4/core/assets/TransferDetail {
-	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;Z)V
-	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
+	public fun <init> (Lnet/postchain/common/types/RowId;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;ZJLnet/postchain/common/types/WrappedByteArray;)V
+	public final fun component1 ()Lnet/postchain/common/types/RowId;
 	public final fun component2 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component3 ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun component4 ()Ljava/math/BigInteger;
-	public final fun component5 ()Z
-	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;Z)Lcom/chromia/directory1/lib/ft4/core/assets/TransferDetail;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/core/assets/TransferDetail;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;ZILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/core/assets/TransferDetail;
+	public final fun component4 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component5 ()Ljava/math/BigInteger;
+	public final fun component6 ()Z
+	public final fun component7 ()J
+	public final fun component8 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun copy (Lnet/postchain/common/types/RowId;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;ZJLnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/lib/ft4/core/assets/TransferDetail;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/core/assets/TransferDetail;Lnet/postchain/common/types/RowId;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;ZJLnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/core/assets/TransferDetail;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAccountId ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getAssetId ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getBlockchainRid ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getDelta ()Ljava/math/BigInteger;
+	public final fun getOpIndex ()J
+	public final fun getRowid ()Lnet/postchain/common/types/RowId;
+	public final fun getTransactionRid ()Lnet/postchain/common/types/WrappedByteArray;
 	public fun hashCode ()I
 	public final fun isInput ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/core/assets/TransferHistoryEntryFilter {
+	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/Long;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/lang/Long;
+	public final fun copy (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/Long;)Lcom/chromia/directory1/lib/ft4/core/assets/TransferHistoryEntryFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/core/assets/TransferHistoryEntryFilter;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/core/assets/TransferHistoryEntryFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccountIds ()Ljava/util/List;
+	public final fun getAssetIds ()Ljava/util/List;
+	public final fun getOpIndex ()Ljava/lang/Long;
+	public final fun getTransactionRids ()Ljava/util/List;
+	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -3010,6 +3221,84 @@ public final class com/chromia/directory1/lib/ft4/core/auth/Signature {
 	public final fun getR ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getS ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getV ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/core/crosschain/AssetOriginFilter {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lcom/chromia/directory1/lib/ft4/core/crosschain/AssetOriginFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/core/crosschain/AssetOriginFilter;Ljava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/core/crosschain/AssetOriginFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssetIds ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/core/crosschain/PendingTransferFilter {
+	public fun <init> (Ljava/util/List;Ljava/lang/Long;Lnet/postchain/common/types/WrappedByteArray;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/Long;
+	public final fun component3 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun copy (Ljava/util/List;Ljava/lang/Long;Lnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/lib/ft4/core/crosschain/PendingTransferFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/core/crosschain/PendingTransferFilter;Ljava/util/List;Ljava/lang/Long;Lnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/core/crosschain/PendingTransferFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOpIndex ()Ljava/lang/Long;
+	public final fun getSenderAccountId ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getTransactionRids ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/core/crosschain/TransfersFilter {
+	public fun <init> (Ljava/util/List;Ljava/lang/Long;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/Long;
+	public final fun copy (Ljava/util/List;Ljava/lang/Long;)Lcom/chromia/directory1/lib/ft4/core/crosschain/TransfersFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/core/crosschain/TransfersFilter;Ljava/util/List;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/core/crosschain/TransfersFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getInitOpIndex ()Ljava/lang/Long;
+	public final fun getInitTxRids ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/external/accounts/AccountAuthDescriptorFilter {
+	public fun <init> (Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun copy (Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/lib/ft4/external/accounts/AccountAuthDescriptorFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/external/accounts/AccountAuthDescriptorFilter;Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/external/accounts/AccountAuthDescriptorFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccountId ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getIds ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/external/accounts/AccountFilter {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/external/accounts/AccountFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/external/accounts/AccountFilter;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/external/accounts/AccountFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIds ()Ljava/util/List;
+	public final fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/external/accounts/AuthDescriptorSignerFilter {
+	public fun <init> (Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun copy (Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/lib/ft4/external/accounts/AuthDescriptorSignerFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/external/accounts/AuthDescriptorSignerFilter;Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/external/accounts/AuthDescriptorSignerFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAuthDescriptorId ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getIds ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -3132,14 +3421,19 @@ public final class com/chromia/directory1/lib/ft4/external/accounts/Lib_ft4_exte
 	public static final field GET_ACCOUNTS_BY_AUTH_DESCRIPTOR_ID Ljava/lang/String;
 	public static final field GET_ACCOUNTS_BY_SIGNER Ljava/lang/String;
 	public static final field GET_ACCOUNTS_BY_TYPE Ljava/lang/String;
+	public static final field GET_ACCOUNTS_FILTERED Ljava/lang/String;
 	public static final field GET_ACCOUNT_AUTH_DESCRIPTORS Ljava/lang/String;
 	public static final field GET_ACCOUNT_AUTH_DESCRIPTORS_BY_SIGNER Ljava/lang/String;
+	public static final field GET_ACCOUNT_AUTH_DESCRIPTORS_FILTERED Ljava/lang/String;
 	public static final field GET_ACCOUNT_AUTH_DESCRIPTOR_BY_ID Ljava/lang/String;
 	public static final field GET_ACCOUNT_BY_ID Ljava/lang/String;
 	public static final field GET_ACCOUNT_MAIN_AUTH_DESCRIPTOR Ljava/lang/String;
 	public static final field GET_ACCOUNT_RATE_LIMIT_LAST_UPDATE Ljava/lang/String;
 	public static final field GET_AUTH_DESCRIPTOR_COUNTER Ljava/lang/String;
+	public static final field GET_AUTH_DESCRIPTOR_SIGNERS_FILTERED Ljava/lang/String;
 	public static final field GET_CONFIG Ljava/lang/String;
+	public static final field GET_MAIN_AUTH_DESCRIPTORS_FILTERED Ljava/lang/String;
+	public static final field GET_RL_STATES_FILTERED Ljava/lang/String;
 	public static final field IS_AUTH_DESCRIPTOR_VALID Ljava/lang/String;
 	public static final field UPDATE_MAIN_AUTH_DESCRIPTOR Ljava/lang/String;
 	public static final fun addAuthDescriptorOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor;)Lnet/postchain/client/transaction/TransactionBuilder;
@@ -3149,36 +3443,88 @@ public final class com/chromia/directory1/lib/ft4/external/accounts/Lib_ft4_exte
 	public static final fun getAccountAuthDescriptorById (Lnet/postchain/client/core/PostchainQuery;[B[B)Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorByIdResult;
 	public static final fun getAccountAuthDescriptors (Lnet/postchain/client/core/PostchainQuery;[B)Ljava/util/List;
 	public static final fun getAccountAuthDescriptorsBySigner (Lnet/postchain/client/core/PostchainQuery;[B[B)Ljava/util/List;
-	public static final fun getAccountById (Lnet/postchain/client/core/PostchainQuery;[B)[B
+	public static final fun getAccountAuthDescriptorsFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/external/accounts/AccountAuthDescriptorFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getAccountById (Lnet/postchain/client/core/PostchainQuery;[B)Lcom/chromia/directory1/lib/ft4/core/accounts/Account;
 	public static final fun getAccountMainAuthDescriptor (Lnet/postchain/client/core/PostchainQuery;[B)Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountMainAuthDescriptorResult;
 	public static final fun getAccountRateLimitLastUpdate (Lnet/postchain/client/core/PostchainQuery;[B)Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountRateLimitLastUpdateResult;
 	public static final fun getAccountsByAuthDescriptorId (Lnet/postchain/client/core/PostchainQuery;[BLjava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getAccountsBySigner (Lnet/postchain/client/core/PostchainQuery;[BLjava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getAccountsByType (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;JLjava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getAccountsFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/external/accounts/AccountFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getAuthDescriptorCounter (Lnet/postchain/client/core/PostchainQuery;[B[B)Ljava/lang/Long;
+	public static final fun getAuthDescriptorSignersFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/external/accounts/AuthDescriptorSignerFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getConfig (Lnet/postchain/client/core/PostchainQuery;)Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetConfigResult;
+	public static final fun getMainAuthDescriptorsFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/external/accounts/MainAccountAuthDescriptorFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getRlStatesFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/external/accounts/RlStateFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun isAuthDescriptorValid (Lnet/postchain/client/core/PostchainQuery;[B[B)Z
 	public static final fun updateMainAuthDescriptorOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor;)Lnet/postchain/client/transaction/TransactionBuilder;
 }
 
+public final class com/chromia/directory1/lib/ft4/external/accounts/MainAccountAuthDescriptorFilter {
+	public fun <init> (Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun copy (Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/lib/ft4/external/accounts/MainAccountAuthDescriptorFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/external/accounts/MainAccountAuthDescriptorFilter;Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/external/accounts/MainAccountAuthDescriptorFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccountAuthDescriptorId ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getAccountIds ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/external/accounts/RlStateFilter {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lcom/chromia/directory1/lib/ft4/external/accounts/RlStateFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/external/accounts/RlStateFilter;Ljava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/external/accounts/RlStateFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccountIds ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/lib/ft4/external/accounts/strategies/AccountCreationTransferFilter {
+	public fun <init> (Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;Lnet/postchain/common/types/WrappedByteArray;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component3 ()Ljava/lang/Long;
+	public final fun component4 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun copy (Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;Lnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/lib/ft4/external/accounts/strategies/AccountCreationTransferFilter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/external/accounts/strategies/AccountCreationTransferFilter;Ljava/util/List;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;Lnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/external/accounts/strategies/AccountCreationTransferFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOpIndex ()Ljava/lang/Long;
+	public final fun getRecipientId ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getRowids ()Ljava/util/List;
+	public final fun getTransactionTxRid ()Lnet/postchain/common/types/WrappedByteArray;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/chromia/directory1/lib/ft4/external/accounts/strategies/Lib_ft4_external_accounts_strategiesKt {
+	public static final field GET_ACCOUNT_CREATION_TRANSFERS_FILTERED Ljava/lang/String;
+	public static final field GET_ACCOUNT_ID_FOR_STRATEGY Ljava/lang/String;
 	public static final field GET_ENABLED_REGISTRATION_STRATEGIES Ljava/lang/String;
 	public static final field GET_REGISTER_ACCOUNT_MESSAGE Ljava/lang/String;
 	public static final field REGISTER_ACCOUNT Ljava/lang/String;
+	public static final fun getAccountCreationTransfersFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/external/accounts/strategies/AccountCreationTransferFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getAccountIdForStrategy (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/GtxOperation;)[B
 	public static final fun getEnabledRegistrationStrategies (Lnet/postchain/client/core/PostchainQuery;)Ljava/util/Set;
 	public static final fun getRegisterAccountMessage (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/GtxOperation;Lcom/chromia/directory1/GtxOperation;)Ljava/lang/String;
 	public static final fun registerAccountOperation (Lnet/postchain/client/transaction/TransactionBuilder;)Lnet/postchain/client/transaction/TransactionBuilder;
 }
 
 public final class com/chromia/directory1/lib/ft4/external/assets/Ft4GetAssetBalanceResult {
-	public fun <init> (Lnet/postchain/gtv/Gtv;Ljava/math/BigInteger;)V
-	public final fun component1 ()Lnet/postchain/gtv/Gtv;
-	public final fun component2 ()Ljava/math/BigInteger;
-	public final fun copy (Lnet/postchain/gtv/Gtv;Ljava/math/BigInteger;)Lcom/chromia/directory1/lib/ft4/external/assets/Ft4GetAssetBalanceResult;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/external/assets/Ft4GetAssetBalanceResult;Lnet/postchain/gtv/Gtv;Ljava/math/BigInteger;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/external/assets/Ft4GetAssetBalanceResult;
+	public fun <init> (Lnet/postchain/common/types/RowId;Lnet/postchain/gtv/Gtv;Ljava/math/BigInteger;)V
+	public final fun component1 ()Lnet/postchain/common/types/RowId;
+	public final fun component2 ()Lnet/postchain/gtv/Gtv;
+	public final fun component3 ()Ljava/math/BigInteger;
+	public final fun copy (Lnet/postchain/common/types/RowId;Lnet/postchain/gtv/Gtv;Ljava/math/BigInteger;)Lcom/chromia/directory1/lib/ft4/external/assets/Ft4GetAssetBalanceResult;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/external/assets/Ft4GetAssetBalanceResult;Lnet/postchain/common/types/RowId;Lnet/postchain/gtv/Gtv;Ljava/math/BigInteger;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/external/assets/Ft4GetAssetBalanceResult;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAmount ()Ljava/math/BigInteger;
 	public final fun getAsset ()Lnet/postchain/gtv/Gtv;
+	public final fun getRowid ()Lnet/postchain/common/types/RowId;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -3272,13 +3618,17 @@ public final class com/chromia/directory1/lib/ft4/external/assets/Lib_ft4_extern
 	public static final field GET_ASSETS_BY_NAME Ljava/lang/String;
 	public static final field GET_ASSETS_BY_SYMBOL Ljava/lang/String;
 	public static final field GET_ASSETS_BY_TYPE Ljava/lang/String;
+	public static final field GET_ASSETS_FILTERED Ljava/lang/String;
 	public static final field GET_ASSET_BALANCE Ljava/lang/String;
 	public static final field GET_ASSET_BALANCES Ljava/lang/String;
 	public static final field GET_ASSET_BY_ID Ljava/lang/String;
 	public static final field GET_ASSET_DETAILS_FOR_CROSSCHAIN_REGISTRATION Ljava/lang/String;
+	public static final field GET_BALANCES_FILTERED Ljava/lang/String;
+	public static final field GET_CROSSCHAIN_TRANSFER_HISTORY_ENTRIES_FILTERED Ljava/lang/String;
 	public static final field GET_TRANSFER_DETAILS Ljava/lang/String;
 	public static final field GET_TRANSFER_DETAILS_BY_ASSET Ljava/lang/String;
 	public static final field GET_TRANSFER_HISTORY Ljava/lang/String;
+	public static final field GET_TRANSFER_HISTORY_ENTRIES_FILTERED Ljava/lang/String;
 	public static final field GET_TRANSFER_HISTORY_ENTRY Ljava/lang/String;
 	public static final field GET_TRANSFER_HISTORY_FROM_HEIGHT Ljava/lang/String;
 	public static final field RECALL_UNCLAIMED_TRANSFER Ljava/lang/String;
@@ -3292,9 +3642,13 @@ public final class com/chromia/directory1/lib/ft4/external/assets/Lib_ft4_extern
 	public static final fun getAssetsByName (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getAssetsBySymbol (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getAssetsByType (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
-	public static final fun getTransferDetails (Lnet/postchain/client/core/PostchainQuery;[BJ)Ljava/util/Set;
-	public static final fun getTransferDetailsByAsset (Lnet/postchain/client/core/PostchainQuery;[BJ[B)Ljava/util/Set;
+	public static final fun getAssetsFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/assets/AssetFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getBalancesFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/assets/BalanceFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getCrosschainTransferHistoryEntriesFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/assets/CrosschainTransferHistoryEntryFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getTransferDetails (Lnet/postchain/client/core/PostchainQuery;[BJ)Ljava/util/List;
+	public static final fun getTransferDetailsByAsset (Lnet/postchain/client/core/PostchainQuery;[BJ[B)Ljava/util/List;
 	public static final fun getTransferHistory (Lnet/postchain/client/core/PostchainQuery;[BLcom/chromia/directory1/lib/ft4/core/assets/Filter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getTransferHistoryEntriesFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/assets/TransferHistoryEntryFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getTransferHistoryEntry (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/lib/ft4/external/assets/Ft4GetTransferHistoryEntryResult;
 	public static final fun getTransferHistoryFromHeight (Lnet/postchain/client/core/PostchainQuery;J[BLjava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun recallUnclaimedTransferOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BJ)Lnet/postchain/client/transaction/TransactionBuilder;
@@ -3353,15 +3707,15 @@ public final class com/chromia/directory1/lib/ft4/external/crosschain/Ft4Crossch
 }
 
 public final class com/chromia/directory1/lib/ft4/external/crosschain/Ft4CrosschainGetLastPendingTransferForAccountResult {
-	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;JLnet/postchain/common/types/WrappedByteArray;)V
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;JLcom/chromia/directory1/lib/ft4/core/accounts/Account;)V
 	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component2 ()J
-	public final fun component3 ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;JLnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/lib/ft4/external/crosschain/Ft4CrosschainGetLastPendingTransferForAccountResult;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/external/crosschain/Ft4CrosschainGetLastPendingTransferForAccountResult;Lnet/postchain/common/types/WrappedByteArray;JLnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/external/crosschain/Ft4CrosschainGetLastPendingTransferForAccountResult;
+	public final fun component3 ()Lcom/chromia/directory1/lib/ft4/core/accounts/Account;
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;JLcom/chromia/directory1/lib/ft4/core/accounts/Account;)Lcom/chromia/directory1/lib/ft4/external/crosschain/Ft4CrosschainGetLastPendingTransferForAccountResult;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/ft4/external/crosschain/Ft4CrosschainGetLastPendingTransferForAccountResult;Lnet/postchain/common/types/WrappedByteArray;JLcom/chromia/directory1/lib/ft4/core/accounts/Account;ILjava/lang/Object;)Lcom/chromia/directory1/lib/ft4/external/crosschain/Ft4CrosschainGetLastPendingTransferForAccountResult;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getAccountId ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getOpIndex ()J
+	public final fun getSenderAccount ()Lcom/chromia/directory1/lib/ft4/core/accounts/Account;
 	public final fun getTxData ()Lnet/postchain/common/types/WrappedByteArray;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -3371,10 +3725,17 @@ public final class com/chromia/directory1/lib/ft4/external/crosschain/Lib_ft4_ex
 	public static final field APPLY_TRANSFER Ljava/lang/String;
 	public static final field CANCEL_TRANSFER Ljava/lang/String;
 	public static final field COMPLETE_TRANSFER Ljava/lang/String;
+	public static final field GET_APPLIED_TRANSFERS_FILTERED Ljava/lang/String;
 	public static final field GET_APPLY_TRANSFER_TX Ljava/lang/String;
 	public static final field GET_ASSET_ORIGIN_BY_ID Ljava/lang/String;
+	public static final field GET_ASSET_ORIGIN_FILTERED Ljava/lang/String;
+	public static final field GET_CANCELED_TRANSFERS_FILTERED Ljava/lang/String;
 	public static final field GET_LAST_PENDING_TRANSFER_FOR_ACCOUNT Ljava/lang/String;
+	public static final field GET_PENDING_TRANSFERS_FILTERED Ljava/lang/String;
 	public static final field GET_PENDING_TRANSFERS_FOR_ACCOUNT Ljava/lang/String;
+	public static final field GET_RECALLED_TRANSFERS_FILTERED Ljava/lang/String;
+	public static final field GET_REVERTED_TRANSFERS_FILTERED Ljava/lang/String;
+	public static final field GET_UNAPPLIED_TRANSFERS_FILTERED Ljava/lang/String;
 	public static final field INIT_TRANSFER Ljava/lang/String;
 	public static final field IS_TRANSFER_APPLIED Ljava/lang/String;
 	public static final field RECALL_UNCLAIMED_TRANSFER Ljava/lang/String;
@@ -3383,10 +3744,17 @@ public final class com/chromia/directory1/lib/ft4/external/crosschain/Lib_ft4_ex
 	public static final fun applyTransferOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/GtxTransaction;JLcom/chromia/directory1/GtxTransaction;JJ)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun cancelTransferOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/GtxTransaction;JLcom/chromia/directory1/GtxTransaction;JJ)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun completeTransferOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/GtxTransaction;J)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun getAppliedTransfersFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/crosschain/TransfersFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getApplyTransferTx (Lnet/postchain/client/core/PostchainQuery;[BJ)Lcom/chromia/directory1/lib/ft4/external/crosschain/Ft4CrosschainGetApplyTransferTxResult;
 	public static final fun getAssetOriginById (Lnet/postchain/client/core/PostchainQuery;[B)[B
+	public static final fun getAssetOriginFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/crosschain/AssetOriginFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getCanceledTransfersFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/crosschain/TransfersFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getLastPendingTransferForAccount (Lnet/postchain/client/core/PostchainQuery;[B[B[B[BLjava/math/BigInteger;)Lcom/chromia/directory1/lib/ft4/external/crosschain/Ft4CrosschainGetLastPendingTransferForAccountResult;
+	public static final fun getPendingTransfersFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/crosschain/PendingTransferFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun getPendingTransfersForAccount (Lnet/postchain/client/core/PostchainQuery;[BLjava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getRecalledTransfersFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/crosschain/TransfersFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getRevertedTransfersFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/crosschain/TransfersFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getUnappliedTransfersFiltered (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/ft4/core/crosschain/TransfersFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
 	public static final fun initTransferOperation (Lnet/postchain/client/transaction/TransactionBuilder;[B[BLjava/math/BigInteger;Ljava/util/List;J)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun isTransferApplied (Lnet/postchain/client/core/PostchainQuery;[BJ)Z
 	public static final fun recallUnclaimedTransferOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/GtxTransaction;J)Lnet/postchain/client/transaction/TransactionBuilder;
@@ -3408,19 +3776,21 @@ public final class com/chromia/directory1/lib/ft4/utils/PagedResult {
 }
 
 public final class com/chromia/directory1/lib/ft4/version/Lib_ft4_versionKt {
+	public static final field GET_API_VERSION Ljava/lang/String;
 	public static final field GET_VERSION Ljava/lang/String;
+	public static final fun getApiVersion (Lnet/postchain/client/core/PostchainQuery;)J
 	public static final fun getVersion (Lnet/postchain/client/core/PostchainQuery;)Ljava/lang/String;
 }
 
 public final class com/chromia/directory1/lib/hbridge/BridgeContractInfo {
-	public fun <init> (Ljava/lang/String;JLjava/util/List;)V
-	public final fun component1 ()Ljava/lang/String;
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;JLjava/util/List;)V
+	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component2 ()J
 	public final fun component3 ()Ljava/util/List;
-	public final fun copy (Ljava/lang/String;JLjava/util/List;)Lcom/chromia/directory1/lib/hbridge/BridgeContractInfo;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/hbridge/BridgeContractInfo;Ljava/lang/String;JLjava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/lib/hbridge/BridgeContractInfo;
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;JLjava/util/List;)Lcom/chromia/directory1/lib/hbridge/BridgeContractInfo;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/hbridge/BridgeContractInfo;Lnet/postchain/common/types/WrappedByteArray;JLjava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/lib/hbridge/BridgeContractInfo;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getContractAddress ()Ljava/lang/String;
+	public final fun getContractAddress ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getErc20Assets ()Ljava/util/List;
 	public final fun getEvmReadOffset ()J
 	public fun hashCode ()I
@@ -3530,21 +3900,23 @@ public final class com/chromia/directory1/lib/hbridge/Erc20Info {
 }
 
 public final class com/chromia/directory1/lib/hbridge/Erc20Withdrawal {
-	public fun <init> (Lnet/postchain/common/types/RowId;JJJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;)V
+	public fun <init> (Lnet/postchain/common/types/RowId;JJJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;)V
 	public final fun component1 ()Lnet/postchain/common/types/RowId;
+	public final fun component10 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component2 ()J
 	public final fun component3 ()J
 	public final fun component4 ()J
 	public final fun component5 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component6 ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun component7 ()Ljava/math/BigInteger;
-	public final fun component8 ()J
-	public final fun component9 ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun copy (Lnet/postchain/common/types/RowId;JJJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/lib/hbridge/Erc20Withdrawal;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/hbridge/Erc20Withdrawal;Lnet/postchain/common/types/RowId;JJJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/lib/hbridge/Erc20Withdrawal;
+	public final fun component7 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component8 ()Ljava/math/BigInteger;
+	public final fun component9 ()J
+	public final fun copy (Lnet/postchain/common/types/RowId;JJJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/lib/hbridge/Erc20Withdrawal;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/hbridge/Erc20Withdrawal;Lnet/postchain/common/types/RowId;JJJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/lib/hbridge/Erc20Withdrawal;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAmount ()Ljava/math/BigInteger;
 	public final fun getBeneficiary ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getBridgeAddress ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getEventHash ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getNetworkId ()J
 	public final fun getOpIndex ()J
@@ -3572,21 +3944,23 @@ public final class com/chromia/directory1/lib/hbridge/Erc20WithdrawalHistoryEntr
 }
 
 public final class com/chromia/directory1/lib/hbridge/Erc20WithdrawalInfo {
-	public fun <init> (Lnet/postchain/common/types/RowId;JJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;Lcom/chromia/directory1/lib/hbridge/WithdrawalStatus;)V
+	public fun <init> (Lnet/postchain/common/types/RowId;JJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;Lcom/chromia/directory1/lib/hbridge/WithdrawalStatus;)V
 	public final fun component1 ()Lnet/postchain/common/types/RowId;
+	public final fun component10 ()Lcom/chromia/directory1/lib/hbridge/WithdrawalStatus;
 	public final fun component2 ()J
 	public final fun component3 ()J
 	public final fun component4 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component5 ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun component6 ()Ljava/math/BigInteger;
-	public final fun component7 ()J
-	public final fun component8 ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun component9 ()Lcom/chromia/directory1/lib/hbridge/WithdrawalStatus;
-	public final fun copy (Lnet/postchain/common/types/RowId;JJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;Lcom/chromia/directory1/lib/hbridge/WithdrawalStatus;)Lcom/chromia/directory1/lib/hbridge/Erc20WithdrawalInfo;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/hbridge/Erc20WithdrawalInfo;Lnet/postchain/common/types/RowId;JJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;Lcom/chromia/directory1/lib/hbridge/WithdrawalStatus;ILjava/lang/Object;)Lcom/chromia/directory1/lib/hbridge/Erc20WithdrawalInfo;
+	public final fun component6 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component7 ()Ljava/math/BigInteger;
+	public final fun component8 ()J
+	public final fun component9 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun copy (Lnet/postchain/common/types/RowId;JJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;Lcom/chromia/directory1/lib/hbridge/WithdrawalStatus;)Lcom/chromia/directory1/lib/hbridge/Erc20WithdrawalInfo;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/lib/hbridge/Erc20WithdrawalInfo;Lnet/postchain/common/types/RowId;JJLnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Lnet/postchain/common/types/WrappedByteArray;Ljava/math/BigInteger;JLnet/postchain/common/types/WrappedByteArray;Lcom/chromia/directory1/lib/hbridge/WithdrawalStatus;ILjava/lang/Object;)Lcom/chromia/directory1/lib/hbridge/Erc20WithdrawalInfo;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAmount ()Ljava/math/BigInteger;
 	public final fun getBeneficiary ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getBridgeAddress ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getEventHash ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getId ()Lnet/postchain/common/types/RowId;
 	public final fun getNetworkId ()J
@@ -3602,6 +3976,7 @@ public final class com/chromia/directory1/lib/hbridge/Lib_hbridgeKt {
 	public static final field ARE_SNAPSHOTS_ENABLED_FOR_ASSET Ljava/lang/String;
 	public static final field BRIDGE_FT4_TOKEN_TO_EVM Ljava/lang/String;
 	public static final field BRIDGE_FT4_TOKEN_TO_EVM_CONTRACT Ljava/lang/String;
+	public static final field BRIDGE_FT_ASSET_TO_EVM Ljava/lang/String;
 	public static final field GET_ACCOUNT_FOR_EOA_ADDRESS Ljava/lang/String;
 	public static final field GET_ACCOUNT_FOR_SC_ADDRESS Ljava/lang/String;
 	public static final field GET_BRIDGE_CONTRACTS Ljava/lang/String;
@@ -3615,6 +3990,8 @@ public final class com/chromia/directory1/lib/hbridge/Lib_hbridgeKt {
 	public static final field GET_ERC20_WITHDRAWAL_BY_ID Ljava/lang/String;
 	public static final field GET_ERC20_WITHDRAWAL_BY_TX Ljava/lang/String;
 	public static final field GET_ERC20_WITHDRAWAL_HISTORY Ljava/lang/String;
+	public static final field GET_RECOVERY_CONTRACT Ljava/lang/String;
+	public static final field GET_REGISTERED_BRIDGE_ERC20_ASSETS Ljava/lang/String;
 	public static final field GET_REGISTERED_ERC20_ASSETS Ljava/lang/String;
 	public static final field GET_SC_ADDRESSES_FOR_ACCOUNT Ljava/lang/String;
 	public static final field GET_STATE_SLOT_IDS_FOR_ACCOUNT Ljava/lang/String;
@@ -3623,9 +4000,12 @@ public final class com/chromia/directory1/lib/hbridge/Lib_hbridgeKt {
 	public static final field LINK_EVM_EOA_ACCOUNT Ljava/lang/String;
 	public static final field LINK_EVM_SC_ACCOUNT Ljava/lang/String;
 	public static final field RECALL_PENDING_DEPOSIT Ljava/lang/String;
+	public static final field REGISTER_RECOVERY_CONTRACT Ljava/lang/String;
+	public static final field UNREGISTER_RECOVERY_CONTRACT Ljava/lang/String;
 	public static final fun areSnapshotsEnabledForAsset (Lnet/postchain/client/core/PostchainQuery;[B)Z
 	public static final fun bridgeFt4TokenToEvmContractOperation (Lnet/postchain/client/transaction/TransactionBuilder;J[BLjava/math/BigInteger;[B[B)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun bridgeFt4TokenToEvmOperation (Lnet/postchain/client/transaction/TransactionBuilder;J[BLjava/math/BigInteger;[B)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun bridgeFtAssetToEvmOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLjava/math/BigInteger;J[B[B)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun getAccountForEoaAddress (Lnet/postchain/client/core/PostchainQuery;[B)[B
 	public static final fun getAccountForScAddress (Lnet/postchain/client/core/PostchainQuery;[BJ)[B
 	public static final fun getBridgeContracts (Lnet/postchain/client/core/PostchainQuery;J)Ljava/util/List;
@@ -3639,6 +4019,8 @@ public final class com/chromia/directory1/lib/hbridge/Lib_hbridgeKt {
 	public static final fun getErc20WithdrawalByTx (Lnet/postchain/client/core/PostchainQuery;[BJ)Lcom/chromia/directory1/lib/hbridge/Erc20WithdrawalInfo;
 	public static final fun getErc20WithdrawalHistory (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Ljava/util/List;
 	public static final fun getErc20Withdrawals (Lnet/postchain/client/core/PostchainQuery;Lcom/chromia/directory1/lib/hbridge/WithdrawalFilter;Ljava/lang/Long;Ljava/lang/String;)Lcom/chromia/directory1/lib/ft4/utils/PagedResult;
+	public static final fun getRecoveryContract (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/BlockchainRid;J)[B
+	public static final fun getRegisteredBridgeErc20Assets (Lnet/postchain/client/core/PostchainQuery;J[B)Ljava/util/List;
 	public static final fun getRegisteredErc20Assets (Lnet/postchain/client/core/PostchainQuery;J)Ljava/util/List;
 	public static final fun getScAddressesForAccount (Lnet/postchain/client/core/PostchainQuery;[B)Ljava/util/List;
 	public static final fun getStateSlotIdsForAccount (Lnet/postchain/client/core/PostchainQuery;[B)Ljava/util/List;
@@ -3647,6 +4029,8 @@ public final class com/chromia/directory1/lib/hbridge/Lib_hbridgeKt {
 	public static final fun linkEvmEoaAccountOperation (Lnet/postchain/client/transaction/TransactionBuilder;[B)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun linkEvmScAccountOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BJ)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun recallPendingDepositOperation (Lnet/postchain/client/transaction/TransactionBuilder;[B)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun registerRecoveryContractOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/common/BlockchainRid;J[B)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun unregisterRecoveryContractOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/common/BlockchainRid;J)Lnet/postchain/client/transaction/TransactionBuilder;
 }
 
 public final class com/chromia/directory1/lib/hbridge/WithdrawalFilter {
@@ -3880,23 +4264,25 @@ public final class com/chromia/directory1/proposal/GetRelevantProposalsResult {
 }
 
 public final class com/chromia/directory1/proposal/ProposalData {
-	public fun <init> (Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/proposal/ProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/String;Lnet/postchain/common/types/WrappedByteArray;)V
+	public fun <init> (Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/proposal/ProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;Lnet/postchain/common/types/WrappedByteArray;)V
 	public final fun component1 ()Lnet/postchain/common/types/RowId;
+	public final fun component10 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component2 ()J
 	public final fun component3 ()Lcom/chromia/directory1/proposal/ProposalType;
 	public final fun component4 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component5 ()Ljava/lang/String;
 	public final fun component6 ()Lcom/chromia/directory1/proposal/ProposalState;
 	public final fun component7 ()Ljava/lang/Long;
-	public final fun component8 ()Ljava/lang/String;
-	public final fun component9 ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun copy (Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/proposal/ProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/String;Lnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/proposal/ProposalData;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/proposal/ProposalData;Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/proposal/ProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/String;Lnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/proposal/ProposalData;
+	public final fun component8 ()Ljava/lang/Long;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/proposal/ProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;Lnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/proposal/ProposalData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/proposal/ProposalData;Lnet/postchain/common/types/RowId;JLcom/chromia/directory1/proposal/ProposalType;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Lcom/chromia/directory1/proposal/ProposalState;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;Lnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/proposal/ProposalData;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getApplyAt ()Ljava/lang/Long;
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getId ()Lnet/postchain/common/types/RowId;
 	public final fun getProposedBy ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getScheduledAt ()Ljava/lang/Long;
 	public final fun getState ()Lcom/chromia/directory1/proposal/ProposalState;
 	public final fun getTimestamp ()J
 	public final fun getTxRid ()Lnet/postchain/common/types/WrappedByteArray;
@@ -3931,6 +4317,8 @@ public final class com/chromia/directory1/proposal/ProposalKt {
 
 public final class com/chromia/directory1/proposal/ProposalState : java/lang/Enum, net/postchain/gtv/mapper/ToGtv {
 	public static final field APPROVED Lcom/chromia/directory1/proposal/ProposalState;
+	public static final field DELAYED Lcom/chromia/directory1/proposal/ProposalState;
+	public static final field FAILED Lcom/chromia/directory1/proposal/ProposalState;
 	public static final field PENDING Lcom/chromia/directory1/proposal/ProposalState;
 	public static final field REJECTED Lcom/chromia/directory1/proposal/ProposalState;
 	public static final field REVOKED Lcom/chromia/directory1/proposal/ProposalState;
@@ -3969,6 +4357,7 @@ public final class com/chromia/directory1/proposal/ProposalType : java/lang/Enum
 	public static final field provider_quota Lcom/chromia/directory1/proposal/ProposalType;
 	public static final field provider_state Lcom/chromia/directory1/proposal/ProposalType;
 	public static final field remove_cluster_subnode_image Lcom/chromia/directory1/proposal/ProposalType;
+	public static final field remove_forced_configuration Lcom/chromia/directory1/proposal/ProposalType;
 	public static final field subnode_image Lcom/chromia/directory1/proposal/ProposalType;
 	public static final field subnode_image_state Lcom/chromia/directory1/proposal/ProposalType;
 	public static final field update_subnode_image Lcom/chromia/directory1/proposal/ProposalType;
@@ -3980,15 +4369,19 @@ public final class com/chromia/directory1/proposal/ProposalType : java/lang/Enum
 }
 
 public final class com/chromia/directory1/proposal/ProposalVoter {
-	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Z)V
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;ZLnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;)V
 	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Z
-	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Z)Lcom/chromia/directory1/proposal/ProposalVoter;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/proposal/ProposalVoter;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;ZILjava/lang/Object;)Lcom/chromia/directory1/proposal/ProposalVoter;
+	public final fun component4 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component5 ()Ljava/lang/Long;
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;ZLnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;)Lcom/chromia/directory1/proposal/ProposalVoter;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/proposal/ProposalVoter;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;ZLnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/directory1/proposal/ProposalVoter;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOpIndex ()Ljava/lang/Long;
 	public final fun getProvider ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getProviderName ()Ljava/lang/String;
+	public final fun getTxRid ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getVote ()Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -4289,7 +4682,21 @@ public final class com/chromia/directory1/proposal_blockchain/PendingBlockchainR
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/chromia/directory1/proposal_blockchain/PendingRemoveForcedConfigurationData {
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;J)V
+	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component2 ()J
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;J)Lcom/chromia/directory1/proposal_blockchain/PendingRemoveForcedConfigurationData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/proposal_blockchain/PendingRemoveForcedConfigurationData;Lnet/postchain/common/types/WrappedByteArray;JILjava/lang/Object;)Lcom/chromia/directory1/proposal_blockchain/PendingRemoveForcedConfigurationData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBlockchainRid ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getHeight ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/chromia/directory1/proposal_blockchain/Proposal_blockchainKt {
+	public static final field APPROVE_PROPOSED_FORCED_CONFIGURATION Ljava/lang/String;
 	public static final field FIND_BLOCKCHAIN_RID Ljava/lang/String;
 	public static final field GET_BLOCKCHAIN_ACTION_PROPOSAL Ljava/lang/String;
 	public static final field GET_BLOCKCHAIN_PROPOSAL Ljava/lang/String;
@@ -4301,7 +4708,9 @@ public final class com/chromia/directory1/proposal_blockchain/Proposal_blockchai
 	public static final field GET_CONFIGURATION_PROPOSAL_V64 Ljava/lang/String;
 	public static final field GET_FORCED_CONFIGURATIONS Ljava/lang/String;
 	public static final field GET_FORCED_CONFIGURATION_PROPOSAL_V64 Ljava/lang/String;
+	public static final field GET_FORCED_CONFIGURATION_STAGE2_PROPOSAL Ljava/lang/String;
 	public static final field GET_PROPOSED_FORCED_CONFIGURATION Ljava/lang/String;
+	public static final field GET_REMOVE_FORCED_CONFIGURATION_PROPOSAL Ljava/lang/String;
 	public static final field PROPOSE_BLOCKCHAIN Ljava/lang/String;
 	public static final field PROPOSE_BLOCKCHAIN_ACTION Ljava/lang/String;
 	public static final field PROPOSE_BLOCKCHAIN_ACTION_ICCF Ljava/lang/String;
@@ -4314,6 +4723,8 @@ public final class com/chromia/directory1/proposal_blockchain/Proposal_blockchai
 	public static final field PROPOSE_CONFIGURATION_ICCF Ljava/lang/String;
 	public static final field PROPOSE_FORCED_CONFIGURATION Ljava/lang/String;
 	public static final field PROPOSE_FORCED_CONFIGURATION_ICCF Ljava/lang/String;
+	public static final field PROPOSE_REMOVE_FORCED_CONFIGURATION Ljava/lang/String;
+	public static final fun approveProposedForcedConfigurationOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/common/BlockchainRid;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun findBlockchainRid (Lnet/postchain/client/core/PostchainQuery;[B)[B
 	public static final fun getBlockchainActionProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain/GetBlockchainActionProposalResult;
 	public static final fun getBlockchainProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain/GetBlockchainProposalResult;
@@ -4324,8 +4735,10 @@ public final class com/chromia/directory1/proposal_blockchain/Proposal_blockchai
 	public static final fun getConfigurationProposalAtV64 (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain/ConfigurationProposalAtData;
 	public static final fun getConfigurationProposalV64 (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain/ConfigurationProposalData;
 	public static final fun getForcedConfigurationProposalV64 (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain/ForcedConfigurationProposalData;
+	public static final fun getForcedConfigurationStage2Proposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/BlockchainRid;)Lcom/chromia/directory1/proposal_blockchain/ForcedConfigurationProposalData;
 	public static final fun getForcedConfigurations (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/BlockchainRid;)Ljava/util/List;
 	public static final fun getProposedForcedConfiguration (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain/GetProposedForcedConfigurationResult;
+	public static final fun getRemoveForcedConfigurationProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain/PendingRemoveForcedConfigurationData;
 	public static final fun proposeBlockchainActionIccfOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/GtxTransaction;J[B)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeBlockchainActionOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;Lcom/chromia/directory1/proposal_blockchain/BlockchainAction;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeBlockchainIccfOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/GtxTransaction;J[B)Lnet/postchain/client/transaction/TransactionBuilder;
@@ -4335,24 +4748,44 @@ public final class com/chromia/directory1/proposal_blockchain/Proposal_blockchai
 	public static final fun proposeBlockchainUnarchiveActionOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;Ljava/lang/String;JLjava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeConfigurationAtOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;[BJZLjava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeConfigurationIccfOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/GtxTransaction;J[B)Lnet/postchain/client/transaction/TransactionBuilder;
-	public static final fun proposeConfigurationOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;[BLjava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun proposeConfigurationOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;[BLjava/lang/String;Ljava/lang/Long;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeForcedConfigurationIccfOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/GtxTransaction;J[B)Lnet/postchain/client/transaction/TransactionBuilder;
-	public static final fun proposeForcedConfigurationOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;[BJLjava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun proposeForcedConfigurationOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;[BJLjava/lang/String;Z)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun proposeRemoveForcedConfigurationOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lnet/postchain/common/BlockchainRid;JLjava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 }
 
 public final class com/chromia/directory1/proposal_blockchain/ProposedForcedConfigurationData {
-	public fun <init> (Lnet/postchain/common/types/RowId;Lnet/postchain/common/types/RowId;JLnet/postchain/common/types/WrappedByteArray;)V
+	public fun <init> (Lnet/postchain/common/types/RowId;Lnet/postchain/common/types/RowId;JLnet/postchain/common/types/WrappedByteArray;Z)V
 	public final fun component1 ()Lnet/postchain/common/types/RowId;
 	public final fun component2 ()Lnet/postchain/common/types/RowId;
 	public final fun component3 ()J
 	public final fun component4 ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun copy (Lnet/postchain/common/types/RowId;Lnet/postchain/common/types/RowId;JLnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/directory1/proposal_blockchain/ProposedForcedConfigurationData;
-	public static synthetic fun copy$default (Lcom/chromia/directory1/proposal_blockchain/ProposedForcedConfigurationData;Lnet/postchain/common/types/RowId;Lnet/postchain/common/types/RowId;JLnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/directory1/proposal_blockchain/ProposedForcedConfigurationData;
+	public final fun component5 ()Z
+	public final fun copy (Lnet/postchain/common/types/RowId;Lnet/postchain/common/types/RowId;JLnet/postchain/common/types/WrappedByteArray;Z)Lcom/chromia/directory1/proposal_blockchain/ProposedForcedConfigurationData;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/proposal_blockchain/ProposedForcedConfigurationData;Lnet/postchain/common/types/RowId;Lnet/postchain/common/types/RowId;JLnet/postchain/common/types/WrappedByteArray;ZILjava/lang/Object;)Lcom/chromia/directory1/proposal_blockchain/ProposedForcedConfigurationData;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getBlockchain ()Lnet/postchain/common/types/RowId;
 	public final fun getConfigData ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getHeight ()J
 	public final fun getProposal ()Lnet/postchain/common/types/RowId;
+	public final fun getResumeChain ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/directory1/proposal_blockchain_move/GetBlockchainMoveCancelProposalResult {
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/chromia/directory1/proposal_blockchain_move/GetBlockchainMoveCancelProposalResult;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/proposal_blockchain_move/GetBlockchainMoveCancelProposalResult;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/chromia/directory1/proposal_blockchain_move/GetBlockchainMoveCancelProposalResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBlockchainName ()Ljava/lang/String;
+	public final fun getBlockchainRid ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getCluster ()Ljava/lang/String;
+	public final fun getContainer ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -4394,12 +4827,16 @@ public final class com/chromia/directory1/proposal_blockchain_move/GetBlockchain
 }
 
 public final class com/chromia/directory1/proposal_blockchain_move/Proposal_blockchain_moveKt {
+	public static final field GET_BLOCKCHAIN_MOVE_CANCEL_PROPOSAL Ljava/lang/String;
 	public static final field GET_BLOCKCHAIN_MOVE_FINISH_PROPOSAL Ljava/lang/String;
 	public static final field GET_BLOCKCHAIN_MOVE_PROPOSAL Ljava/lang/String;
 	public static final field PROPOSE_BLOCKCHAIN_MOVE Ljava/lang/String;
+	public static final field PROPOSE_BLOCKCHAIN_MOVE_CANCEL Ljava/lang/String;
 	public static final field PROPOSE_BLOCKCHAIN_MOVE_FINISH Ljava/lang/String;
+	public static final fun getBlockchainMoveCancelProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain_move/GetBlockchainMoveCancelProposalResult;
 	public static final fun getBlockchainMoveFinishProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain_move/GetBlockchainMoveFinishProposalResult;
 	public static final fun getBlockchainMoveProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain_move/GetBlockchainMoveProposalResult;
+	public static final fun proposeBlockchainMoveCancelOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeBlockchainMoveFinishOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;JLjava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeBlockchainMoveOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;Ljava/lang/String;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 }

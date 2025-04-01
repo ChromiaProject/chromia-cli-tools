@@ -24,9 +24,9 @@
         <postchain.client.version>3.27.0</postchain.client.version>
         <rell.version>0.14.8</rell.version>
         <rell.dokka.version>0.2.11</rell.dokka.version>
-        <rell.toolbox.version>0.4.13</rell.toolbox.version>
-        <eif.version>0.8.0</eif.version>
-        <directory.chain.version>1.74.0</directory.chain.version>
+        <rell.toolbox.version>0.6.0</rell.toolbox.version>
+        <eif.version>0.13.1</eif.version>
+        <directory.chain.version>1.83.0</directory.chain.version>
         <directory.source>${project.build.directory}/directory-chain/src</directory.source>
 
         <jgit.version>7.1.0.202411261347-r</jgit.version>
@@ -132,7 +132,7 @@
                 <plugin>
                     <groupId>net.postchain.rell</groupId>
                     <artifactId>rell-maven-plugin</artifactId>
-                    <version>0.12.5</version>
+                    <version>0.14.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
