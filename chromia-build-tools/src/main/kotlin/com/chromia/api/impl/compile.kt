@@ -39,8 +39,12 @@ fun compileGtv(cliEnv: RellCliEnv, model: ChromiaModel): List<BlockchainConfigur
 
     val tika = Tika()
 
-    return blockchains.map { (bc, m) -> blockchainGtv(cliEnv, tika, model.compile, bc, m) } +
-            libraries.map { (lib, m) -> libraryGtv(cliEnv, model.compile, lib, m) }
+    return blockchains.map { (bc, m) ->
+        cliEnv.print("Building Blockchain: $bc")
+        blockchainGtv(cliEnv, tika, model.compile, bc, m)
+    } + libraries.map { (lib, m) ->
+        libraryGtv(cliEnv, model.compile, lib, m)
+    }
 }
 
 private fun blockchainGtv(cliEnv: RellCliEnv, tika: Tika, compileModel: CompileModel, name: String, blockchainModel: BlockchainModel): BlockchainConfiguration {
