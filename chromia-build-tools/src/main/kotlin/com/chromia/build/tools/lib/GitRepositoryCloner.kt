@@ -3,7 +3,9 @@ package com.chromia.build.tools.lib
 import java.io.File
 import java.nio.file.Path
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.api.errors.InvalidRemoteException
+import org.eclipse.jgit.api.errors.TransportException
 import org.eclipse.jgit.internal.transport.sshd.agent.connector.Factory
 import org.eclipse.jgit.lib.TextProgressMonitor
 import org.eclipse.jgit.transport.SshSessionFactory
@@ -25,9 +27,15 @@ class GitRepositoryCloner(val sshDir: File? = null, val quiet: Boolean = false) 
                     .setTimeout(60)
                     .apply { if (!quiet) setProgressMonitor(TextProgressMonitor()) }
                     .call()
-        } catch (e: InvalidRemoteException) {
+        } catch (e: Exception) {
+            val humanFriendlyError = when (e) {
+                is InvalidRemoteException -> "Invalid repository URL '$registry'."
+                is TransportException -> formatTransportExceptionMsg(e, registry, tagOrBranch)
+                is GitAPIException -> "Git operation failed: ${e.message}"
+                else -> e.message ?: ""
+            }
             target.toFile().deleteRecursively()
-            throw LibraryInstallException(e.message!!)
+            throw LibraryInstallException(humanFriendlyError)
         }
     }
 
@@ -42,4 +50,17 @@ class GitRepositoryCloner(val sshDir: File? = null, val quiet: Boolean = false) 
             }
             .setHomeDirectory(FS.DETECTED.userHome())
             .build(null)
+
+    private fun formatTransportExceptionMsg(e: TransportException, url: String, tagOrBranch: String?): String {
+        val branchNotFoundRegex = Regex("Remote branch '.*' not found")
+
+        return e.message?.let {
+            when {
+                it.contains("not authorized") -> "Authentication failed for $url"
+                it.contains("timeout") -> "Connection timed out while accessing $url"
+                branchNotFoundRegex.containsMatchIn(it) -> "Remote repository '$url' doesn't have branch '$tagOrBranch'"
+                else -> e.message
+            }
+        } ?: ""
+    }
 }
