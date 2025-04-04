@@ -76,7 +76,7 @@ deploy:
       $MAVEN_CLI_OPTS
       --activate-profiles ci
       -Drevision=$CI_COMMIT_TAG
-      clean source:jar deploy
+      clean deploy
 
 prepare_release:
   image: registry.gitlab.com/chromaway/core-tools/chromia-images/maven-docker:1.1.4
