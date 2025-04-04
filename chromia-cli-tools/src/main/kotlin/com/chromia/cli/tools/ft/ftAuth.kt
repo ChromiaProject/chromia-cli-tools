@@ -4,6 +4,7 @@ import com.chromia.directory1.lib.ft4.core.accounts.AuthType
 import com.chromia.directory1.lib.ft4.external.accounts.Ft4GetAccountAuthDescriptorsBySignerResult
 import com.chromia.directory1.lib.ft4.external.accounts.getAccountAuthDescriptorsBySigner
 import com.chromia.directory1.lib.ft4.external.accounts.getAccountsBySigner
+import com.chromia.directory1.lib.ft4.external.accounts.strategies.registerAccountOperation
 import com.chromia.directory1.lib.ft4.external.auth.ftAuthOperation
 import com.chromia.directory1.lib.ft4.external.auth.getAuthFlags
 import com.chromia.directory1.lib.ft4.utils.PagedResult
@@ -189,4 +190,10 @@ fun CoreCliktCommand.addFtAuthOperation(
         authDescriptorId: ByteArray
 ) {
     transactionBuilder.ftAuthOperation(accountId, authDescriptorId)
+}
+
+fun CoreCliktCommand.addFtRegisterAccountOperation(
+        transactionBuilder: TransactionBuilder,
+) {
+    transactionBuilder.registerAccountOperation()
 }
