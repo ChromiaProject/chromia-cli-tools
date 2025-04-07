@@ -13,7 +13,7 @@ class LibraryInstaller(
         private val repositoryCloner: RepositoryCloner,
         private val env: RellCliEnv,
         sourceDir: Path,
-        tempDir: Path,
+        private val tempDir: Path,
 ) {
 
     private val libRoot: Path = sourceDir.resolve("lib")
@@ -24,8 +24,9 @@ class LibraryInstaller(
             libs.forEach { (libName, libModel) -> installLibrary(libName, libModel) }
 
     private fun installLibrary(name: String, model: RellLibraryModel) {
+        cleanupTempDir()
         val installDir = libRoot.resolve(name)
-        if (installDir.exists()) {
+        if (installDir.exists() && installDir.isNotEmptyDir()) {
             if (libraryVerifyer.verifyLib(name, model, true)) return
             env.print("Library $name not up to date, reinstalling")
             installDir.toFile().deleteRecursively()
@@ -39,10 +40,31 @@ class LibraryInstaller(
 
     private fun cloneRepository(name: String, model: RellLibraryModel, installDir: Path) {
         val tmpInstallDir = tmpLibRoot.resolve(name)
-        if (tmpInstallDir.exists()) tmpInstallDir.toFile().deleteRecursively()
-        repositoryCloner.clone(model.registry, tmpInstallDir, model.tagOrBranch)
-        copyRellFilesInFolder(tmpInstallDir.resolve(model.path), installDir)
-        tmpInstallDir.toFile().deleteRecursively()
+        try {
+            repositoryCloner.clone(model.registry, tmpInstallDir, model.tagOrBranch)
+
+            val sourcePath = tmpInstallDir.resolve(model.path)
+            validateLibPath(sourcePath, model, name)
+            copyRellFilesInFolder(sourcePath, installDir)
+        } finally {
+            cleanupTempDir()
+        }
+    }
+
+    private fun validateLibPath(sourcePath: Path, model: RellLibraryModel, name: String) {
+        if (!sourcePath.exists()) {
+            val pathNotFoundMsg = buildString {
+                appendLine("Path '${model.path}' not found in repository '${model.registry}'.")
+                append("Please update the 'path' accordingly in chromia.yml 'libs->$name->path'")
+            }
+            throw LibraryInstallException(pathNotFoundMsg)
+        }
+    }
+
+    private fun cleanupTempDir() {
+        tempDir.resolve(".tmp").let {
+            if (it.exists()) it.toFile().deleteRecursively()
+        }
     }
 
     private fun copyRellFilesInFolder(src: Path, dest: Path) {
@@ -51,4 +73,12 @@ class LibraryInstaller(
             Files.copy(it, dest.resolve(src.relativize(it)), StandardCopyOption.REPLACE_EXISTING)
         }
     }
+
+    private fun Path.isNotEmptyDir(): Boolean = isValidDirectory && hasEntries
+
+    private val Path.isValidDirectory: Boolean
+        get() = Files.exists(this) && Files.isDirectory(this)
+
+    private val Path.hasEntries: Boolean
+        get() = Files.list(this).use { it.findAny().isPresent }
 }

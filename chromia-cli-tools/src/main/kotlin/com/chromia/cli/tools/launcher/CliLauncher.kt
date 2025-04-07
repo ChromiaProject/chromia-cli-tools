@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.mordant.rendering.AnsiLevel
+import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.rendering.Theme
 import com.github.ajalt.mordant.terminal.Terminal
 import mu.KotlinLogging
@@ -53,8 +54,11 @@ open class CliLauncher(val name: String) : NoOpCliktCommand(name = name) {
             else -> "An error occurred."
         }
 
-        val suffix = logFolderMessage()
-        return "$humanFriendlyMessage ${formatExceptionMessage(exception)}$suffix"
+        val formattedErrorMsg = "$humanFriendlyMessage ${formatExceptionMessage(exception)}"
+        return buildString {
+            appendLine(TextColors.brightRed(formattedErrorMsg))
+            append(logFolderMessage())
+        }
     }
 
     private fun formatExceptionMessage(exception: Exception): String {
