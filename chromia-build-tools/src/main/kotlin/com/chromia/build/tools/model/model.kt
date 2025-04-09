@@ -2,5 +2,5 @@ package com.chromia.cli.model
 
 import net.postchain.rell.base.model.R_LangVersion
 
-const val DefaultChromiaModelRellVersion = "0.14.2"
+const val DefaultChromiaModelRellVersion = "0.14.5"
 val MinimalRellVersionStrictGtv = R_LangVersion.of("0.13.9")
