@@ -1,22 +1,27 @@
 package com.chromia.build.tools.keystore
 
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import net.postchain.common.exception.UserMistake
-import java.nio.file.Path
-import kotlin.io.path.absolutePathString
 import net.postchain.crypto.KeyPair
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables
+import java.nio.file.Path
+import kotlin.io.path.absolutePathString
+import kotlin.io.path.readText
 
 class ChromiaKeyStoreTest {
 
-    private val keyPair = KeyPair.of("02CCF1F5FF6A6E5C9A6E89716A67BC77BECEF4DA804BD3BCE3105D96EB3D1AD765", "7EEBCE9FF2339D21CA3F4A325C9968B0E6D197A2CADA421F7DB8DEFD02AB1429")
+    private val keyPair = KeyPair.of("03CE4656584DBBAE56CE27C4D97F91A68DE0A789FA9844D589FEB87C5F2A17DADC",
+            "EA5148DD724F33FBDD911CDFE58B14CCC0DFD96D7F30E966975FA2B2C8BDD0C8")
+    private val mnemonic =
+            "section easy total social evoke title opera street firm master aim spare chair bronze venture edge increase problem sentence panda science draft soup vicious"
 
     @TempDir
     private lateinit var testDir: Path
@@ -31,8 +36,12 @@ class ChromiaKeyStoreTest {
 
     @Test
     fun `Save and load key pair flow`() {
-        chromiaKeyStore.saveKeyPair(keyPair)
+        chromiaKeyStore.saveKeyPair(keyPair, mnemonic)
         val loadedKeyPair = chromiaKeyStore.loadKeyPair()
+        assertThat(chromiaKeyStore.publicKeyFile.readText()).contains(keyPair.pubKey.hex())
+        assertThat(chromiaKeyStore.privateKeyFile.readText()).contains(keyPair.privKey.hex())
+        assertThat(chromiaKeyStore.mnemonicFile.readText()).contains(mnemonic)
+
         assertThat(loadedKeyPair.pubKey.hex()).isEqualTo(keyPair.pubKey.hex())
         assertThat(loadedKeyPair.privKey.hex()).isEqualTo(keyPair.privKey.hex())
     }

@@ -464,8 +464,12 @@ public final class com/chromia/build/tools/keystore/ChromiaKeyStore {
 	public final fun findKeyPair ()Lnet/postchain/crypto/KeyPair;
 	public final fun getChromiaHome ()Ljava/lang/String;
 	public final fun getKeyId ()Ljava/lang/String;
+	public final fun getMnemonicFile ()Ljava/nio/file/Path;
+	public final fun getPrivateKeyFile ()Ljava/nio/file/Path;
+	public final fun getPublicKeyFile ()Ljava/nio/file/Path;
 	public final fun loadKeyPair ()Lnet/postchain/crypto/KeyPair;
-	public final fun saveKeyPair (Lnet/postchain/crypto/KeyPair;)Ljava/lang/String;
+	public final fun saveKeyPair (Lnet/postchain/crypto/KeyPair;Ljava/lang/String;)Ljava/lang/String;
+	public static synthetic fun saveKeyPair$default (Lcom/chromia/build/tools/keystore/ChromiaKeyStore;Lnet/postchain/crypto/KeyPair;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
 }
 
 public final class com/chromia/build/tools/lib/DirectoryHashCalculator {
