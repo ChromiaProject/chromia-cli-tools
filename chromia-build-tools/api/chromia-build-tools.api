@@ -458,6 +458,7 @@ public final class com/chromia/build/tools/icmf/InMemoryIcmfSenderGtxModule$Cont
 }
 
 public final class com/chromia/build/tools/keystore/ChromiaKeyStore {
+	public static final field Companion Lcom/chromia/build/tools/keystore/ChromiaKeyStore$Companion;
 	public fun <init> ()V
 	public fun <init> (Ljava/lang/String;)V
 	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -470,6 +471,9 @@ public final class com/chromia/build/tools/keystore/ChromiaKeyStore {
 	public final fun loadKeyPair ()Lnet/postchain/crypto/KeyPair;
 	public final fun saveKeyPair (Lnet/postchain/crypto/KeyPair;Ljava/lang/String;)Ljava/lang/String;
 	public static synthetic fun saveKeyPair$default (Lcom/chromia/build/tools/keystore/ChromiaKeyStore;Lnet/postchain/crypto/KeyPair;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+}
+
+public final class com/chromia/build/tools/keystore/ChromiaKeyStore$Companion : mu/KLogging {
 }
 
 public final class com/chromia/build/tools/lib/DirectoryHashCalculator {

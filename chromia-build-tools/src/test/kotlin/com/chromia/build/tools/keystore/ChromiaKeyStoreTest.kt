@@ -2,6 +2,7 @@ package com.chromia.build.tools.keystore
 
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.containsExactlyInAnyOrder
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
@@ -12,7 +13,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables
+import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.attribute.PosixFilePermission
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.readText
 
@@ -39,11 +42,20 @@ class ChromiaKeyStoreTest {
         chromiaKeyStore.saveKeyPair(keyPair, mnemonic)
         val loadedKeyPair = chromiaKeyStore.loadKeyPair()
         assertThat(chromiaKeyStore.publicKeyFile.readText()).contains(keyPair.pubKey.hex())
+        assertThat(chromiaKeyStore.mnemonicFile.readText()).contains(mnemonic)
         assertThat(chromiaKeyStore.privateKeyFile.readText()).contains(keyPair.privKey.hex())
         assertThat(chromiaKeyStore.mnemonicFile.readText()).contains(mnemonic)
-
         assertThat(loadedKeyPair.pubKey.hex()).isEqualTo(keyPair.pubKey.hex())
         assertThat(loadedKeyPair.privKey.hex()).isEqualTo(keyPair.privKey.hex())
+
+        // only test this on POSIX compatible OS (e.g. not on Windows)
+        val os = System.getProperty("os.name").lowercase()
+        if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+            assertThat(Files.getPosixFilePermissions(chromiaKeyStore.privateKeyFile))
+                    .containsExactlyInAnyOrder(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)
+            assertThat(Files.getPosixFilePermissions(chromiaKeyStore.mnemonicFile))
+                    .containsExactlyInAnyOrder(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)
+        }
     }
 
     @Test

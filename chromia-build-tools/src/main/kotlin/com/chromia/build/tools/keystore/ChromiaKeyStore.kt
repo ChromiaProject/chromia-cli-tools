@@ -1,14 +1,19 @@
 package com.chromia.build.tools.keystore
 
+import mu.KLogging
 import net.postchain.common.exception.UserMistake
 import net.postchain.crypto.KeyPair
+import java.nio.file.Files
+import java.nio.file.attribute.PosixFilePermission
 import kotlin.io.path.Path
+import kotlin.io.path.absolutePathString
 import kotlin.io.path.createDirectories
 import kotlin.io.path.exists
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 class ChromiaKeyStore(val keyId: String = "chromia_key") {
+    companion object : KLogging()
 
     val chromiaHome = System.getenv("CHROMIA_HOME") ?: (System.getProperty("user.home") + "/.chromia")
     val publicKeyFile = Path("$chromiaHome/$keyId.pubkey")
@@ -23,6 +28,15 @@ class ChromiaKeyStore(val keyId: String = "chromia_key") {
         Path(chromiaHome).createDirectories()
         publicKeyFile.writeText(keyPair.pubKey.hex())
         privateKeyFile.writeText(keyPair.privKey.hex())
+        try {
+            Files.setPosixFilePermissions(privateKeyFile,
+                    setOf(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE))
+        } catch (e: UnsupportedOperationException) {
+            // we don't expect this to work on Windows
+            logger.debug {
+                "Could not set permissions on private key file ${privateKeyFile.absolutePathString()}: ${e.message}"
+            }
+        }
         if (mnemonic != null) {
             mnemonicFile.writeText(
                     """
@@ -32,6 +46,15 @@ class ChromiaKeyStore(val keyId: String = "chromia_key") {
                                 $mnemonic
                             """.trimIndent()
             )
+            try {
+                Files.setPosixFilePermissions(mnemonicFile,
+                        setOf(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE))
+            } catch (e: UnsupportedOperationException) {
+                // we don't expect this to work on Windows
+                logger.debug {
+                    "Could not set permissions on mnemonic file ${mnemonicFile.absolutePathString()}: ${e.message}"
+                }
+            }
         }
 
         println(
