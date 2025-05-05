@@ -391,6 +391,7 @@ public final class com/chromia/build/tools/icmf/InMemoryIcmfMessageQueue : mu/KL
 }
 
 public final class com/chromia/build/tools/icmf/InMemoryIcmfReceiverGtxModule : net/postchain/gtx/GTXModule, net/postchain/gtx/OperationWrapper {
+	public static final field Companion Lcom/chromia/build/tools/icmf/InMemoryIcmfReceiverGtxModule$Companion;
 	public fun <init> ()V
 	public fun getOperations ()Ljava/util/Set;
 	public fun getQueries ()Ljava/util/Set;
@@ -405,8 +406,11 @@ public final class com/chromia/build/tools/icmf/InMemoryIcmfReceiverGtxModule : 
 	public fun shutdown ()V
 }
 
+public final class com/chromia/build/tools/icmf/InMemoryIcmfReceiverGtxModule$Companion : mu/KLogging {
+}
+
 public final class com/chromia/build/tools/icmf/InMemoryIcmfReceiverGtxModule$InMemoryIcmfReceiveGTXOperation : net/postchain/gtx/GTXOperation {
-	public fun <init> (Lnet/postchain/gtx/data/ExtOpData;Lnet/postchain/core/Transactor;)V
+	public fun <init> (Lcom/chromia/build/tools/icmf/InMemoryIcmfReceiverGtxModule;Lnet/postchain/gtx/data/ExtOpData;Lnet/postchain/core/Transactor;)V
 	public fun apply (Lnet/postchain/core/TxEContext;)Z
 	public fun checkCorrectness ()V
 }
@@ -414,6 +418,7 @@ public final class com/chromia/build/tools/icmf/InMemoryIcmfReceiverGtxModule$In
 public final class com/chromia/build/tools/icmf/InMemoryIcmfReceiverSpecialTxExtension : net/postchain/gtx/special/GTXSpecialTxExtension {
 	public field topics Ljava/util/List;
 	public fun <init> ()V
+	public final fun blockPipe (Ljava/lang/String;)V
 	public fun createSpecialOperations (Lnet/postchain/base/SpecialTransactionPosition;Lnet/postchain/core/BlockEContext;)Ljava/util/List;
 	public fun getRelevantOps ()Ljava/util/Set;
 	public final fun getTopics ()Ljava/util/List;
