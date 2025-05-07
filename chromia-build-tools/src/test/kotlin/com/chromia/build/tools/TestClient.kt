@@ -9,7 +9,6 @@ import net.postchain.client.core.TransactionInfo
 import net.postchain.client.core.TransactionResult
 import net.postchain.client.core.TxRid
 import net.postchain.client.core.Version
-import net.postchain.client.impl.PostchainClientImpl
 import net.postchain.client.transaction.TransactionBuilder
 import net.postchain.common.BlockchainRid
 import net.postchain.common.rest.HighestBlockHeightAnchoringCheck
@@ -41,7 +40,14 @@ open class TestClient(
 
     override fun blockAtHeight(height: Long): BlockDetail = TODO("Not yet implemented")
     override fun blockByRid(blockRid: BlockRid): BlockDetail = TODO("Not yet implemented")
-    override fun getFeatures(blockchainRIDHex: String): PostchainClientImpl.BlockchainFeatures = TODO("Not yet implemented")
+    override fun getFeatures(): Map<String, Gtv> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getWaitingTransactions(): List<TxRid> {
+        TODO("Not yet implemented")
+    }
+
     override fun awaitConfirmation(txRid: TxRid, retries: Int, pollInterval: Duration): TransactionResult =
             TransactionResult(txRid, TransactionStatus.CONFIRMED, null, null)
 
@@ -88,6 +94,13 @@ open class TestClient(
     }
 
     override fun validateConfiguration(configuration: Gtv) { }
+    override fun genericGetGtv(path: String): Gtv {
+        TODO("Not yet implemented")
+    }
+
+    override fun genericGetJson(path: String): String {
+        TODO("Not yet implemented")
+    }
 }
 
 fun getContainerDataResult(name: String): Map<String, GtvPrimitive> {

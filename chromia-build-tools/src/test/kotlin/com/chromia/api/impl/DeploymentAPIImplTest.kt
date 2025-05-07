@@ -13,6 +13,7 @@ import com.chromia.build.tools.config.ChromiaConfigLoader
 import com.chromia.build.tools.testData
 import com.chromia.cli.model.DeploymentModel
 import net.postchain.client.config.PostchainClientConfig
+import net.postchain.client.core.TxRid
 import net.postchain.common.BlockchainRid
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
@@ -101,6 +102,22 @@ class DeploymentAPIImplTest {
                 "cm_get_blockchain_cluster" -> gtv("my_cluster")
                 else -> super.query(name, args)
             }
+        }
+
+        override fun getFeatures(): Map<String, Gtv> {
+            TODO("Not yet implemented")
+        }
+
+        override fun getWaitingTransactions(): List<TxRid> {
+            TODO("Not yet implemented")
+        }
+
+        override fun genericGetGtv(path: String): Gtv {
+            TODO("Not yet implemented")
+        }
+
+        override fun genericGetJson(path: String): String {
+            TODO("Not yet implemented")
         }
     }
 }
