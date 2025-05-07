@@ -11,7 +11,9 @@ import com.chromia.cli.model.DeploymentModel
 import com.chromia.directory1.proposal_blockchain.BlockchainAction
 import net.postchain.client.config.PostchainClientConfig
 import net.postchain.client.core.TransactionResult
+import net.postchain.client.core.TxRid
 import net.postchain.common.BlockchainRid
+import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtx.Gtx
 import org.junit.jupiter.api.Test
@@ -36,6 +38,22 @@ class DeploymentActionTest {
         override fun postTransactionAwaitConfirmation(tx: Gtx): TransactionResult {
             sentTxs.add(tx)
             return super.postTransactionAwaitConfirmation(tx)
+        }
+
+        override fun genericGetGtv(path: String): Gtv {
+            TODO("Not yet implemented")
+        }
+
+        override fun genericGetJson(path: String): String {
+            TODO("Not yet implemented")
+        }
+
+        override fun getFeatures(): Map<String, Gtv> {
+            TODO("Not yet implemented")
+        }
+
+        override fun getWaitingTransactions(): List<TxRid> {
+            TODO("Not yet implemented")
         }
     }
 }
