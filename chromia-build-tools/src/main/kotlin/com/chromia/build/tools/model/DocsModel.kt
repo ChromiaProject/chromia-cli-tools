@@ -12,6 +12,7 @@ data class DocsModel(
         private val additionalContent: List<String>? = null,
         val footerMessage: String = FOOTER_DEFAULT,
         val sourceLink: SourceLink? = null,
+        val additionalModules: List<String>? = null,
 ) {
     val additionalContentFiles get() = additionalContent?.map { File(it) } ?: listOf()
 
@@ -24,6 +25,7 @@ data class DocsModel(
                 additionalContent = ensureDocsType<List<String>?>(data, "additionalContent"),
                 footerMessage = ensureDocsType<String?>(data, "footerMessage") ?: FOOTER_DEFAULT,
                 sourceLink = ensureObject<SourceLink?>(data["sourceLink"], SourceLink::load, null, "sourceLink"),
+                additionalModules = ensureDocsType<List<String>?>(data, "additionalModules")
         )
 
         private inline fun <reified T> ensureDocsType(data: Map<String, Any>, key: String) =

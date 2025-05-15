@@ -160,6 +160,13 @@
           },
           "description": "Additional Markdown documentation files to include"
         },
+        "additionalModules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Additional modules to include"
+        },
         "footerMessage": {
           "type": "string",
           "description": "Message shown in the footer"
