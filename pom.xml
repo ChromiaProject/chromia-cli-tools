@@ -23,7 +23,7 @@
         <postchain.version>3.34.0</postchain.version>
         <postchain.client.version>3.29.2</postchain.client.version>
         <rell.version>0.14.10</rell.version>
-        <rell.dokka.version>0.2.13</rell.dokka.version>
+        <rell.dokka.version>0.2.14</rell.dokka.version>
         <rell.toolbox.version>0.7.1</rell.toolbox.version>
         <eif.version>0.13.1</eif.version>
         <directory.chain.version>1.83.0</directory.chain.version>
