@@ -98,6 +98,7 @@ fun action(
         clientProvider: PostchainClientProvider = PostchainClientProviderImpl()
 ): Pair<Boolean, String?> {
     require(config.signers.isNotEmpty()) { "No signers configured" }
+    require(deploymentModel.chains.isNotEmpty()) { "No chains configured" }
     val result = config.setDeployment(deploymentModel)
             .client(clientProvider)
             .transactionBuilder()
