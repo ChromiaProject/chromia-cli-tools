@@ -15,6 +15,8 @@ import net.postchain.base.configuration.KEY_FEATURES
 import net.postchain.common.BlockchainRid
 import net.postchain.common.exception.NotFound
 import net.postchain.common.tx.TransactionStatus
+import net.postchain.common.types.WrappedByteArray
+import net.postchain.core.AsyncQueryResponse
 import net.postchain.core.BlockRid
 import net.postchain.core.TransactionInfoExt
 import net.postchain.core.TransactionInfoExtsTruncated
@@ -113,6 +115,10 @@ class TestModel(
         TODO("Not yet implemented")
     }
 
+    override fun checkQueryCorrectness(query: GtxQuery) {
+        TODO("Not yet implemented")
+    }
+
     override fun getTransaction(txRID: TxRid): ByteArray? {
         TODO("Not yet implemented")
     }
@@ -149,6 +155,14 @@ class TestModel(
             "rell.get_rell_version" -> gtv(DefaultChromiaModelRellVersion)
             else -> throw NotFound("Query ${query.name} no implemented")
         }
+    }
+
+    override fun enqueueQuery(query: GtxQuery) {
+        TODO("Not yet implemented")
+    }
+
+    override fun fetchQueryResponse(queryRid: WrappedByteArray): AsyncQueryResponse {
+        TODO("Not yet implemented")
     }
 
     override fun validateBlockchainConfiguration(configuration: Gtv) {
