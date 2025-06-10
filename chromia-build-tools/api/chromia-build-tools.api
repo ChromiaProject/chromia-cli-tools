@@ -58,10 +58,6 @@ public final class com/chromia/api/impl/deployment/UtilsKt {
 	public static final fun postTransaction (Lkotlin/jvm/functions/Function2;Lnet/postchain/client/core/PostchainClient;Lcom/chromia/api/result/BlockchainConfiguration;Lcom/chromia/api/impl/deployment/DeploymentOperation;)Lcom/chromia/api/result/BlockchainDeploymentResult;
 }
 
-public synthetic class com/chromia/api/impl/deployment/UtilsKt$WhenMappings {
-	public static final synthetic field $EnumSwitchMapping$0 [I
-}
-
 public final class com/chromia/api/result/BlockchainConfiguration : com/chromia/api/result/Named {
 	public fun <init> (Ljava/lang/String;Lnet/postchain/gtv/Gtv;)V
 	public final fun component1 ()Ljava/lang/String;
@@ -200,14 +196,6 @@ public final class com/chromia/build/tools/config/BlockchainConfigurationCompres
 	public final fun compress (Lnet/postchain/client/core/PostchainClient;Lnet/postchain/gtv/Gtv;J)Lnet/postchain/gtv/Gtv;
 }
 
-synthetic class com/chromia/build/tools/config/BlockchainConfigurationCompressor$merkleHashCalculator$1 : kotlin/jvm/internal/FunctionAdapter, net/postchain/crypto/Digester {
-	public static final field INSTANCE Lcom/chromia/build/tools/config/BlockchainConfigurationCompressor$merkleHashCalculator$1;
-	public final fun digest ([B)[B
-	public final fun equals (Ljava/lang/Object;)Z
-	public final fun getFunctionDelegate ()Lkotlin/Function;
-	public final fun hashCode ()I
-}
-
 public final class com/chromia/build/tools/config/ChromiaClientConfig {
 	public static final field Companion Lcom/chromia/build/tools/config/ChromiaClientConfig$Companion;
 	public static final field DEFAULT_API_URL Ljava/lang/String;
@@ -305,12 +293,6 @@ public final class com/chromia/build/tools/iccf/SingleNodeIccfGtxModule : com/ch
 	public fun initializeContext (Lnet/postchain/core/BlockchainConfiguration;Lnet/postchain/PostchainContext;)V
 }
 
-synthetic class com/chromia/build/tools/iccf/SingleNodeIccfGtxModule$1 : kotlin/jvm/internal/FunctionReferenceImpl, kotlin/jvm/functions/Function2 {
-	public static final field INSTANCE Lcom/chromia/build/tools/iccf/SingleNodeIccfGtxModule$1;
-	public final fun invoke (Lcom/chromia/build/tools/iccf/SingleNodeIccfGtxModule$Config;Lnet/postchain/gtx/data/ExtOpData;)Lcom/chromia/build/tools/iccf/SingleNodeIccfGtxOperation;
-	public synthetic fun invoke (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-}
-
 public final class com/chromia/build/tools/iccf/SingleNodeIccfGtxModule$Config {
 	public field context Lnet/postchain/PostchainContext;
 	public fun <init> ()V
@@ -322,31 +304,6 @@ public final class com/chromia/build/tools/iccf/SingleNodeIccfGtxOperation : net
 	public fun <init> (Lcom/chromia/build/tools/iccf/SingleNodeIccfGtxModule$Config;Lnet/postchain/gtx/data/ExtOpData;)V
 	public fun apply (Lnet/postchain/core/TxEContext;)Z
 	public fun checkCorrectness ()V
-}
-
-private final class com/chromia/build/tools/iccf/SingleNodeIccfGtxOperation$SourceInfo {
-	public fun <init> (Lnet/postchain/common/BlockchainRid;[BLnet/postchain/base/ConfirmationProof;[BLnet/postchain/base/gtv/BlockHeaderData;)V
-	public final fun component1 ()Lnet/postchain/common/BlockchainRid;
-	public final fun component2 ()[B
-	public final fun component3 ()Lnet/postchain/base/ConfirmationProof;
-	public final fun component4 ()[B
-	public final fun component5 ()Lnet/postchain/base/gtv/BlockHeaderData;
-	public final fun copy (Lnet/postchain/common/BlockchainRid;[BLnet/postchain/base/ConfirmationProof;[BLnet/postchain/base/gtv/BlockHeaderData;)Lcom/chromia/build/tools/iccf/SingleNodeIccfGtxOperation$SourceInfo;
-	public static synthetic fun copy$default (Lcom/chromia/build/tools/iccf/SingleNodeIccfGtxOperation$SourceInfo;Lnet/postchain/common/BlockchainRid;[BLnet/postchain/base/ConfirmationProof;[BLnet/postchain/base/gtv/BlockHeaderData;ILjava/lang/Object;)Lcom/chromia/build/tools/iccf/SingleNodeIccfGtxOperation$SourceInfo;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getSourceBlockHeader ()Lnet/postchain/base/gtv/BlockHeaderData;
-	public final fun getSourceBlockRid ()[B
-	public final fun getSourceBlockchainRid ()Lnet/postchain/common/BlockchainRid;
-	public final fun getSourceTxConfirmationProof ()Lnet/postchain/base/ConfirmationProof;
-	public final fun getSourceTxHash ()[B
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/chromia/build/tools/iccf/SingleNodeIccfGtxOperation$verifyWitnessesAreCorrectAllowedWitnesses$blockWitnessBuilder$1 : net/postchain/core/block/BlockHeader {
-	public fun getBlockRID ()[B
-	public fun getPrevBlockRID ()[B
-	public fun getRawData ()[B
 }
 
 public final class com/chromia/build/tools/icmf/IcmfMessageOp {
@@ -428,10 +385,6 @@ public final class com/chromia/build/tools/icmf/InMemoryIcmfReceiverSpecialTxExt
 	public fun validateSpecialOperations (Lnet/postchain/base/SpecialTransactionPosition;Lnet/postchain/core/BlockEContext;Ljava/util/List;)Z
 }
 
-public synthetic class com/chromia/build/tools/icmf/InMemoryIcmfReceiverSpecialTxExtension$WhenMappings {
-	public static final synthetic field $EnumSwitchMapping$0 [I
-}
-
 public final class com/chromia/build/tools/icmf/InMemoryIcmfReceiverSynchronizationInfrastructureExtension : net/postchain/core/SynchronizationInfrastructureExtension {
 	public fun <init> (Lnet/postchain/PostchainContext;)V
 	public fun connectProcess (Lnet/postchain/core/BlockchainProcess;)V
@@ -500,14 +453,6 @@ public abstract interface class com/chromia/build/tools/lib/DirectoryHashCalcula
 public final class com/chromia/build/tools/lib/DirectoryHashCalculator$RidStrategy$Companion {
 	public final fun getLIST ()Lcom/chromia/build/tools/lib/DirectoryHashCalculator$RidStrategy;
 	public final fun getMAP ()Lcom/chromia/build/tools/lib/DirectoryHashCalculator$RidStrategy;
-}
-
-synthetic class com/chromia/build/tools/lib/DirectoryHashCalculator$hashCalculator$1 : kotlin/jvm/internal/FunctionAdapter, net/postchain/crypto/Digester {
-	public static final field INSTANCE Lcom/chromia/build/tools/lib/DirectoryHashCalculator$hashCalculator$1;
-	public final fun digest ([B)[B
-	public final fun equals (Ljava/lang/Object;)Z
-	public final fun getFunctionDelegate ()Lkotlin/Function;
-	public final fun hashCode ()I
 }
 
 public final class com/chromia/build/tools/lib/GitRepositoryCloner : com/chromia/build/tools/lib/RepositoryCloner {
@@ -614,10 +559,6 @@ public abstract interface class com/chromia/build/tools/template/TemplateFactory
 public final class com/chromia/build/tools/template/TemplateFactoryProvider {
 	public static final field INSTANCE Lcom/chromia/build/tools/template/TemplateFactoryProvider;
 	public final fun getFactory (Lcom/chromia/build/tools/template/TemplateProject;)Lcom/chromia/build/tools/template/TemplateFactory;
-}
-
-public synthetic class com/chromia/build/tools/template/TemplateFactoryProvider$WhenMappings {
-	public static final synthetic field $EnumSwitchMapping$0 [I
 }
 
 public final class com/chromia/build/tools/template/TemplateProject : java/lang/Enum {
@@ -914,22 +855,6 @@ public final class com/chromia/cli/parser/AnchorGtvYamlKt {
 public final class com/chromia/cli/parser/ChromiaConstructor : org/yaml/snakeyaml/env/EnvScalarConstructor {
 	public fun <init> (Ljava/io/File;)V
 	public final fun getRootFile ()Ljava/io/File;
-}
-
-private final class com/chromia/cli/parser/ChromiaConstructor$ConstructBigInteger : org/yaml/snakeyaml/constructor/AbstractConstruct {
-	public fun <init> (Lcom/chromia/cli/parser/ChromiaConstructor;)V
-	public fun construct (Lorg/yaml/snakeyaml/nodes/Node;)Ljava/lang/Object;
-}
-
-private final class com/chromia/cli/parser/ChromiaConstructor$ConstructByteArray : org/yaml/snakeyaml/constructor/AbstractConstruct {
-	public fun <init> (Lcom/chromia/cli/parser/ChromiaConstructor;)V
-	public fun construct (Lorg/yaml/snakeyaml/nodes/Node;)Ljava/lang/Object;
-}
-
-private final class com/chromia/cli/parser/ChromiaConstructor$IncludeConstructor : org/yaml/snakeyaml/constructor/Construct {
-	public fun <init> (Lcom/chromia/cli/parser/ChromiaConstructor;)V
-	public fun construct (Lorg/yaml/snakeyaml/nodes/Node;)Ljava/lang/Object;
-	public fun construct2ndStep (Lorg/yaml/snakeyaml/nodes/Node;Ljava/lang/Object;)V
 }
 
 public final class com/chromia/directory1/GtxOperation {
@@ -2977,11 +2902,6 @@ public final class com/chromia/directory1/lib/ft4/core/accounts/RateLimitConfig 
 	public final fun getRecoveryTime ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/chromia/directory1/lib/ft4/core/accounts/strategies/open/Lib_ft4_core_accounts_strategies_openKt {
-	public static final field RAS_OPEN Ljava/lang/String;
-	public static final fun rasOpenOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor;Lcom/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor;)Lnet/postchain/client/transaction/TransactionBuilder;
 }
 
 public final class com/chromia/directory1/lib/ft4/core/accounts/strategies/transfer/Allowlist {
