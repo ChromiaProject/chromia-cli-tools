@@ -2979,6 +2979,11 @@ public final class com/chromia/directory1/lib/ft4/core/accounts/RateLimitConfig 
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/chromia/directory1/lib/ft4/core/accounts/strategies/open/Lib_ft4_core_accounts_strategies_openKt {
+	public static final field RAS_OPEN Ljava/lang/String;
+	public static final fun rasOpenOperation (Lnet/postchain/client/transaction/TransactionBuilder;Lcom/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor;Lcom/chromia/directory1/lib/ft4/core/accounts/AuthDescriptor;)Lnet/postchain/client/transaction/TransactionBuilder;
+}
+
 public final class com/chromia/directory1/lib/ft4/core/accounts/strategies/transfer/Allowlist {
 	public fun <init> (ZLjava/util/List;)V
 	public final fun component1 ()Z

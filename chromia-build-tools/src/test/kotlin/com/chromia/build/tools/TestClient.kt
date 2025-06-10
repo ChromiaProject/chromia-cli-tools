@@ -2,13 +2,16 @@ package com.chromia.build.tools
 
 import com.chromia.directory1.economy_chain.LeaseData
 import net.postchain.client.config.PostchainClientConfig
+import net.postchain.client.core.AsyncQueryResponse
 import net.postchain.client.core.BlockDetail
 import net.postchain.client.core.BlockRid
 import net.postchain.client.core.PostchainClient
+import net.postchain.client.core.QueryRid
 import net.postchain.client.core.TransactionInfo
 import net.postchain.client.core.TransactionResult
 import net.postchain.client.core.TxRid
 import net.postchain.client.core.Version
+import net.postchain.client.request.Endpoint
 import net.postchain.client.transaction.TransactionBuilder
 import net.postchain.common.BlockchainRid
 import net.postchain.common.rest.HighestBlockHeightAnchoringCheck
@@ -94,6 +97,14 @@ open class TestClient(
     }
 
     override fun validateConfiguration(configuration: Gtv) { }
+    override fun asyncQuery(name: String, args: Gtv): Pair<Endpoint, QueryRid> {
+        TODO("Not yet implemented")
+    }
+
+    override fun fetchAsyncQueryResponse(endpoint: Endpoint, queryRid: QueryRid): AsyncQueryResponse {
+        TODO("Not yet implemented")
+    }
+
     override fun genericGetGtv(path: String): Gtv {
         TODO("Not yet implemented")
     }
