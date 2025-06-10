@@ -72,7 +72,7 @@
                             <packageName>com.chromia.directory1</packageName>
                             <source>${directory.source}</source>
                             <mainModule>
-                                version,proposal_blockchain,common.queries,anchoring_chain_common,economy_chain_test,economy_chain_in_directory_chain,lib.ft4.core.accounts.strategies.open
+                                version,proposal_blockchain,common.queries,anchoring_chain_common,economy_chain_test,economy_chain_in_directory_chain
                             </mainModule>
                             <configPath>${directory.config}</configPath>
                         </configuration>

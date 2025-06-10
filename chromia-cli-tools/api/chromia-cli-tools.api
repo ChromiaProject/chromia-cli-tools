@@ -5,19 +5,6 @@ public class com/chromia/cli/tools/config/BlockchainOptions : com/github/ajalt/c
 	public final fun getUrl ()Ljava/lang/String;
 }
 
-public final class com/chromia/cli/tools/config/BlockchainOptions$special$$inlined$convert$default$1 : kotlin/jvm/functions/Function1 {
-	public static final field INSTANCE Lcom/chromia/cli/tools/config/BlockchainOptions$special$$inlined$convert$default$1;
-	public fun <init> ()V
-	public final fun invoke (Lcom/github/ajalt/clikt/core/Context;)Ljava/lang/String;
-	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
-}
-
-public final class com/chromia/cli/tools/config/BlockchainOptions$special$$inlined$convert$default$2 : kotlin/jvm/functions/Function2 {
-	public fun <init> (Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;)V
-	public final fun invoke (Lcom/github/ajalt/clikt/parameters/options/OptionCallTransformContext;Ljava/lang/String;)Ljava/lang/Object;
-	public synthetic fun invoke (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-}
-
 public class com/chromia/cli/tools/config/ChromiaConfigOption : com/github/ajalt/clikt/parameters/groups/OptionGroup {
 	public fun <init> (Lkotlin/jvm/functions/Function1;)V
 	public final fun getConfig ()Lcom/chromia/build/tools/config/ChromiaClientConfig;
@@ -59,64 +46,6 @@ public final class com/chromia/cli/tools/config/ConfigOptionKt {
 	public static final fun safeOptionalChromiaModelOption (Lcom/github/ajalt/clikt/core/CliktCommand;)Lcom/chromia/cli/tools/config/SafeOptionalChromiaModelOption;
 	public static final fun secretOption (Lcom/github/ajalt/clikt/core/ParameterHolder;)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
 	public static final fun targetUrlOption (Lcom/github/ajalt/clikt/core/ParameterHolder;)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
-}
-
-public final class com/chromia/cli/tools/config/ConfigOptionKt$chromiaConfigFileOption$$inlined$convert$default$1 : kotlin/jvm/functions/Function1 {
-	public static final field INSTANCE Lcom/chromia/cli/tools/config/ConfigOptionKt$chromiaConfigFileOption$$inlined$convert$default$1;
-	public fun <init> ()V
-	public final fun invoke (Lcom/github/ajalt/clikt/core/Context;)Ljava/lang/String;
-	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
-}
-
-public final class com/chromia/cli/tools/config/ConfigOptionKt$chromiaConfigFileOption$$inlined$convert$default$2 : kotlin/jvm/functions/Function2 {
-	public fun <init> (Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;)V
-	public final fun invoke (Lcom/github/ajalt/clikt/parameters/options/OptionCallTransformContext;Ljava/lang/String;)Ljava/lang/Object;
-	public synthetic fun invoke (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-}
-
-public final class com/chromia/cli/tools/config/ConfigOptionKt$chromiaModelFileOption$$inlined$convert$default$1 : kotlin/jvm/functions/Function1 {
-	public static final field INSTANCE Lcom/chromia/cli/tools/config/ConfigOptionKt$chromiaModelFileOption$$inlined$convert$default$1;
-	public fun <init> ()V
-	public final fun invoke (Lcom/github/ajalt/clikt/core/Context;)Ljava/lang/String;
-	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
-}
-
-public final class com/chromia/cli/tools/config/ConfigOptionKt$chromiaModelFileOption$$inlined$convert$default$2 : kotlin/jvm/functions/Function2 {
-	public fun <init> (Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;)V
-	public final fun invoke (Lcom/github/ajalt/clikt/parameters/options/OptionCallTransformContext;Ljava/lang/String;)Ljava/lang/Object;
-	public synthetic fun invoke (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-}
-
-public final class com/chromia/cli/tools/config/ConfigOptionKt$keyPairSourceOption$$inlined$convert$default$1 : kotlin/jvm/functions/Function1 {
-	public static final field INSTANCE Lcom/chromia/cli/tools/config/ConfigOptionKt$keyPairSourceOption$$inlined$convert$default$1;
-	public fun <init> ()V
-	public final fun invoke (Lcom/github/ajalt/clikt/core/Context;)Ljava/lang/String;
-	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
-}
-
-public final class com/chromia/cli/tools/config/ConfigOptionKt$keyPairSourceOption$$inlined$convert$default$2 : kotlin/jvm/functions/Function2 {
-	public fun <init> (Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;)V
-	public final fun invoke (Lcom/github/ajalt/clikt/parameters/options/OptionCallTransformContext;Ljava/lang/String;)Ljava/lang/Object;
-	public synthetic fun invoke (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-}
-
-public final class com/chromia/cli/tools/config/ConfigOptionKt$keyPairSourceOption$$inlined$convert$default$3 : kotlin/jvm/functions/Function1 {
-	public static final field INSTANCE Lcom/chromia/cli/tools/config/ConfigOptionKt$keyPairSourceOption$$inlined$convert$default$3;
-	public fun <init> ()V
-	public final fun invoke (Lcom/github/ajalt/clikt/core/Context;)Ljava/lang/String;
-	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
-}
-
-public final class com/chromia/cli/tools/config/ConfigOptionKt$keyPairSourceOption$$inlined$convert$default$4 : kotlin/jvm/functions/Function2 {
-	public fun <init> (Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;)V
-	public final fun invoke (Lcom/github/ajalt/clikt/parameters/options/OptionCallTransformContext;Ljava/lang/String;)Ljava/lang/Object;
-	public synthetic fun invoke (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
-}
-
-public final class com/chromia/cli/tools/config/ConfigOptionKt$requiredChromiaModelOption$$inlined$defaultLazy$default$1 : kotlin/jvm/functions/Function2 {
-	public fun <init> (Lkotlin/jvm/functions/Function1;)V
-	public final fun invoke (Lcom/github/ajalt/clikt/parameters/options/OptionTransformContext;Ljava/util/List;)Ljava/lang/Object;
-	public synthetic fun invoke (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class com/chromia/cli/tools/config/ConfigurationFormat : java/lang/Enum {
@@ -256,10 +185,6 @@ public class com/chromia/cli/tools/launcher/CliLauncher : com/github/ajalt/clikt
 	public fun <init> (Ljava/lang/String;)V
 	public final fun catchingAllExceptionsMain ([Ljava/lang/String;)V
 	public final fun getName ()Ljava/lang/String;
-}
-
-public synthetic class com/chromia/cli/tools/launcher/CliLauncher$WhenMappings {
-	public static final synthetic field $EnumSwitchMapping$0 [I
 }
 
 public final class com/chromia/cli/tools/util/OptionsKt {
