@@ -83,6 +83,10 @@
             <artifactId>rell-api-base</artifactId>
         </dependency>
         <dependency>
+            <groupId>net.postchain.client</groupId>
+            <artifactId>ft4-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.github.ajalt.clikt</groupId>
             <artifactId>clikt-jvm</artifactId>
         </dependency>

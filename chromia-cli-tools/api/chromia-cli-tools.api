@@ -134,14 +134,6 @@ public final class com/chromia/cli/tools/formatter/ThemeKt {
 	public static final fun getWarning (Lcom/github/ajalt/clikt/core/CliktCommand;)Lcom/github/ajalt/mordant/rendering/TextStyle;
 }
 
-public final class com/chromia/cli/tools/ft/DescriptorUtilsKt {
-	public static final fun getFlags (Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)Ljava/util/List;
-	public static final fun getKeysAsFormattedString (Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)Ljava/lang/String;
-	public static final fun getMultiKeys (Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)[Lnet/postchain/gtv/Gtv;
-	public static final fun getNumberOfSigners (Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)J
-	public static final fun getSingleKey (Lcom/chromia/directory1/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)[B
-}
-
 public final class com/chromia/cli/tools/ft/EvmAuthKt {
 	public static final fun addEvmAuthOperation (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;)V
 	public static synthetic fun addEvmAuthOperation$default (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainClient;Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/util/List;[B[B[BZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
@@ -163,6 +155,7 @@ public final class com/chromia/cli/tools/ft/FtAuthKt {
 	public static final fun findAccountId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;[B)[B
 	public static final fun findFtAccountIdAndAuthDescriptorId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;[BLjava/lang/String;Ljava/lang/String;)Lkotlin/Pair;
 	public static final fun findFtAccountIdWithAuthDescriptorId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;[B[BLjava/lang/String;[B)Lkotlin/Pair;
+	public static final fun getKeysAsFormattedString (Lcom/chromia/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)Ljava/lang/String;
 	public static final fun initFtAuth (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;)V
 }
 

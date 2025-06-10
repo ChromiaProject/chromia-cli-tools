@@ -1,10 +1,9 @@
 package com.chromia.cli.tools.ft
 
-import com.chromia.directory1.lib.ft4.core.auth.Signature
-import com.chromia.directory1.lib.ft4.external.accounts.getAuthDescriptorCounter
-import com.chromia.directory1.lib.ft4.external.auth.evmAuthOperation
-import com.chromia.directory1.lib.ft4.external.auth.evmSignaturesOperation
-import com.chromia.directory1.lib.ft4.external.auth.getAuthMessageTemplate
+import com.chromia.ft4.fetchEvmAuthMessage
+import com.chromia.lib.ft4.core.auth.Signature
+import com.chromia.lib.ft4.external.auth.evmAuthOperation
+import com.chromia.lib.ft4.external.auth.evmSignaturesOperation
 import com.github.ajalt.clikt.core.CliktError
 import com.github.ajalt.clikt.core.CoreCliktCommand
 import com.github.ajalt.mordant.rendering.TextStyles.Companion.hyperlink
@@ -16,8 +15,6 @@ import net.postchain.common.hexStringToByteArray
 import net.postchain.common.toHex
 import net.postchain.common.wrap
 import net.postchain.gtv.Gtv
-import net.postchain.gtv.GtvFactory.gtv
-import net.postchain.gtv.merkleHash
 import org.apache.commons.text.StringEscapeUtils
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
@@ -95,7 +92,9 @@ fun CoreCliktCommand.fetchEvmSignatures(
         launchWebBrowser: Boolean = true,
         urlNotifier: (String) -> Unit = {}
 ): List<Signature> {
-    val authMessages = operations.map { fetchAuthMessage(client, accountId, authDescriptorId, it) }
+    val authMessages = operations.map {
+        fetchEvmAuthMessage(client, accountId, authDescriptorId, it.opName, it.opArgs, it.forEvmSignatures)
+    }
 
     val html = this::class.java.getResource("/com/chromia/cli/tools/evm_auth/index.html")!!.readText()
             .replace("{{address}}", "0x${evmAddress.toHex()}")
@@ -134,33 +133,6 @@ fun CoreCliktCommand.fetchEvmSignatures(
                 s = it.asJsonObject.get("s").asString.drop(2).hexStringToByteArray().wrap(),
                 v = it.asJsonObject.get("v").asLong)
     }
-}
-
-private fun fetchAuthMessage(
-        client: PostchainClient,
-        accountId: ByteArray,
-        authDescriptorId: ByteArray,
-        op: OperationDescriptor,
-): String {
-    val authMessageTemplate = client.getAuthMessageTemplate(op.opName, gtv(op.opArgs))
-    val counter = if (op.forEvmSignatures) {
-        0
-    } else {
-        client.getAuthDescriptorCounter(accountId, authDescriptorId) ?: throw CliktError(
-                "Invalid auth descriptor counter. Was the auth descriptor too close to expiration?"
-        )
-    }
-    val nonce = gtv(listOf(
-            gtv(client.config.blockchainRid),
-            gtv(op.opName),
-            gtv(op.opArgs),
-            gtv(counter),
-    )).merkleHash(client.merkleHashCalculator)
-    return authMessageTemplate
-            .replace("{blockchain_rid}", client.config.blockchainRid.toHex().uppercase())
-            .replace("{nonce}", nonce.toHex().uppercase())
-            .replace("{account_id}", accountId.toHex().uppercase())
-            .replace("{auth_descriptor_id}", authDescriptorId.toHex().uppercase())
 }
 
 fun CoreCliktCommand.openWebLink(url: String) {

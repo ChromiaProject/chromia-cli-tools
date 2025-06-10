@@ -1,14 +1,18 @@
 package com.chromia.cli.tools.ft
 
-import com.chromia.directory1.lib.ft4.core.accounts.AuthType
-import com.chromia.directory1.lib.ft4.external.accounts.Ft4GetAccountAuthDescriptorsBySignerResult
-import com.chromia.directory1.lib.ft4.external.accounts.getAccountAuthDescriptorsBySigner
-import com.chromia.directory1.lib.ft4.external.accounts.getAccountsBySigner
-import com.chromia.directory1.lib.ft4.external.accounts.strategies.registerAccountOperation
-import com.chromia.directory1.lib.ft4.external.auth.ftAuthOperation
-import com.chromia.directory1.lib.ft4.external.auth.getAuthFlags
-import com.chromia.directory1.lib.ft4.utils.PagedResult
-import com.chromia.directory1.lib.ft4.version.getVersion
+import com.chromia.ft4.flags
+import com.chromia.ft4.getMultiSigners
+import com.chromia.ft4.getSingleSigner
+import com.chromia.ft4.numberOfSigners
+import com.chromia.lib.ft4.core.accounts.AuthType
+import com.chromia.lib.ft4.external.accounts.Ft4GetAccountAuthDescriptorsBySignerResult
+import com.chromia.lib.ft4.external.accounts.getAccountAuthDescriptorsBySigner
+import com.chromia.lib.ft4.external.accounts.getAccountsBySigner
+import com.chromia.lib.ft4.external.accounts.strategies.registerAccountOperation
+import com.chromia.lib.ft4.external.auth.ftAuthOperation
+import com.chromia.lib.ft4.external.auth.getAuthFlags
+import com.chromia.lib.ft4.utils.PagedResult
+import com.chromia.lib.ft4.version.getVersion
 import com.github.ajalt.clikt.core.Abort
 import com.github.ajalt.clikt.core.CliktError
 import com.github.ajalt.clikt.core.CoreCliktCommand
@@ -97,12 +101,12 @@ private fun findAuthDescriptors(
             }
 
             descriptor.authType == AuthType.S -> {
-                descriptor.getSingleKey().wrap() == signer.wrap()
+                descriptor.getSingleSigner().wrap() == signer.wrap()
             }
 
             descriptor.authType == AuthType.M -> {
-                descriptor.getMultiKeys().any { oneSigner ->
-                    oneSigner.asByteArray().wrap() == signer.wrap()
+                descriptor.getMultiSigners().any { oneSigner ->
+                    oneSigner.wrap() == signer.wrap()
                 }
             }
 
@@ -133,8 +137,8 @@ private fun CoreCliktCommand.findValidAuthDescriptorIdForOperation(
         (terminal.interactiveSelectList(
                 entries = authDescriptorsCandidates.map {
                     """id: ${it.id}
-                                |flags: ${it.getFlags()}
-                                |signatures needed: ${it.getNumberOfSigners()} 
+                                |flags: ${it.flags()}
+                                |signatures needed: ${it.numberOfSigners()} 
                                 |keys: ${it.getKeysAsFormattedString()}
                                 |""".trimMargin()
                 },
@@ -149,14 +153,14 @@ private fun CoreCliktCommand.findValidAuthDescriptorIdForOperation(
         throw CliktError(
                 """No valid account descriptor found. 
                     |Operation $opName requires the flag(s): $flags, 
-                    |while the flag(s) of the auth descriptor is: ${authDescriptor.getFlags()}""".trimMargin()
+                    |while the flag(s) of the auth descriptor is: ${authDescriptor.flags()}""".trimMargin()
         )
     }
     return authDescriptor.id
 }
 
 private fun isValid(requiredFlags: List<String>, authDescriptor: Ft4GetAccountAuthDescriptorsBySignerResult): Boolean {
-    val flags = authDescriptor.getFlags()
+    val flags = authDescriptor.flags()
     return flags.containsAll(requiredFlags)
 }
 
@@ -196,4 +200,10 @@ fun CoreCliktCommand.addFtRegisterAccountOperation(
         transactionBuilder: TransactionBuilder,
 ) {
     transactionBuilder.registerAccountOperation()
+}
+
+fun Ft4GetAccountAuthDescriptorsBySignerResult.getKeysAsFormattedString(): String = if (this.authType == AuthType.S) {
+    this.args.asArray()[1].toString()
+} else {
+    this.args.asArray()[2].asArray().joinToString("\n")
 }
