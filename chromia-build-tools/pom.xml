@@ -60,9 +60,6 @@
             <plugin>
                 <groupId>net.postchain.rell</groupId>
                 <artifactId>rell-maven-plugin</artifactId>
-                <configuration>
-                    <source>${directory.source}</source>
-                </configuration>
                 <executions>
                     <execution>
                         <id>rell-client-gen</id>
@@ -73,8 +70,9 @@
                         </goals>
                         <configuration>
                             <packageName>com.chromia.directory1</packageName>
+                            <source>${directory.source}</source>
                             <mainModule>
-                                version,proposal_blockchain,common.queries,anchoring_chain_common,economy_chain_test,economy_chain_in_directory_chain
+                                version,proposal_blockchain,common.queries,anchoring_chain_common,economy_chain_test,economy_chain_in_directory_chain,lib.ft4.core.accounts.strategies.open
                             </mainModule>
                             <configPath>${directory.config}</configPath>
                         </configuration>
