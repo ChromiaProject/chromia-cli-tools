@@ -1,8 +1,8 @@
 package com.chromia.cli.tools.ft
 
+import com.chromia.ft4.findAuthDescriptors
 import com.chromia.ft4.flags
-import com.chromia.ft4.getMultiSigners
-import com.chromia.ft4.getSingleSigner
+import com.chromia.ft4.isValid
 import com.chromia.ft4.numberOfSigners
 import com.chromia.lib.ft4.core.accounts.AuthType
 import com.chromia.lib.ft4.external.accounts.Ft4GetAccountAuthDescriptorsBySignerResult
@@ -24,7 +24,6 @@ import net.postchain.client.transaction.TransactionBuilder
 import net.postchain.common.hexStringToByteArray
 import net.postchain.common.toHex
 import net.postchain.common.types.WrappedByteArray
-import net.postchain.common.wrap
 
 fun CoreCliktCommand.initFtAuth(client: PostchainQuery) {
     val version = try {
@@ -89,34 +88,6 @@ fun CoreCliktCommand.findFtAccountIdWithAuthDescriptorId(
     ).data
 }
 
-private fun findAuthDescriptors(
-        descriptors: List<Ft4GetAccountAuthDescriptorsBySignerResult>,
-        optionalAuthDescriptorId: ByteArray?,
-        signer: ByteArray
-): List<Ft4GetAccountAuthDescriptorsBySignerResult> {
-    return descriptors.filter { descriptor ->
-        when {
-            optionalAuthDescriptorId != null && optionalAuthDescriptorId.isNotEmpty() -> {
-                descriptor.id == optionalAuthDescriptorId.wrap()
-            }
-
-            descriptor.authType == AuthType.S -> {
-                descriptor.getSingleSigner().wrap() == signer.wrap()
-            }
-
-            descriptor.authType == AuthType.M -> {
-                descriptor.getMultiSigners().any { oneSigner ->
-                    oneSigner.wrap() == signer.wrap()
-                }
-            }
-
-            else -> {
-                throw CliktError("Authtype: ${descriptor.authType} is not supported in FTAuthenticator")
-            }
-        }
-    }
-}
-
 private fun CoreCliktCommand.findValidAuthDescriptorIdForOperation(
         client: PostchainQuery,
         opName: String,
@@ -149,7 +120,7 @@ private fun CoreCliktCommand.findValidAuthDescriptorIdForOperation(
         authDescriptorsCandidates.first()
     }
 
-    if (!isValid(flags, authDescriptor)) {
+    if (!authDescriptor.isValid(flags)) {
         throw CliktError(
                 """No valid account descriptor found. 
                     |Operation $opName requires the flag(s): $flags, 
@@ -157,11 +128,6 @@ private fun CoreCliktCommand.findValidAuthDescriptorIdForOperation(
         )
     }
     return authDescriptor.id
-}
-
-private fun isValid(requiredFlags: List<String>, authDescriptor: Ft4GetAccountAuthDescriptorsBySignerResult): Boolean {
-    val flags = authDescriptor.flags()
-    return flags.containsAll(requiredFlags)
 }
 
 fun CoreCliktCommand.findAccountId(client: PostchainQuery, signer: ByteArray): ByteArray {
