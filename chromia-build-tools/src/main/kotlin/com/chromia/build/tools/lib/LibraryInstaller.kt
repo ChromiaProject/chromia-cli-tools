@@ -39,6 +39,7 @@ class LibraryInstaller(
     }
 
     private fun cloneRepository(name: String, model: RellLibraryModel, installDir: Path) {
+        model.registry ?: throw LibraryInstallException("Registry not set for library $name")
         val tmpInstallDir = tmpLibRoot.resolve(name)
         try {
             repositoryCloner.clone(model.registry, tmpInstallDir, model.tagOrBranch)

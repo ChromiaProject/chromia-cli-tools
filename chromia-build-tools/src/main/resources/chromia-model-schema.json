@@ -334,35 +334,57 @@
     "library": {
       "type": "object",
       "description": "Library definition",
-      "additionalProperties": false,
-      "required": [
-        "registry",
-        "path"
-      ],
-      "properties": {
-        "registry": {
-          "type": "string",
-          "description": "Registry URL (HTTPS or SSH)"
+      "oneOf": [
+        {
+          "description": "Default library with registry URL",
+          "properties": {
+            "registry": {
+              "type": "string",
+              "pattern": "^(https?|ssh)://.*$",
+              "description": "Registry URL (HTTPS, HTTP, or SSH)"
+            },
+            "path": {
+              "type": "string",
+              "description": "Path to the library module in the repo"
+            },
+            "tagOrBranch": {
+              "type": "string",
+              "description": "Optionally specifies the git tag or branch of the library"
+            },
+            "insecure": {
+              "type": "boolean",
+              "default": false,
+              "description": "If true, will not verify the RID"
+            },
+            "rid": {
+              "type": "string",
+              "pattern": "^x\"[a-fA-F0-9]+\"$",
+              "description": "Hash of the library"
+            }
+          },
+          "required": ["registry", "path"],
+          "additionalProperties": false
         },
-        "tagOrBranch": {
-          "type": "string",
-          "description": "Optionally specifies the git tag or branch of the library"
-        },
-        "path": {
-          "type": "string",
-          "description": "Path to the library module in the repo"
-        },
-        "insecure": {
-          "type": "boolean",
-          "default": false,
-          "description": "If true, will not verify the RID"
-        },
-        "rid": {
-          "type": "string",
-          "pattern": "^x\"[a-fA-F0-9]+\"$",
-          "description": "Hash of the library"
+        {
+          "description": "Library from library-chain",
+          "properties": {
+            "registry": {
+              "type": "string",
+              "description": "Registry where the library is deployed"
+            },
+            "version": {
+              "type": "string",
+              "description": "Version of the library to download"
+            },
+            "path": {
+              "type": "string",
+              "description": "Path to the library module in the repo"
+            }
+          },
+          "required": ["version"],
+          "additionalProperties": false
         }
-      }
+      ]
     },
     "deployment": {
       "type": "object",
