@@ -51,7 +51,7 @@ class DirectoryHashCalculator(private val sourceDir: Path) {
              * `[<a.rell-content>, <b.rell-content>]`
              */
             val LIST = RidStrategy { s ->
-                gtv(s.sorted(Comparator.comparing { it.first }).map { gtv(it.second) }.collect(toList()))
+                gtv(s.sorted(Comparator.comparing { normalizePath(it.first) }).map { gtv(it.second) }.collect(toList()))
             }
 
             /**
@@ -59,7 +59,11 @@ class DirectoryHashCalculator(private val sourceDir: Path) {
              * `lib/foo/module.rell -> <content>`
              */
             val MAP = RidStrategy { s ->
-                gtv(s.collect(toMap({ it.first.pathString.replace("\\", "/") }, { gtv(it.second) })))
+                gtv(s.collect(toMap({ normalizePath(it.first) }, { gtv(it.second) })))
+            }
+
+            private fun normalizePath(path: Path): String {
+                return path.pathString.replace("\\", "/")
             }
         }
     }
