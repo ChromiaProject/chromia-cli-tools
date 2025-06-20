@@ -1,5 +1,6 @@
 package com.chromia.build.tools.lib
 
+import org.eclipse.jgit.api.CloneCommand
 import java.io.File
 import java.nio.file.Path
 import org.eclipse.jgit.api.Git
@@ -27,6 +28,7 @@ class GitRepositoryCloner(val sshDir: File? = null, val quiet: Boolean = false) 
                     .setTimeout(60)
                     .apply { if (!quiet) setProgressMonitor(TextProgressMonitor()) }
                     .call()
+                    .close()
         } catch (e: Exception) {
             val humanFriendlyError = when (e) {
                 is InvalidRemoteException -> "Invalid repository URL '$registry'."
