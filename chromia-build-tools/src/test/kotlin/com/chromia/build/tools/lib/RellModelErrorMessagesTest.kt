@@ -34,8 +34,7 @@ internal class RellModelErrorMessagesTest {
             Additional property 'some_unexpected_field' found but was invalid (location: libs->foo->some_unexpected_field)
             Required property "version" not found (location: libs->foo)
             Additional property 'rid' found but was invalid (location: libs->foo->rid)
-            Additional property 'some_unexpected_field' found but was invalid (location: libs->foo->some_unexpected_field)
-        """.trimIndent())
+            Additional property 'some_unexpected_field' found but was invalid (location: libs->foo->some_unexpected_field)""".trimIndent())
     }
 
     @Test
@@ -161,7 +160,7 @@ internal class RellModelErrorMessagesTest {
             Following errors found in chromia.yml:
             Additional property 'foo' found but was invalid (location: libs->foo)
             Combination schema "oneOf" fails - 0 of 2 valid (location: libs->foo)
-            String doesn't match pattern ^x"[a-fA-F0-9]+"$ - "615175A2847D739 ... 2A7E3C3E7032DB5" (location: libs->foo->rid)
+            String doesn't match pattern ^x"[a-fA-F0-9]+"${'$'} - "615175A2847D739 ... 2A7E3C3E7032DB5" (location: libs->foo->rid)
             Required property "version" not found (location: libs->foo)
             Additional property 'rid' found but was invalid (location: libs->foo->rid)
         """.trimIndent())

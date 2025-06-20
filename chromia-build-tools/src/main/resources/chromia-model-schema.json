@@ -370,6 +370,7 @@
           "properties": {
             "registry": {
               "type": "string",
+              "pattern": "^(https?://)?.*$",
               "description": "Registry where the library is deployed"
             },
             "version": {
@@ -379,6 +380,11 @@
             "path": {
               "type": "string",
               "description": "Path to the library module in the repo"
+            },
+            "brid": {
+              "type": ["string"],
+              "pattern": "^(x\"[0-9A-Fa-f]{64}\")|([0-9A-Fa-f]{64})$",
+              "description": "Blockchain RID for library-chain"
             }
           },
           "required": ["version"],
