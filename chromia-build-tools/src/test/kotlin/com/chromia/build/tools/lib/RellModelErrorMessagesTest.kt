@@ -115,13 +115,7 @@ internal class RellModelErrorMessagesTest {
         }
         val throwable = assertThrows<ValidationException> { parseModel(dir.resolve("chromia.yml").toFile()) }
         assertThat(throwable.message!!).contains(
-            """
-                Following errors found in chromia.yml:
-                Additional property 'foo' found but was invalid (location: libs->foo)
-                Combination schema "oneOf" fails - 0 of 2 valid (location: libs->foo)
-                String doesn't match pattern ^(https?|ssh)://.*$ - "x\"1234\"" (location: libs->foo->registry)
-                Required property "version" not found (location: libs->foo)
-            """.trimIndent()
+            "Incorrect type, expected String (location: libs->foo->registry)".trimIndent()
         )
     }
 

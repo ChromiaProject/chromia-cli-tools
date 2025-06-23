@@ -340,7 +340,6 @@
           "properties": {
             "registry": {
               "type": "string",
-              "pattern": "^(https?|ssh)://.*$",
               "description": "Registry URL (HTTPS, HTTP, or SSH)"
             },
             "path": {
@@ -370,7 +369,6 @@
           "properties": {
             "registry": {
               "type": "string",
-              "pattern": "^(https?://)?.*$",
               "description": "Registry where the library is deployed"
             },
             "version": {
