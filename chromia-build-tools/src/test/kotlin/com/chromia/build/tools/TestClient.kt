@@ -136,7 +136,9 @@ fun getLeaseData(): Gtv {
         expired = false,
         autoRenew = false,
         subnodeImageName = "",
-        bridgeLeases = listOf()
+        bridgeLeases = listOf(),
+        leaseOwnerAccountId = null,
+        extraComputeRequests = null,
     )
 
     return GtvObjectMapper.toGtvDictionary(leaseData)
