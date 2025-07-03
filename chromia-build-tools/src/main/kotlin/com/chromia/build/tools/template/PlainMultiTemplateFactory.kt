@@ -6,10 +6,10 @@ import java.io.File
 /**
  * Creates an empty template with several modules
  */
-class PlainMultiTemplateFactory : AbstractTemplateFactory("plain-multi") {
-    override fun createProjectFromTemplate(targetDir: File, projectName: String) {
+class PlainMultiTemplateFactory : AbstractTemplateFactory() {
+    override fun createProjectFiles(targetDir: File, projectName: String, options: TemplateOptions?) {
         val projectFileName = snakeCaseName(projectName)
-        with(FileBuilder(targetDir)) {
+        with(FileBuilder(targetDir, "plain-multi")) {
             createChromiaConfig(projectName) {
                 it.replace("PROJECT_MODULE_NAME", projectFileName)
             }

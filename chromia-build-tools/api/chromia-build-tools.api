@@ -509,56 +509,85 @@ public final class com/chromia/build/tools/rell/RellCliEnvImpl : net/postchain/r
 }
 
 public abstract class com/chromia/build/tools/template/AbstractTemplateFactory : com/chromia/build/tools/template/TemplateFactory {
-	public fun <init> (Ljava/lang/String;)V
-}
-
-protected final class com/chromia/build/tools/template/AbstractTemplateFactory$FileBuilder {
-	public fun <init> (Lcom/chromia/build/tools/template/AbstractTemplateFactory;Ljava/io/File;)V
-	public final fun createChromiaConfig (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
-	public static synthetic fun createChromiaConfig$default (Lcom/chromia/build/tools/template/AbstractTemplateFactory$FileBuilder;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
-	public final fun createFile (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
-	public static synthetic fun createFile$default (Lcom/chromia/build/tools/template/AbstractTemplateFactory$FileBuilder;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
-	public final fun createFormatterConfig (Lkotlin/jvm/functions/Function0;)V
-	public static synthetic fun createFormatterConfig$default (Lcom/chromia/build/tools/template/AbstractTemplateFactory$FileBuilder;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
-	public final fun createGitIgnore (Lkotlin/jvm/functions/Function0;)V
-	public static synthetic fun createGitIgnore$default (Lcom/chromia/build/tools/template/AbstractTemplateFactory$FileBuilder;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
-	public final fun createLinterConfig (Lkotlin/jvm/functions/Function0;)V
-	public static synthetic fun createLinterConfig$default (Lcom/chromia/build/tools/template/AbstractTemplateFactory$FileBuilder;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
-	public final fun moveFolder (Ljava/lang/String;)V
+	public fun <init> ()V
+	public abstract fun createProjectFiles (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
+	public fun createProjectFromTemplate (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
 }
 
 public final class com/chromia/build/tools/template/AssetManagementTemplateFactory : com/chromia/build/tools/template/AbstractTemplateFactory {
 	public fun <init> ()V
-	public fun createProjectFromTemplate (Ljava/io/File;Ljava/lang/String;)V
+	public fun createProjectFiles (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
+}
+
+public final class com/chromia/build/tools/template/DevContainerSupport {
+	public static final field Companion Lcom/chromia/build/tools/template/DevContainerSupport$Companion;
+	public static final field DEV_CONTAINER_FOLDER_NAME Ljava/lang/String;
+	public fun <init> ()V
+	public final fun addToProject (Ljava/io/File;)V
+}
+
+public final class com/chromia/build/tools/template/DevContainerSupport$Companion {
+}
+
+public final class com/chromia/build/tools/template/FileBuilder {
+	public fun <init> (Ljava/io/File;Ljava/lang/String;)V
+	public final fun createChromiaConfig (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun createChromiaConfig$default (Lcom/chromia/build/tools/template/FileBuilder;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun createFile (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun createFile$default (Lcom/chromia/build/tools/template/FileBuilder;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun createFormatterConfig (Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun createFormatterConfig$default (Lcom/chromia/build/tools/template/FileBuilder;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun createGitIgnore (Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun createGitIgnore$default (Lcom/chromia/build/tools/template/FileBuilder;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun createLinterConfig (Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun createLinterConfig$default (Lcom/chromia/build/tools/template/FileBuilder;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun moveFolder (Ljava/lang/String;)V
 }
 
 public final class com/chromia/build/tools/template/MinimalTemplateFactory : com/chromia/build/tools/template/AbstractTemplateFactory {
 	public fun <init> ()V
-	public fun createProjectFromTemplate (Ljava/io/File;Ljava/lang/String;)V
+	public fun createProjectFiles (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
 }
 
 public final class com/chromia/build/tools/template/PlainLibraryTemplateFactory : com/chromia/build/tools/template/AbstractTemplateFactory {
 	public fun <init> ()V
-	public fun createProjectFromTemplate (Ljava/io/File;Ljava/lang/String;)V
+	public fun createProjectFiles (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
 }
 
 public final class com/chromia/build/tools/template/PlainMultiTemplateFactory : com/chromia/build/tools/template/AbstractTemplateFactory {
 	public fun <init> ()V
-	public fun createProjectFromTemplate (Ljava/io/File;Ljava/lang/String;)V
+	public fun createProjectFiles (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
 }
 
 public final class com/chromia/build/tools/template/PlainTemplateFactory : com/chromia/build/tools/template/AbstractTemplateFactory {
 	public fun <init> ()V
-	public fun createProjectFromTemplate (Ljava/io/File;Ljava/lang/String;)V
+	public fun createProjectFiles (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
 }
 
 public abstract interface class com/chromia/build/tools/template/TemplateFactory {
-	public abstract fun createProjectFromTemplate (Ljava/io/File;Ljava/lang/String;)V
+	public abstract fun createProjectFromTemplate (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
+}
+
+public final class com/chromia/build/tools/template/TemplateFactory$DefaultImpls {
+	public static synthetic fun createProjectFromTemplate$default (Lcom/chromia/build/tools/template/TemplateFactory;Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;ILjava/lang/Object;)V
 }
 
 public final class com/chromia/build/tools/template/TemplateFactoryProvider {
 	public static final field INSTANCE Lcom/chromia/build/tools/template/TemplateFactoryProvider;
 	public final fun getFactory (Lcom/chromia/build/tools/template/TemplateProject;)Lcom/chromia/build/tools/template/TemplateFactory;
+}
+
+public final class com/chromia/build/tools/template/TemplateOptions {
+	public fun <init> ()V
+	public fun <init> (Z)V
+	public synthetic fun <init> (ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun copy (Z)Lcom/chromia/build/tools/template/TemplateOptions;
+	public static synthetic fun copy$default (Lcom/chromia/build/tools/template/TemplateOptions;ZILjava/lang/Object;)Lcom/chromia/build/tools/template/TemplateOptions;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIncludeDevContainer ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/chromia/build/tools/template/TemplateProject : java/lang/Enum {

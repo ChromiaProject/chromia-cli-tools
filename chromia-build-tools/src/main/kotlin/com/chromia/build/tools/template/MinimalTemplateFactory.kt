@@ -5,9 +5,9 @@ import java.io.File
 /**
  * Minimal working example dapp (hello world)
  */
-class MinimalTemplateFactory : AbstractTemplateFactory("minimal") {
-    override fun createProjectFromTemplate(targetDir: File, projectName: String) {
-        with(FileBuilder(targetDir)) {
+class MinimalTemplateFactory : AbstractTemplateFactory() {
+    override fun createProjectFiles(targetDir: File, projectName: String, options: TemplateOptions?) {
+        with(FileBuilder(targetDir, "minimal")) {
             createChromiaConfig(projectName)
             createGitIgnore()
             createFormatterConfig()
