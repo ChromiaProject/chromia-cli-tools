@@ -1,0 +1,14 @@
+{
+	"name": "Simple Chromia",
+	"dockerFile": "Dockerfile",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ChromaWay.rell-language-extension",
+                "redhat.vscode-yaml"
+            ]
+        }
+    },
+    "forwardPorts": [7740, 7750]
+}

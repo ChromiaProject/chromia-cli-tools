@@ -6,10 +6,10 @@ import java.io.File
 /**
  * Creates an empty single-module project with a main and a test file.
  */
-class PlainTemplateFactory : AbstractTemplateFactory("plain") {
-    override fun createProjectFromTemplate(targetDir: File, projectName: String) {
+class PlainTemplateFactory : AbstractTemplateFactory() {
+    override fun createProjectFiles(targetDir: File, projectName: String, options: TemplateOptions?) {
         val projectFileName = snakeCaseName(projectName)
-        with(FileBuilder(targetDir)) {
+        with(FileBuilder(targetDir, "plain")) {
             createChromiaConfig(projectName)
             createGitIgnore()
             createFormatterConfig()
