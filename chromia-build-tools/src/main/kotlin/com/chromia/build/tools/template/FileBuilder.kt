@@ -39,7 +39,7 @@ class FileBuilder(private val targetDir: File, private val sourceFolderName: Str
     private fun jarMover(fileURL: URL, targetDir: File, sourceName: String) {
         val endIndex = fileURL.path.lastIndexOf("!")
         val startIndex = 5 // skipping the prefix of a jar  "jar:"
-        val jarPath = fileURL.path.substring(startIndex, endIndex)
+        val jarPath = fileURL.path.substring(startIndex, endIndex).replace("%20", " ")
         JarFile(jarPath).use { jarFile ->
             val entries = jarFile.entries()
 
