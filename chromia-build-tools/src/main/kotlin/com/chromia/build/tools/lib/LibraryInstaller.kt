@@ -70,8 +70,10 @@ class LibraryInstaller(
 
     private fun copyRellFilesInFolder(src: Path, dest: Path) {
         if (!dest.exists()) dest.toFile().mkdirs() else dest.toFile().deleteRecursively()
-        Files.walk(src).filter { it.isDirectory() || it.extension == "rell" }.forEach {
-            Files.copy(it, dest.resolve(src.relativize(it)), StandardCopyOption.REPLACE_EXISTING)
+        Files.walk(src).use { stream ->
+            stream.filter { it.isDirectory() || it.extension == "rell" }.forEach {
+                Files.copy(it, dest.resolve(src.relativize(it)), StandardCopyOption.REPLACE_EXISTING)
+            }
         }
     }
 
