@@ -59,7 +59,7 @@ class LibraryInstaller(
                     """
                     |Path '${model.path}' not found in repository '${model.registry}'.
                     |Library: $name
-                    |-> Version/Branch: ${model.tagOrBranch ?: "default"}
+                    |-> Version/Branch: ${model.tagOrBranch ?: ""}
                     |-> Repository: ${model.registry}
                     |-> Requested Path: ${model.path}
                     """.trimMargin()
