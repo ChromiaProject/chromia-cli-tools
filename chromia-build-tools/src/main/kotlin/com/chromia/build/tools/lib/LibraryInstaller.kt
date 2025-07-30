@@ -55,7 +55,15 @@ class LibraryInstaller(
     private fun validateLibPath(sourcePath: Path, model: RellLibraryModel, name: String) {
         if (!sourcePath.exists()) {
             val pathNotFoundMsg = buildString {
-                appendLine("Path '${model.path}' not found in repository '${model.registry}'.")
+                appendLine(
+                    """
+                    |Path '${model.path}' not found in repository '${model.registry}'.
+                    |Library: $name
+                    |-> Version/Branch: ${model.tagOrBranch ?: "default"}
+                    |-> Repository: ${model.registry}
+                    |-> Requested Path: ${model.path}
+                    """.trimMargin()
+                )
                 append("Please update the 'path' accordingly in chromia.yml 'libs->$name->path'")
             }
             throw LibraryInstallException(pathNotFoundMsg)
