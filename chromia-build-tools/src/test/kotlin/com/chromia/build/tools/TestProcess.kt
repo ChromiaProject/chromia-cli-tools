@@ -70,7 +70,7 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
             } else if (partialOutput != null) {
                 assertThat(processOutput).contains(partialOutput)
             } else if (verbose) {
-                actual.readLines().forEach { println(it) }
+                processOutput.forEach { println(it) }
             }
             return
         }
@@ -125,7 +125,7 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
                         env.forEach { (k, v) -> environment()[k] = v }
                     }
             return TestProcess(
-                    pb, startCondition, wholeOutput, shouldFinish, exitCode, timeout, verbose, input, binaryInput
+                    pb, startCondition, wholeOutput, shouldFinish, exitCode, timeout, verbose, input, binaryInput, partialOutput
             ).use {
                 if (verbose) {
                     thread(isDaemon = true) {
