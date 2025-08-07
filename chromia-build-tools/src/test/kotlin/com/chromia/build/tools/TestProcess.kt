@@ -2,6 +2,7 @@ package com.chromia.build.tools
 
 import assertk.Assert
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
 import assertk.assertions.support.expected
@@ -13,8 +14,8 @@ import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
 class TestProcess private constructor(processBuilder: ProcessBuilder, startCondition: String?, wholeOutput: String?,
-                                      shouldFinish: Boolean, expectedExitCode: Int, timeout: Duration,
-                                      val verbose: Boolean, val input: String?, val binaryInput: ByteArray?) : AutoCloseable {
+                                      shouldFinish: Boolean, expectedExitCode: Int, timeout: Duration, val verbose: Boolean,
+                                      val input: String?, val binaryInput: ByteArray?, val partialOutput: String? = null) : AutoCloseable {
 
     val process = processBuilder.start()
     val reader = BufferedReader(InputStreamReader(process.inputStream))
@@ -62,10 +63,12 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
 
     private fun Assert<TestProcess>.finished(exitCode: Int, wholeOutput: String?) = given { actual ->
         if (actual.process.exitValue() == exitCode) {
+            val processOutput = actual.readLines().joinToString("\n")
             if (wholeOutput != null) {
-                val processOutput = actual.readLines().joinToString("\n")
                 assertThat(processOutput).isEqualTo(wholeOutput)
                 if (verbose) println(processOutput)
+            } else if (partialOutput != null) {
+                assertThat(processOutput).contains(partialOutput)
             } else if (verbose) {
                 actual.readLines().forEach { println(it) }
             }
@@ -86,6 +89,7 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
         private var workingDir: File? = null
         private var input: String? = null
         private var binaryInput: ByteArray? = null
+        private var partialOutput: String? = null
         fun setConfig(file: File) = apply { config = file }
         fun setWorkingDir(file: File) = apply { workingDir = file }
         fun awaitCompletion(value: Boolean) = apply { shouldFinish = value }
@@ -97,6 +101,7 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
         fun env(vararg envvars: Pair<String, String>) = apply { env.putAll(envvars) }
         fun input(s: String) = apply { input = s }
         fun binaryInput(b: ByteArray) = apply { binaryInput = b }
+        fun partialOutput(output: String) = apply { partialOutput = output }
 
         fun start() = start {}
 
