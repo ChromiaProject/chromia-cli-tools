@@ -29,7 +29,7 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
         }
         if (shouldFinish) {
             process.waitFor(timeout.seconds, TimeUnit.SECONDS)
-            assertThat(this).finished(expectedExitCode, wholeOutput)
+            assertThat(this).finished(expectedExitCode, wholeOutput, partialOutput)
         }
     }
 
@@ -61,16 +61,20 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
         assertThat(found).isTrue()
     }
 
-    private fun Assert<TestProcess>.finished(exitCode: Int, wholeOutput: String?) = given { actual ->
+    private fun Assert<TestProcess>.finished(
+        exitCode: Int,
+        wholeOutput: String?,
+        partialOutput: String? = null
+    ) = given { actual ->
         if (actual.process.exitValue() == exitCode) {
-            val processOutput = actual.readLines().joinToString("\n")
             if (wholeOutput != null) {
+                val processOutput = actual.readLines().joinToString("\n")
                 assertThat(processOutput).isEqualTo(wholeOutput)
                 if (verbose) println(processOutput)
             } else if (partialOutput != null) {
-                assertThat(processOutput).contains(partialOutput)
+                assertThat(actual.readLines().contains(partialOutput))
             } else if (verbose) {
-                processOutput.forEach { println(it) }
+                actual.readLines().forEach { println(it) }
             }
             return
         }
