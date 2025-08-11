@@ -5,10 +5,15 @@ import net.postchain.client.config.PostchainClientConfig
 import net.postchain.client.core.AsyncQueryResponse
 import net.postchain.client.core.BlockDetail
 import net.postchain.client.core.BlockRid
+import net.postchain.client.core.PollingTransactionStatus
 import net.postchain.client.core.PostchainClient
+import net.postchain.client.core.PostingTransaction
 import net.postchain.client.core.QueryRid
+import net.postchain.client.core.TransactionConfirmed
 import net.postchain.client.core.TransactionInfo
+import net.postchain.client.core.TransactionPostedSuccessfully
 import net.postchain.client.core.TransactionResult
+import net.postchain.client.core.TxEventListener
 import net.postchain.client.core.TxRid
 import net.postchain.client.core.Version
 import net.postchain.client.request.Endpoint
@@ -75,6 +80,14 @@ open class TestClient(
 
     override fun postTransactionAwaitConfirmation(tx: Gtx): TransactionResult =
             testConfiguration.txResultFactory(testConfiguration.txs.size).also { testConfiguration.txs.add(tx) }
+
+    override fun postTransactionAwaitConfirmation(tx: Gtx, listener: TxEventListener): TransactionResult {
+        listener.onTxEvent(PostingTransaction(TxRid("")))
+        listener.onTxEvent(TransactionPostedSuccessfully(TxRid("")))
+        listener.onTxEvent(PollingTransactionStatus(TxRid("")))
+        listener.onTxEvent(TransactionConfirmed(TxRid("")))
+        return testConfiguration.txResultFactory(testConfiguration.txs.size).also { testConfiguration.txs.add(tx) }
+    }
 
     override fun transactionBuilder() = TransactionBuilder(
             this, config.blockchainRid, config.signers.map { it.pubKey.data }, merkleHashCalculator, config.signers.map { it.sigMaker(Secp256K1CryptoSystem()) }

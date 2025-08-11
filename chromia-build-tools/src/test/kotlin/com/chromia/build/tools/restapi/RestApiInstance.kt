@@ -1,6 +1,5 @@
 package com.chromia.build.tools.restapi
 
-import java.time.Clock
 import net.postchain.api.rest.controller.Model
 import net.postchain.api.rest.controller.RestApi
 
