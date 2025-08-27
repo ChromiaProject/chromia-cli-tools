@@ -8,4 +8,10 @@
         ]]></notes>
         <cve>CVE-2020-36843</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+        False positive: This vulnerability is not present in version 7.2.1.202505142326-r which we use.
+        ]]></notes>
+        <cve>CVE-2025-4949</cve>
+    </suppress>
 </suppressions>
