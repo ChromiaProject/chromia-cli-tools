@@ -374,15 +374,6 @@
             "version": {
               "type": "string",
               "description": "Version of the library to download"
-            },
-            "path": {
-              "type": "string",
-              "description": "Path to the library module in the repo"
-            },
-            "brid": {
-              "type": ["string"],
-              "pattern": "^(x\"[0-9A-Fa-f]{64}\")|([0-9A-Fa-f]{64})$",
-              "description": "Blockchain RID for library-chain"
             }
           },
           "required": ["version"],
