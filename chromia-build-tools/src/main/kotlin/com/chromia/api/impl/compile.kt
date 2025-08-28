@@ -9,7 +9,6 @@ import com.chromia.cli.model.BlockchainModel
 import com.chromia.cli.model.ChromiaModel
 import com.chromia.cli.model.CompileModel
 import com.chromia.cli.model.MinimalRellVersionStrictGtv
-import com.chromia.cli.model.RellLibraryModel
 import net.postchain.common.exception.UserMistake
 import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtv.builder.GtvBuilder
@@ -25,10 +24,8 @@ import kotlin.io.path.invariantSeparatorsPathString
 import kotlin.io.path.isReadable
 import kotlin.io.path.isRegularFile
 import kotlin.io.path.name
-import kotlin.io.path.pathString
 import kotlin.io.path.readBytes
 import kotlin.io.path.readText
-import kotlin.io.path.relativeTo
 
 const val BlockchainConfigurationMaxSize = 26 * 1024 * 1024 // 26 MiB
 
@@ -123,7 +120,6 @@ private fun libraryGtv(cliEnv: RellCliEnv, compileModel: CompileModel, name: Str
         update(gtv(rid), "rid")
     }.build()
 
-    cliEnv.print(RellLibraryModel("", path = libFolder.relativeTo(compileModel.root).pathString, rid = rid).format(name))
     return BlockchainConfiguration(name, gtv)
 }
 
