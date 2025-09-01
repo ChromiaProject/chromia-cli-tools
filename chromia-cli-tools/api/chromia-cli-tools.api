@@ -39,12 +39,15 @@ public final class com/chromia/cli/tools/config/ConfigOptionKt {
 	public static final fun chromiaModelOption (Lcom/github/ajalt/clikt/core/CliktCommand;)Lcom/chromia/cli/tools/config/ChromiaModelOption;
 	public static final fun configurationFormatOption (Lcom/github/ajalt/clikt/core/ParameterHolder;)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
 	public static final fun configureSigners (Lcom/chromia/build/tools/config/ChromiaClientConfig;Lcom/chromia/cli/tools/config/KeyPairSource;)V
-	public static final fun keyIdOption (Lcom/github/ajalt/clikt/core/ParameterHolder;)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
-	public static final fun keyPairSourceOption (Lcom/github/ajalt/clikt/core/ParameterHolder;)Lcom/github/ajalt/clikt/parameters/groups/MutuallyExclusiveOptions;
+	public static final fun keyIdOption (Lcom/github/ajalt/clikt/core/ParameterHolder;Z)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
+	public static synthetic fun keyIdOption$default (Lcom/github/ajalt/clikt/core/ParameterHolder;ZILjava/lang/Object;)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
+	public static final fun keyPairSourceOption (Lcom/github/ajalt/clikt/core/ParameterHolder;Z)Lcom/github/ajalt/clikt/parameters/groups/MutuallyExclusiveOptions;
+	public static synthetic fun keyPairSourceOption$default (Lcom/github/ajalt/clikt/core/ParameterHolder;ZILjava/lang/Object;)Lcom/github/ajalt/clikt/parameters/groups/MutuallyExclusiveOptions;
 	public static final fun optionalChromiaModelConfigOption (Lcom/github/ajalt/clikt/core/CliktCommand;)Lcom/chromia/cli/tools/config/OptionalChromiaModelConfigOption;
 	public static final fun optionalChromiaModelOption (Lcom/github/ajalt/clikt/core/CliktCommand;)Lcom/chromia/cli/tools/config/OptionalChromiaModelOption;
 	public static final fun safeOptionalChromiaModelOption (Lcom/github/ajalt/clikt/core/CliktCommand;)Lcom/chromia/cli/tools/config/SafeOptionalChromiaModelOption;
-	public static final fun secretOption (Lcom/github/ajalt/clikt/core/ParameterHolder;)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
+	public static final fun secretOption (Lcom/github/ajalt/clikt/core/ParameterHolder;Z)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
+	public static synthetic fun secretOption$default (Lcom/github/ajalt/clikt/core/ParameterHolder;ZILjava/lang/Object;)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
 	public static final fun targetUrlOption (Lcom/github/ajalt/clikt/core/ParameterHolder;)Lcom/github/ajalt/clikt/parameters/options/OptionWithValues;
 }
 
