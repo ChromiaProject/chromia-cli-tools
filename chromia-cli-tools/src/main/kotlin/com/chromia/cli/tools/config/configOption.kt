@@ -137,17 +137,17 @@ sealed class KeyPairSource {
     data class SecretFile(val file: File) : KeyPairSource()
 }
 
-fun ParameterHolder.secretOption() =
-        option("--secret", help = "Path to secret file (pubkey/privkey)")
+fun ParameterHolder.secretOption(hideHelpMessage: Boolean = false) =
+        option("--secret", help = "Path to secret file (pubkey/privkey)", hidden = hideHelpMessage)
                 .file(canBeDir = false, mustExist = true, mustBeReadable = true)
 
-fun ParameterHolder.keyIdOption() =
-        option("--key-id", help = "Key ID of the keypair to use", metavar = "KEY_ID")
+fun ParameterHolder.keyIdOption(hideHelpMessage: Boolean = false) =
+        option("--key-id", help = "Key ID of the keypair to use", metavar = "KEY_ID", hidden = hideHelpMessage)
 
-fun ParameterHolder.keyPairSourceOption() = mutuallyExclusiveOptions(
-        name = "Key pair source",
-        option1 = secretOption().convert { KeyPairSource.SecretFile(it) },
-        option2 = keyIdOption().convert { KeyPairSource.KeyId(it) },
+fun ParameterHolder.keyPairSourceOption(hideHelpMessage: Boolean = false) = mutuallyExclusiveOptions(
+        name = if (hideHelpMessage) null else "Key pair source",
+        option1 = secretOption(hideHelpMessage).convert { KeyPairSource.SecretFile(it) },
+        option2 = keyIdOption(hideHelpMessage).convert { KeyPairSource.KeyId(it) },
 ).single()
 
 fun ChromiaClientConfig.configureSigners(keyPairSource: KeyPairSource?) {
