@@ -7,6 +7,7 @@ import net.postchain.api.rest.BlockchainNodeState
 import net.postchain.api.rest.InfraVersion
 import net.postchain.api.rest.TransactionsCount
 import net.postchain.api.rest.Version
+import net.postchain.api.rest.model.ApiMetadata
 import net.postchain.api.rest.model.ApiRejectedTransaction
 import net.postchain.api.rest.model.ApiStatus
 import net.postchain.api.rest.model.TxRid
@@ -166,6 +167,10 @@ class TestModel(
     }
 
     override fun validateBlockchainConfiguration(configuration: Gtv) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getMetadata(): ApiMetadata {
         TODO("Not yet implemented")
     }
 }
