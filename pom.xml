@@ -22,7 +22,7 @@
         <codegen.version>0.16.8</codegen.version>
         <postchain.version>3.42.4</postchain.version>
         <postchain.client.version>3.37.1</postchain.client.version>
-        <rell.version>0.14.13</rell.version>
+        <rell.version>0.14.12</rell.version>
         <rell.dokka.version>0.2.18</rell.dokka.version>
         <rell.toolbox.version>0.8.4</rell.toolbox.version>
         <eif.version>0.16.3</eif.version>
