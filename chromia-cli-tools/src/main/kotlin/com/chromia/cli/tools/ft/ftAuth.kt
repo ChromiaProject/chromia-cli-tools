@@ -21,15 +21,22 @@ import com.github.ajalt.mordant.input.interactiveSelectList
 import net.postchain.client.core.PostchainQuery
 import net.postchain.client.exception.ClientError
 import net.postchain.client.transaction.TransactionBuilder
+import net.postchain.common.BlockchainRid
 import net.postchain.common.hexStringToByteArray
 import net.postchain.common.toHex
 import net.postchain.common.types.WrappedByteArray
 
-fun CoreCliktCommand.initFtAuth(client: PostchainQuery) {
+fun CoreCliktCommand.initFtAuth(client: PostchainQuery, blockchain: String? = null, blockchainRid: BlockchainRid? = null) {
     val version = try {
         client.getVersion()
     } catch (e: ClientError) {
-        throw CliktError("Dapp is not FT4 compatible: ${e.errorMessage}")
+        val errMsg = buildString {
+            append("Dapp ")
+            blockchain?.let { append("[$it] ") }
+            blockchainRid?.let { append(" with BRID '$it' ") }
+            append("is not FT4 compatible: ${e.errorMessage}")
+        }
+        throw CliktError(errMsg)
     }
     // 0.0.* -> 0.3.*
     if (version.matches(Regex("^0\\.[0-3]\\.(0|[1-9]\\d*).*"))) {

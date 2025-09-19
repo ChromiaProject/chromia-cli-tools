@@ -65,8 +65,10 @@ class FTAuthenticatorTest {
     @Test
     fun incompatibleDappTest() {
         assertThrows<CliktError> {
-            testCommand.initFtAuth { query, _ -> if (query == GET_VERSION)
-                throw ClientError("", null, "Query not found", null) else GtvNull }
+            testCommand.initFtAuth(
+                client = { query, _ -> if (query == GET_VERSION)
+                    throw ClientError("", null, "Query not found", null) else GtvNull }
+            )
         }
     }
 
@@ -74,7 +76,9 @@ class FTAuthenticatorTest {
     fun validV1AuthDescriptor() {
         val pubKey = PubKey("1".repeat(64).hexStringToByteArray())
         val res = assertThrows<CliktError> {
-            testCommand.initFtAuth { query, _ -> queryResponseV1(pubKey, listOf("A"), query) }
+            testCommand.initFtAuth(
+                client = { query, _ -> queryResponseV1(pubKey, listOf("A"), query) }
+            )
         }
         assertThat(res.message).isEqualTo(
                 "Versions before release 0.4.0 are not supported, current FT4 version 0.1.1 is to old"
@@ -85,7 +89,10 @@ class FTAuthenticatorTest {
     fun validV2AuthDescriptor() {
         val pubKey = PubKey("1".repeat(64).hexStringToByteArray())
         val res = assertThrows<CliktError> {
-            testCommand.initFtAuth { query, _ -> queryResponseV2(pubKey, listOf("A"), query) }
+            testCommand.initFtAuth(
+                client = { query, _ -> queryResponseV2(pubKey, listOf("A"), query) }
+            )
+
         }
         assertThat(res.message).isEqualTo(
                 "Versions before release 0.4.0 are not supported, current FT4 version 0.2.0 is to old"
