@@ -159,8 +159,7 @@ public final class com/chromia/cli/tools/ft/FtAuthKt {
 	public static final fun findFtAccountIdAndAuthDescriptorId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;[BLjava/lang/String;Ljava/lang/String;)Lkotlin/Pair;
 	public static final fun findFtAccountIdWithAuthDescriptorId (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;[B[BLjava/lang/String;[B)Lkotlin/Pair;
 	public static final fun getKeysAsFormattedString (Lcom/chromia/lib/ft4/external/accounts/Ft4GetAccountAuthDescriptorsBySignerResult;)Ljava/lang/String;
-	public static final fun initFtAuth (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;)V
-	public static synthetic fun initFtAuth$default (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;ILjava/lang/Object;)V
+	public static final fun initFtAuth (Lcom/github/ajalt/clikt/core/CoreCliktCommand;Lnet/postchain/client/core/PostchainQuery;)V
 }
 
 public final class com/chromia/cli/tools/ft/OperationDescriptor {

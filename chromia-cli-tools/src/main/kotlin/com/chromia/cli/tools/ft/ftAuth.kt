@@ -1,5 +1,6 @@
 package com.chromia.cli.tools.ft
 
+import com.chromia.directory1.common.queries.getBlockchain
 import com.chromia.ft4.findAuthDescriptors
 import com.chromia.ft4.flags
 import com.chromia.ft4.isValid
@@ -18,22 +19,24 @@ import com.github.ajalt.clikt.core.CliktError
 import com.github.ajalt.clikt.core.CoreCliktCommand
 import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.mordant.input.interactiveSelectList
+import net.postchain.client.core.PostchainClient
 import net.postchain.client.core.PostchainQuery
 import net.postchain.client.exception.ClientError
 import net.postchain.client.transaction.TransactionBuilder
-import net.postchain.common.BlockchainRid
 import net.postchain.common.hexStringToByteArray
 import net.postchain.common.toHex
 import net.postchain.common.types.WrappedByteArray
 
-fun CoreCliktCommand.initFtAuth(client: PostchainQuery, blockchain: String? = null, blockchainRid: BlockchainRid? = null) {
+fun CoreCliktCommand.initFtAuth(client: PostchainQuery) {
     val version = try {
         client.getVersion()
     } catch (e: ClientError) {
+        val rid = (client as? PostchainClient)?.config?.blockchainRid
+        val blockchain = rid?.let {  client.getBlockchain(rid.data) }
         val errMsg = buildString {
             append("Dapp ")
             blockchain?.let { append("[$it] ") }
-            blockchainRid?.let { append(" with BRID '$it' ") }
+            rid?.let { append(" with RID '$it' ") }
             append("is not FT4 compatible: ${e.errorMessage}")
         }
         throw CliktError(errMsg)
