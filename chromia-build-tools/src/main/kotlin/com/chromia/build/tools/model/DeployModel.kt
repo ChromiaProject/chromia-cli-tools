@@ -6,6 +6,7 @@ import net.postchain.common.BlockchainRid
 import net.postchain.common.exception.UserMistake
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvArray
+import net.postchain.gtv.GtvNull
 import net.postchain.gtv.GtvString
 import net.postchain.gtv.listMapAndPrimitivesToGtv
 
@@ -21,6 +22,7 @@ data class DeploymentModel(
             return when (url) {
                 is GtvString -> listOf(url.asString())
                 is GtvArray -> url.asArray().map { it.asString() }
+                is GtvNull  -> emptyList()
                 else -> throw UserMistake("deployment url must be either a single string or an array")
             }
         }

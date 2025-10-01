@@ -388,9 +388,6 @@
     },
     "deployment": {
       "type": "object",
-      "required": [
-        "url"
-      ],
       "description": "Deployment target",
       "additionalProperties": false,
       "properties": {
