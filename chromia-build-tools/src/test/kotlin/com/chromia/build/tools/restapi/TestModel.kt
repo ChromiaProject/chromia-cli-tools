@@ -26,6 +26,7 @@ import net.postchain.core.block.BlockDetailsTruncated
 import net.postchain.core.block.BlockQueryHeightFilter
 import net.postchain.core.block.BlockQueryTimeFilter
 import net.postchain.crypto.PubKey
+import net.postchain.crypto.SigMaker
 import net.postchain.ebft.rest.contract.StateNodeStatus
 import net.postchain.gtv.Gtv
 import net.postchain.gtv.GtvEncoder
@@ -46,6 +47,14 @@ class TestModel(
     override val txMap = mutableMapOf<TxRid, Gtx>()
 
     private val merkleHashCalculator = makeMerkleHashCalculator(merkleHashVersion)
+
+    override fun queryWithHeight(query: GtxQuery): Pair<Gtv, Long> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getBlockSigMaker(): SigMaker {
+        TODO("Not yet implemented")
+    }
 
     override fun confirmBlock(blockRID: BlockRid): BlockSignature? {
         TODO("Not yet implemented")

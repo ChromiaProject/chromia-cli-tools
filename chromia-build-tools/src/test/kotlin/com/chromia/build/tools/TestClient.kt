@@ -8,6 +8,7 @@ import net.postchain.client.core.BlockRid
 import net.postchain.client.core.PollingTransactionStatus
 import net.postchain.client.core.PostchainClient
 import net.postchain.client.core.PostingTransaction
+import net.postchain.client.core.QueryResponse
 import net.postchain.client.core.QueryRid
 import net.postchain.client.core.TransactionConfirmed
 import net.postchain.client.core.TransactionInfo
@@ -71,6 +72,14 @@ open class TestClient(
 
     override fun getHighestBlockHeightAnchoringCheck(): HighestBlockHeightAnchoringCheck =
             TODO("Not yet implemented")
+
+    override fun queryWithHeight(name: String, args: Gtv): Pair<Gtv, Long> {
+        TODO("Not yet implemented")
+    }
+
+    override fun queryWithHeightAndSignature(name: String, args: Gtv): QueryResponse {
+        TODO("Not yet implemented")
+    }
 
     override fun getTransactionsInfo(limit: Long, beforeTime: Long, signer: String?): List<TransactionInfo> = TODO("Not yet implemented")
     override fun getVersion(): Version { TODO("Not yet implemented") }
