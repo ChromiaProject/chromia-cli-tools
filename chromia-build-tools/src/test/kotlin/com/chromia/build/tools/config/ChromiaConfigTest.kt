@@ -113,6 +113,7 @@ class ChromiaConfigTest {
 
             ChromiaConfigLoader.setSkipLoadingKeysById(true)
             ChromiaConfigLoader { _ -> }.loadClientConfigFile(test.resolve("config").toFile())
+            ChromiaConfigLoader.setSkipLoadingKeysById(false)
         }
     }
 
