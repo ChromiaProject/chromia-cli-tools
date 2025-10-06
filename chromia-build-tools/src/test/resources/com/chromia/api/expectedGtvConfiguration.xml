@@ -19,6 +19,11 @@
     <entry key="configurationfactory">
         <string>net.postchain.gtx.GTXBlockchainConfigurationFactory</string>
     </entry>
+    <entry key="features">
+        <dict>
+            <entry key="merkle_hash_version"><int>2</int></entry>
+        </dict>
+    </entry>
     <entry key="gtx">
         <dict>
             <entry key="modules">
