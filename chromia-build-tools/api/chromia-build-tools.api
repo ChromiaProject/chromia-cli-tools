@@ -231,6 +231,7 @@ public final class com/chromia/build/tools/config/ChromiaConfigLoader {
 public final class com/chromia/build/tools/config/ChromiaConfigLoader$Companion {
 	public final fun globalConfigurationFile ()Ljava/io/File;
 	public final fun localConfigurationFile ()Ljava/io/File;
+	public final fun setSkipLoadingKeysById (Z)V
 }
 
 public final class com/chromia/build/tools/config/ChromiaConfigLoaderKt {
