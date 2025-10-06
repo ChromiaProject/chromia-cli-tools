@@ -20,6 +20,7 @@ internal fun GtvBuilder.addDefaultEntries(blockchainModel: BlockchainModel, extr
     update(gtv(2000), "revolt", "fast_revolt_status_timeout")
     update(gtv(true), "revolt", "revolt_when_should_build_block")
     update(gtv(1000), "blockstrategy", "mininterblockinterval")
+    update(gtv(2), "features", "merkle_hash_version")
 
     val modulesGtv: MutableList<Gtv> = mutableListOf()
     extraModules.forEach { modulesGtv.add(gtv(it)) }
