@@ -146,7 +146,10 @@ fun ParameterHolder.keyIdOption(hideHelpMessage: Boolean = false) =
 
 fun ParameterHolder.keyPairSourceOption(hideHelpMessage: Boolean = false) = mutuallyExclusiveOptions(
         name = if (hideHelpMessage) null else "Key pair source",
-        option1 = secretOption(hideHelpMessage).convert { KeyPairSource.SecretFile(it) },
+        option1 = secretOption(hideHelpMessage).convert {
+            ChromiaConfigLoader.setSkipLoadingKeysById(true)
+            KeyPairSource.SecretFile(it)
+        },
         option2 = keyIdOption(hideHelpMessage).convert { KeyPairSource.KeyId(it) },
 ).single()
 

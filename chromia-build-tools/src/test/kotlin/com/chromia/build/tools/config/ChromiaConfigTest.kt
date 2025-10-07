@@ -96,6 +96,28 @@ class ChromiaConfigTest {
     }
 
     @Test
+    fun `doesn't throws when key id doesn't exist but skipLoadingKeysById is true`(@TempDir dir: Path) {
+        val test = dir.resolve("sub")
+        File(test.toFile(), "/config").also {
+            it.parentFile.mkdirs()
+        }.writeText("key.id = bogus_key_id")
+
+        EnvironmentVariables("CHROMIA_HOME", dir.absolutePathString()).execute {
+            ChromiaKeyStore(keyIdName).saveKeyPair(keyPair)
+            ChromiaConfigWriter.global.setKeyId(keyIdName)
+
+            val throwable = assertThrows<UserMistake> {
+                ChromiaConfigLoader { _ -> }.loadClientConfigFile(test.resolve("config").toFile())
+            }
+            assertThat(throwable.message!!).isEqualTo("Key with ID 'bogus_key_id' not found")
+
+            ChromiaConfigLoader.setSkipLoadingKeysById(true)
+            ChromiaConfigLoader { _ -> }.loadClientConfigFile(test.resolve("config").toFile())
+            ChromiaConfigLoader.setSkipLoadingKeysById(false)
+        }
+    }
+
+    @Test
     fun `Warning is logged when config file contains pub and priv key explicitly`(@TempDir dir: Path) {
         val test = dir.resolve("sub")
         testData(dir) {

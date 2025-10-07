@@ -6,6 +6,7 @@ import net.postchain.common.exception.UserMistake
 import org.apache.commons.configuration2.Configuration
 import org.apache.commons.configuration2.PropertiesConfiguration
 import java.io.File
+import kotlin.Boolean
 
 const val SUPPRESS_KEY_STORAGE_DEPRECATION_WARNING_SYSTEM_PROPERTY = "chromia.suppress-key-storage-deprecation-warning"
 
@@ -23,6 +24,9 @@ class ChromiaConfigLoader(private val logger: (String) -> Unit) {
 
         fun globalConfigurationFile() = File("$chromiaHome/config")
         fun localConfigurationFile() = File(DEFAULT_CONFIG_FILENAME)
+
+        private var skipLoadingKeysById = false
+        fun setSkipLoadingKeysById(skip: Boolean) { skipLoadingKeysById = skip }
     }
 
     /**
@@ -55,7 +59,7 @@ class ChromiaConfigLoader(private val logger: (String) -> Unit) {
         val keysExplicitlyProvided = allSensitiveKeysExist(explicitConfig)
         config.copy(explicitConfig)
 
-        if (config.containsKey("key.id") && !keysExplicitlyProvided) {
+        if (config.containsKey("key.id") && !keysExplicitlyProvided && !skipLoadingKeysById) {
             ChromiaKeyStore(config.getString("key.id")).findKeyPair()?.let {
                 config.setProperty("pubkey", it.pubKey.hex())
                 config.setProperty("privkey", it.privKey.hex())
