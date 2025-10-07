@@ -48,9 +48,7 @@ class TestModel(
 
     private val merkleHashCalculator = makeMerkleHashCalculator(merkleHashVersion)
 
-    override fun queryWithHeight(query: GtxQuery): Pair<Gtv, Long> {
-        TODO("Not yet implemented")
-    }
+    override fun queryWithHeight(query: GtxQuery): Pair<Gtv, Long> = query(query) to 0
 
     override fun getBlockSigMaker(): SigMaker {
         TODO("Not yet implemented")

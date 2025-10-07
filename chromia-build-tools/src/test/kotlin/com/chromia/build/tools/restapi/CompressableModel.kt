@@ -5,6 +5,8 @@ import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtx.GtxQuery
 
 class CompressableModel(val model: CachedModel) : CachedModel by model {
+    override fun queryWithHeight(query: GtxQuery): Pair<Gtv, Long> = query(query) to 0
+
     override fun query(query: GtxQuery): Gtv {
         return when (query.name) {
             "api_version" -> gtv(28)

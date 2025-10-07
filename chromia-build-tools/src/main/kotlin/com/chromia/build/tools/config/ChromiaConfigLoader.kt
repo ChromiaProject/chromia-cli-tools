@@ -65,6 +65,7 @@ class ChromiaConfigLoader(private val logger: (String) -> Unit) {
                 config.setProperty("privkey", it.privKey.hex())
             } ?: throw UserMistake("Key with ID '${config.getString("key.id")}' not found")
         }
+        setSkipLoadingKeysById(false)
         return config
     }
 

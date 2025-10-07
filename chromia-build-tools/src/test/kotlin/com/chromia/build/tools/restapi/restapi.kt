@@ -27,6 +27,10 @@ fun CachedModel.withInvalidConfiguration() = object : CachedModel by this {
 fun CachedModel.withRellVersion(version: String) = withRellVersion(R_LangVersion.of(version))
 fun CachedModel.withRellVersion(version: R_LangVersion) = withQuery("rell.get_rell_version", gtv(version.str()))
 
+fun CachedModel.withRellVersionWithHeight(version: String) = withRellVersionWithHeight(R_LangVersion.of(version))
+fun CachedModel.withRellVersionWithHeight(version: R_LangVersion) = withQueryWithHeight("rell.get_rell_version", gtv(version.str()))
+
+
 fun CachedModel.withQuery(name: String, response: Gtv) = withQuery(name) { response }
 
 fun CachedModel.withStatus(status: TransactionStatus, reason: String) = object : CachedModel by this {
@@ -37,5 +41,17 @@ fun CachedModel.withQuery(name: String, response: (GtxQuery) -> Gtv) = object : 
     override fun query(query: GtxQuery) = when (query.name) {
         name -> response(query)
         else -> this@withQuery.query(query)
+    }
+}
+//queryWithHeight(query: GtxQuery): Pair<Gtv, Long>
+
+fun CachedModel.withQueryWithHeight(name: String, response: Gtv, height: Long = 0) = withQueryWithHeight(name, { response }, height)
+
+fun CachedModel.withQueryWithHeight(name: String, response: (GtxQuery) -> Gtv, height: Long = 0) = object : CachedModel by this {
+    override fun queryWithHeight(query: GtxQuery): Pair<Gtv, Long> {
+        return when (query.name) {
+            name -> response(query) to height
+            else -> this@withQueryWithHeight.queryWithHeight(query)
+        }
     }
 }
