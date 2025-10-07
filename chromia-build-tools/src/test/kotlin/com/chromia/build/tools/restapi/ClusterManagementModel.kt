@@ -14,6 +14,8 @@ import net.postchain.gtx.GtxQuery
 class ClusterManagementModel(private val model: CachedModel, val directoryChain: PostchainQuery) : CachedModel by model {
     constructor(directoryChain: PostchainQuery) : this(TestModel(BlockchainRid.ZERO_RID), directoryChain)
 
+    override fun queryWithHeight(query: GtxQuery): Pair<Gtv, Long> = query(query) to 0
+
     override fun query(query: GtxQuery): Gtv {
         val (name, args) = query
         return when (name) {
