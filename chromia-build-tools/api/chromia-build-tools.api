@@ -748,6 +748,7 @@ public final class com/chromia/cli/model/DeploymentModel {
 	public synthetic fun <init> (Lnet/postchain/common/BlockchainRid;Ljava/lang/String;Lnet/postchain/gtv/Gtv;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lnet/postchain/common/BlockchainRid;
 	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lnet/postchain/gtv/Gtv;
 	public final fun component4 ()Ljava/util/Map;
 	public final fun copy (Lnet/postchain/common/BlockchainRid;Ljava/lang/String;Lnet/postchain/gtv/Gtv;Ljava/util/Map;)Lcom/chromia/cli/model/DeploymentModel;
 	public static synthetic fun copy$default (Lcom/chromia/cli/model/DeploymentModel;Lnet/postchain/common/BlockchainRid;Ljava/lang/String;Lnet/postchain/gtv/Gtv;Ljava/util/Map;ILjava/lang/Object;)Lcom/chromia/cli/model/DeploymentModel;
@@ -755,6 +756,7 @@ public final class com/chromia/cli/model/DeploymentModel {
 	public final fun getBlockchainRid ()Lnet/postchain/common/BlockchainRid;
 	public final fun getChains ()Ljava/util/Map;
 	public final fun getContainer ()Ljava/lang/String;
+	public final fun getUrl ()Lnet/postchain/gtv/Gtv;
 	public final fun getUrls ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

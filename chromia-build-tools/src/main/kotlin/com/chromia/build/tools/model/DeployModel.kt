@@ -13,7 +13,7 @@ import net.postchain.gtv.listMapAndPrimitivesToGtv
 data class DeploymentModel(
         val blockchainRid: BlockchainRid?,
         val container: String?, // Container id
-        private val url: Gtv,
+        val url: Gtv,
         val chains: Map<String, BlockchainRid> = mapOf()
 ) {
 
