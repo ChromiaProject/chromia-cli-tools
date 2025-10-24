@@ -24,3 +24,7 @@ fun CliktCommand.timebOptions(clock: Clock) = mutuallyExclusiveOptions(
         option("--timeb-after", help = "Add timeb operation to make transaction fail if applied after the given number of seconds from now.")
                 .convert { clock.millis() + (it.toLong() * 1000L) } // convert seconds to milliseconds
 ).single()
+
+fun CliktCommand.slowDBStatementLogMsOption() = option("-sdbl", "--slow-db-statement-log-ms",
+    help = "Threshold for slow DB statement log in milliseconds")
+    .long()
