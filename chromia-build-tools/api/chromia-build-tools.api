@@ -519,6 +519,18 @@ public final class com/chromia/build/tools/model/EnsureTypeKt {
 	public static final fun ensureBrid (Ljava/lang/Object;[Ljava/lang/String;)Lnet/postchain/common/BlockchainRid;
 }
 
+public final class com/chromia/build/tools/multisignature/MultiSignatureTxData {
+	public static final field Companion Lcom/chromia/build/tools/multisignature/MultiSignatureTxData$Companion;
+	public fun <init> ([B[B)V
+	public final fun encode ()Ljava/lang/String;
+	public final fun getTransaction ()[B
+	public final fun getTxRid ()[B
+}
+
+public final class com/chromia/build/tools/multisignature/MultiSignatureTxData$Companion : mu/KLogging {
+	public final fun decode (Ljava/lang/String;)Lcom/chromia/build/tools/multisignature/MultiSignatureTxData;
+}
+
 public final class com/chromia/build/tools/parser/TypeUtilKt {
 	public static final fun mapByteArraysToHexString (Ljava/lang/Object;)Ljava/lang/Object;
 }

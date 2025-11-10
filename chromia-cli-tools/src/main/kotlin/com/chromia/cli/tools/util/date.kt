@@ -1,6 +1,9 @@
 package com.chromia.cli.tools.util
 
+import java.time.Clock
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -33,3 +36,16 @@ fun parseDateTime(time: String, formats: List<DateTimeFormatter> = DATE_TIME_FOR
 fun parseDateTimeAsEpochMillis(time: String, formats: List<DateTimeFormatter> = DATE_TIME_FORMATS.values.toList()): Long? {
     return parseDateTime(time, formats)?.toInstant(ZoneOffset.UTC)?.toEpochMilli()
 }
+
+fun getFormattedUtcDateTime(dateTime: Instant = Clock.systemUTC().instant()): String {
+    val zonedDateTime = dateTime.atZone(ZoneId.of("UTC"))
+    val pattern = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH.mm.ss.nnnnnnnnn'Z'")
+    val formattedDateTime = pattern.format(zonedDateTime)
+
+    return formattedDateTime
+}
+
+fun Long.convertMillisToLocalDateTime(): LocalDateTime? =
+        Instant.ofEpochMilli(this)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime()
