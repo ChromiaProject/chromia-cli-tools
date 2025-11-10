@@ -1,6 +1,6 @@
 package com.chromia.build.tools.lib
 
-import org.eclipse.jgit.api.CloneCommand
+import com.chromia.build.tools.util.safeDelete
 import java.io.File
 import java.nio.file.Path
 import org.eclipse.jgit.api.Git
@@ -36,7 +36,7 @@ class GitRepositoryCloner(val sshDir: File? = null, val quiet: Boolean = false) 
                 is GitAPIException -> "Git operation failed: ${e.message}"
                 else -> e.message ?: ""
             }
-            target.toFile().deleteRecursively()
+            target.safeDelete()
             throw LibraryInstallException(humanFriendlyError)
         }
     }

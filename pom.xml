@@ -429,6 +429,11 @@
             </dependency>
             <dependency>
                 <groupId>net.postchain.client</groupId>
+                <artifactId>chromia-client</artifactId>
+                <version>${postchain.client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.postchain.client</groupId>
                 <artifactId>ft4-client</artifactId>
                 <version>${postchain.client.version}</version>
             </dependency>
@@ -733,6 +738,22 @@
                                     <skipCheckoutIfExists>true</skipCheckoutIfExists>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>library-chain-checkout</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>checkout</goal>
+                                </goals>
+                                <configuration>
+                                    <connectionUrl>scm:git:https://bitbucket.org/chromawallet/library-chain.git
+                                    </connectionUrl>
+                                    <checkoutDirectory>${project.build.directory}/library-chain
+                                    </checkoutDirectory>
+                                    <scmVersion>main</scmVersion>
+                                    <scmVersionType>branch</scmVersionType>
+                                    <skipCheckoutIfExists>true</skipCheckoutIfExists>
+                                </configuration>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
@@ -747,6 +768,7 @@
             </activation>
             <properties>
                 <directory.source>${project.basedir}/../../directory-chain/src</directory.source>
+                <library-chain.source>${project.basedir}/../../library-chain/src</library-chain.source>
             </properties>
         </profile>
     </profiles>
