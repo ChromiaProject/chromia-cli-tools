@@ -1,6 +1,10 @@
 package com.chromia.build.tools.lib
 
+import com.chromia.build.tools.util.safeDelete
 import com.chromia.cli.model.RellLibraryModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
@@ -14,22 +18,34 @@ class LibraryInstaller(
         private val env: RellCliEnv,
         sourceDir: Path,
         private val tempDir: Path,
+        private val forceInstall: Boolean
 ) {
 
     private val libRoot: Path = sourceDir.resolve("lib")
     private val tmpLibRoot: Path = tempDir.resolve(".tmp/lib")
     private val libraryVerifyer = LibraryVerifyer(env, libRoot)
+    private val chromiaLibInstaller = ChromiaLibInstaller()
 
-    fun installLibs(libs: Map<String, RellLibraryModel>) =
-            libs.forEach { (libName, libModel) -> installLibrary(libName, libModel) }
+    fun installLibs(libs: Map<String, RellLibraryModel>) = runBlocking {
+        coroutineScope {
+            libs.forEach { (id, libModel) ->
+                launch { libModel.install(id) }
+            }
+        }
+    }
 
-    private fun installLibrary(name: String, model: RellLibraryModel) {
+    private fun RellLibraryModel.install(id: String) =
+        version?.let {
+            chromiaLibInstaller.installChromiaLibrary(id, this, libRoot, forceInstall)
+        } ?: installGitLibrary(id, this)
+
+    private fun installGitLibrary(name: String, model: RellLibraryModel) {
         cleanupTempDir()
         val installDir = libRoot.resolve(name)
         if (installDir.exists() && installDir.isNotEmptyDir()) {
             if (libraryVerifyer.verifyLib(name, model, true)) return
             env.print("Library $name not up to date, reinstalling")
-            installDir.toFile().deleteRecursively()
+            installDir.safeDelete()
         }
         cloneRepository(name, model, installDir)
         if (!libraryVerifyer.verifyLib(name, model)) {

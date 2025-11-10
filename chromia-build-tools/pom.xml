@@ -20,6 +20,8 @@
         <revision>dev</revision>
         <directory.source>${project.parent.build.directory}/directory-chain/src</directory.source>
         <directory.config>${directory.source}/../chromia.yml</directory.config>
+        <library-chain.source>${project.parent.build.directory}/library-chain/src</library-chain.source>
+        <library-chain.config>${library-chain.source}/../chromia.yml</library-chain.config>
     </properties>
 
     <build>
@@ -77,6 +79,21 @@
                             <configPath>${directory.config}</configPath>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>library-chain-client-gen</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>rell-install</goal>
+                            <goal>rell-generate-client</goal>
+                        </goals>
+                        <configuration>
+                            <source>${library-chain.source}</source>
+                            <packageName>com.chromia.library.chain</packageName>
+                            <mainModule>main</mainModule>
+                            <configPath>${library-chain.config}</configPath>
+                            <target>${project.build.directory}/generated-sources/rell-client-library</target>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -123,6 +140,10 @@
         <dependency>
             <groupId>net.postchain.client</groupId>
             <artifactId>postchain-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.postchain.client</groupId>
+            <artifactId>chromia-client</artifactId>
         </dependency>
         <dependency>
             <groupId>net.postchain.rell</groupId>
@@ -172,6 +193,11 @@
             <groupId>uk.org.webcompere</groupId>
             <artifactId>system-stubs-jupiter</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>1.9.0</version>
         </dependency>
     </dependencies>
 </project>
