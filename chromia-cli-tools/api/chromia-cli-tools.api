@@ -183,8 +183,17 @@ public class com/chromia/cli/tools/launcher/CliLauncher : com/github/ajalt/clikt
 	public final fun getName ()Ljava/lang/String;
 }
 
+public final class com/chromia/cli/tools/multisignature/MultisignatureKt {
+	public static final fun getSignersFromFile (Ljava/io/File;)Ljava/util/Set;
+	public static final fun parseTransactionFile (Lcom/chromia/build/tools/multisignature/MultiSignatureTxData$Companion;Ljava/io/File;)Lcom/chromia/build/tools/multisignature/MultiSignatureTxData;
+	public static final fun saveTransactionToFile (Lcom/chromia/build/tools/multisignature/MultiSignatureTxData;Ljava/io/File;Ljava/lang/String;)Ljava/io/File;
+}
+
 public final class com/chromia/cli/tools/util/DateKt {
+	public static final fun convertMillisToLocalDateTime (J)Ljava/time/LocalDateTime;
 	public static final fun getDATE_TIME_FORMATS ()Ljava/util/Map;
+	public static final fun getFormattedUtcDateTime (Ljava/time/Instant;)Ljava/lang/String;
+	public static synthetic fun getFormattedUtcDateTime$default (Ljava/time/Instant;ILjava/lang/Object;)Ljava/lang/String;
 	public static final fun getSUPPORTED_TIME_AT_FORMATS ()Ljava/lang/String;
 	public static final fun parseDateTime (Ljava/lang/String;Ljava/util/List;)Ljava/time/LocalDateTime;
 	public static synthetic fun parseDateTime$default (Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Ljava/time/LocalDateTime;
