@@ -468,6 +468,11 @@
           "default": 26214400,
           "description": "Maximum size of transactions in bytes"
         },
+        "max_transaction_signatures": {
+          "type": "integer",
+          "default": 100,
+          "description": "Maximum number of signers/signatures for a transaction"
+        },
         "modules": {
           "type": "array",
           "items": {
@@ -479,6 +484,16 @@
           "type": "boolean",
           "default": false,
           "description": "Allow operations and queries with the same name to be overridden by another GTX module."
+        },
+        "slow_op_threshold": {
+          "type": "integer",
+          "default": -1,
+          "description": "The threshold for considering an operation *slow*, in milliseconds. Slow operations are logged at INFO level, -1 disables this logging."
+        },
+        "slow_prioritization_query_threshold": {
+          "type": "integer",
+          "default": -1,
+          "description": "The threshold for considering a prioritization query *slow*, in milliseconds. Slow queries are logged at INFO level, -1 disables this logging."
         }
       }
     },
