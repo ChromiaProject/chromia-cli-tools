@@ -55,10 +55,9 @@ fun createLibraryChainClient(explicitUrl: String? = null, explicitBrid: Blockcha
         .getClient(libraryChainBrid)
 }
 
-private fun resolveLibraryChainNetworkUrls(networkOrUrl: String?) = when {
+private fun resolveLibraryChainNetworkUrls(networkOrUrl: String) = when {
     predefinedNetworks[networkOrUrl] != null -> predefinedNetworks[networkOrUrl]!!
-    !networkOrUrl.isNullOrBlank() -> listOf(networkOrUrl)
-    else -> listOf(CHROMIA_MAINNET)
+    else -> listOf(networkOrUrl)
 }
 
 private fun resolveLibraryChainBrid(explicitBrid: BlockchainRid?, networkOrUrl: String) =
