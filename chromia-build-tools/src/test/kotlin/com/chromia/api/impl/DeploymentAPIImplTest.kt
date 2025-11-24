@@ -39,6 +39,7 @@ class DeploymentAPIImplTest {
     fun invalidConfigurations() {
         testData(dir)
         val testModel = DeploymentModel(BlockchainRid.ZERO_RID, "my_container", gtv("http://host"), mapOf("my_chain" to BlockchainRid.ZERO_RID))
+
         testModel.failsToCreateNewDeployment("Deployment for chain [my_chain] already configured")
         testModel.copy(container = null).failsToCreateNewDeployment("No container id is configured")
         testModel.copy(chains = mapOf()).failsToCreateNewDeployment("No signers configured")
@@ -99,6 +100,7 @@ class DeploymentAPIImplTest {
     inner class DeploymentClient(config: PostchainClientConfig) : TestClient(config, { 100 }) {
         override fun query(name: String, args: Gtv): Gtv {
             return when (name) {
+                "cm_api:cm_get_blockchain_cluster" -> gtv("my_cluster")
                 "cm_get_blockchain_cluster" -> gtv("my_cluster")
                 else -> super.query(name, args)
             }
