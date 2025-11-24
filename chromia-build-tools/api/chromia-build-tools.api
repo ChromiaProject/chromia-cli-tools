@@ -301,7 +301,7 @@ public abstract class com/chromia/build/tools/iccf/AbstractTestIccfGtxModule : n
 
 public final class com/chromia/build/tools/iccf/SingleNodeIccfGtxModule : com/chromia/build/tools/iccf/AbstractTestIccfGtxModule, net/postchain/gtx/PostchainContextAware {
 	public fun <init> ()V
-	public fun initializeContext (Lnet/postchain/core/BlockchainConfiguration;Lnet/postchain/PostchainContext;)V
+	public fun initializeContext (Lnet/postchain/core/BlockchainConfiguration;Lnet/postchain/PostchainContext;Lnet/postchain/core/ExecutionContext;)V
 }
 
 public final class com/chromia/build/tools/iccf/SingleNodeIccfGtxModule$Config {
