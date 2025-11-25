@@ -259,12 +259,8 @@ test:
       max_config_size: 10240 # 10 KiB, low so we can test limits easier
 
 libs:
-  ft4:
-    registry: https://bitbucket.org/chromawallet/ft3-lib
-    path: rell/src/lib/ft4
-    tagOrBranch: v0.5.0r
-    rid: x"125809B57980D6E36C07210D0541E7BCAD86A66F324FC1C0DA9CA7D1F8D5A720"
-    insecure: false
+  com.chromia.ft4:
+    version: 1.0.0
   auth:
     registry: https://bitbucket.org/chromawallet/auth-server-ft4.git
     path: rell/src/auth
