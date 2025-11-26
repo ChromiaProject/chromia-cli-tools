@@ -3,6 +3,8 @@ package com.chromia.build.tools.lib
 import com.chromia.build.tools.compile.ValidationException
 import com.chromia.build.tools.lib.DirectoryHashCalculator.RidStrategy
 import com.chromia.cli.model.RellLibraryModel
+import com.chromia.library.chain.versioning.external.getLibraryRid
+import net.postchain.common.wrap
 import java.nio.file.Path
 import kotlin.io.path.notExists
 import net.postchain.rell.api.base.RellCliEnv
@@ -11,7 +13,8 @@ class LibraryVerifyer(private val env: RellCliEnv, private val libRoot: Path) {
 
     fun verifyLibs(libs: Map<String, RellLibraryModel>) {
         libs.forEach { (name, rellLibrary) ->
-            val libraryLocation = libRoot.resolve(name)
+            val actualName = rellLibrary.getSimpleName(name)
+            val libraryLocation = libRoot.resolve(actualName)
             if (libraryLocation.notExists()) throw ValidationException("Library $name is not installed, install before building")
             if (!verifyLib(name, rellLibrary)) throw ValidationException("Failed validation of library $name")
         }
@@ -19,10 +22,21 @@ class LibraryVerifyer(private val env: RellCliEnv, private val libRoot: Path) {
 
     fun verifyLib(name: String, model: RellLibraryModel, quiet: Boolean = false): Boolean {
         if (model.insecure) return true
-        val libDir = libRoot.resolve(name)
+
+        val (finalModel, finalName) = if (model.isChromiaLib()) {
+            val client = createLibraryChainClient(model.registry, model.brid)
+            val expectedRid = model.rid
+                    ?: client.getLibraryRid(name, model.version!!)?.wrap()
+                    ?: error("Library '$name' with Version '${model.version}' doesn't exist")
+            model.copy(rid = expectedRid) to name.substringAfterLast(".")
+        } else {
+            model to name
+        }
+
+        val libDir = libRoot.resolve(finalName)
         val hashCalculator = DirectoryHashCalculator(libRoot.parent)
         val libraryRid = hashCalculator.compute(libDir, RidStrategy.LIST)
-        if (model.rid == libraryRid) return true
+        if (finalModel.rid == libraryRid) return true
         if (!quiet) {
             env.error("""
                 The rid for library $name does not match the configured value.
@@ -33,4 +47,10 @@ class LibraryVerifyer(private val env: RellCliEnv, private val libRoot: Path) {
         }
         return false
     }
+
+    private fun RellLibraryModel.getSimpleName(originalName: String): String =
+        if (isChromiaLib()) originalName.substringAfterLast(".") else originalName
+
+    private fun RellLibraryModel.isChromiaLib() = this.version != null
+
 }

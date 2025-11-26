@@ -3,11 +3,19 @@ package com.chromia.build.tools.model
 import assertk.assertThat
 import assertk.assertions.isTrue
 import com.chromia.build.tools.lib.LibraryVerifyer
+import com.chromia.build.tools.lib.createLibraryChainClient
 import com.chromia.build.tools.testData
 import com.chromia.cli.model.RellLibraryModel
 import com.chromia.cli.model.parseModel
+import com.chromia.library.chain.versioning.external.getLibraryRid
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
+import net.postchain.client.core.PostchainClient
 import net.postchain.common.hexStringToWrappedByteArray
 import net.postchain.rell.api.base.RellCliEnv
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -15,6 +23,11 @@ import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 
 internal class RellLibraryModelTest {
+
+    @AfterEach
+    fun tearDown() {
+        unmockkStatic(::createLibraryChainClient)
+    }
 
     @Test
     fun singleLibraryTest(@TempDir dir: Path) {
@@ -62,6 +75,33 @@ internal class RellLibraryModelTest {
                 addSourceFile("lib/bar/main.rell", """module;""")
             }
         }
+        val settings = parseModel(dir.resolve("chromia.yml").toFile())
+        val libraryVerifyer = LibraryVerifyer(RellCliEnv.DEFAULT, dir.resolve("src/lib"))
+        settings.libs.forEach {
+            assertThat(libraryVerifyer.verifyLib(it.key, it.value)).isTrue()
+        }
+    }
+
+
+    @Test
+    fun chromiaLibraryTest(@TempDir dir: Path) {
+        testData(dir) {
+            config {
+                addLib("com.chromia.foo", RellLibraryModel(null, version = "1.0.0"))
+                addSourceFile("lib/foo/main.rell", """module;""")
+                addSourceFile("lib/foo/api.rell", """module;""")
+                addSourceFile("lib/bar/main.rell", """module;""")
+            }
+        }
+        
+        val mockClient = mockk<PostchainClient>(relaxed = true)
+        
+        val expectedLibraryRid = "33B5C0C7909B01AD272346A49C4F4FCD6FF7E29685803F7F6C8B5EF320BF2F0C".hexStringToWrappedByteArray()
+        
+        mockkStatic(::createLibraryChainClient)
+        every { createLibraryChainClient(any(), any()) } returns mockClient
+        every { mockClient.getLibraryRid("com.chromia.foo", "1.0.0") } returns expectedLibraryRid.data
+        
         val settings = parseModel(dir.resolve("chromia.yml").toFile())
         val libraryVerifyer = LibraryVerifyer(RellCliEnv.DEFAULT, dir.resolve("src/lib"))
         settings.libs.forEach {
