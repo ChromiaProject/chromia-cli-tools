@@ -51,6 +51,7 @@ open class ChromiaModelOption(logger: (String) -> Unit) : OptionGroup("Configura
     val projectFolder by lazy { modelFile.parentFile }
     val sourceDir get() = model.compile.source.toFile()
     val targetDir get() = model.compile.target.toFile()
+    val modelFilePath get() = modelFile.absolutePath
 }
 
 open class OptionalChromiaModelOption(logger: (String) -> Unit) : OptionGroup("Configuration Properties") {
@@ -60,6 +61,7 @@ open class OptionalChromiaModelOption(logger: (String) -> Unit) : OptionGroup("C
     val model by lazy { resolvedModelFile?.let { parseModel(it) } }
     val sourceDir get() = model?.compile?.source?.toFile()
     val targetDir get() = model?.compile?.target?.toFile()
+    val modelFilePath get() = resolvedModelFile?.absolutePath
 }
 
 open class SafeOptionalChromiaModelOption(logger: (String) -> Unit) : OptionGroup("Configuration Properties") {
@@ -69,6 +71,7 @@ open class SafeOptionalChromiaModelOption(logger: (String) -> Unit) : OptionGrou
     val model by lazy { resolvedModelFile?.let { exceptionSuppressingParse(it) } }
     val sourceDir get() = model?.compile?.source?.toFile()
     val targetDir get() = model?.compile?.target?.toFile()
+    val modelFilePath get() = resolvedModelFile?.absolutePath
 }
 
 
@@ -80,6 +83,7 @@ open class ChromiaModelConfigOption(logger: (String) -> Unit) : OptionGroup("Con
     val projectFolder by lazy { modelFile.parentFile }
     val sourceDir get() = model.compile.source.toFile()
     val targetDir get() = model.compile.target.toFile()
+    val modelFilePath get() = modelFile.absolutePath
 }
 
 open class OptionalChromiaModelConfigOption(logger: (String) -> Unit) : OptionGroup("Configuration Properties") {
@@ -88,6 +92,7 @@ open class OptionalChromiaModelConfigOption(logger: (String) -> Unit) : OptionGr
     private val modelFile by chromiaModelFileOption()
     val model by lazy { ChromiaConfigLoader(logger).findModelFile(modelFile)?.let { parseModel(it) } }
     val projectFolder by lazy { modelFile?.parentFile }
+    val modelFilePath get() = modelFile?.absolutePath
 }
 
 open class BlockchainOptions(logger: (String) -> Unit) : OptionGroup() {
