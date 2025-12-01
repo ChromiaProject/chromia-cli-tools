@@ -5864,8 +5864,10 @@ public final class com/chromia/library/chain/versioning/external/Versioning_exte
 	public static final field GET_ORGANIZATION Ljava/lang/String;
 	public static final field GET_ORGANIZATIONS Ljava/lang/String;
 	public static final field GET_PENDING_INVITATIONS_FOR_DEVELOPER Ljava/lang/String;
+	public static final field UPDATE_LIBRARY_DESCRIPTION Ljava/lang/String;
 	public static final field UPDATE_LIBRARY_DEVELOPER_ACCESS_LEVEL Ljava/lang/String;
 	public static final field UPDATE_LIBRARY_METADATA Ljava/lang/String;
+	public static final field UPDATE_LIBRARY_VERSION_DESCRIPTION Ljava/lang/String;
 	public static final field UPDATE_ORGANIZATION_DEVELOPER_ACCESS_LEVEL Ljava/lang/String;
 	public static final fun acceptLibraryInvitationOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun acceptOrganizationInvitationOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
@@ -5895,8 +5897,10 @@ public final class com/chromia/library/chain/versioning/external/Versioning_exte
 	public static final fun getOrganization (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Lcom/chromia/library/chain/versioning/Organization;
 	public static final fun getOrganizations (Lnet/postchain/client/core/PostchainQuery;JJ)Ljava/util/List;
 	public static final fun getPendingInvitationsForDeveloper (Lnet/postchain/client/core/PostchainQuery;[B)Ljava/util/List;
+	public static final fun updateLibraryDescriptionOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun updateLibraryDeveloperAccessLevelOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[BLcom/chromia/library/chain/users/DeveloperAccessLevel;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun updateLibraryMetadataOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun updateLibraryVersionDescriptionOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun updateOrganizationDeveloperAccessLevelOperation (Lnet/postchain/client/transaction/TransactionBuilder;Ljava/lang/String;[BLcom/chromia/library/chain/users/DeveloperAccessLevel;)Lnet/postchain/client/transaction/TransactionBuilder;
 }
 
