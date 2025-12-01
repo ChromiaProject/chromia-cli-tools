@@ -17,6 +17,7 @@ public class com/chromia/cli/tools/config/ChromiaModelConfigOption : com/github/
 	public final fun getConfigFile ()Ljava/io/File;
 	public final fun getModel ()Lcom/chromia/cli/model/ChromiaModel;
 	public final fun getModelFile ()Ljava/io/File;
+	public final fun getModelFilePath ()Ljava/lang/String;
 	public final fun getProjectFolder ()Ljava/io/File;
 	public final fun getSourceDir ()Ljava/io/File;
 	public final fun getTargetDir ()Ljava/io/File;
@@ -25,6 +26,7 @@ public class com/chromia/cli/tools/config/ChromiaModelConfigOption : com/github/
 public class com/chromia/cli/tools/config/ChromiaModelOption : com/github/ajalt/clikt/parameters/groups/OptionGroup {
 	public fun <init> (Lkotlin/jvm/functions/Function1;)V
 	public final fun getModel ()Lcom/chromia/cli/model/ChromiaModel;
+	public final fun getModelFilePath ()Ljava/lang/String;
 	public final fun getProjectFolder ()Ljava/io/File;
 	public final fun getSourceDir ()Ljava/io/File;
 	public final fun getTargetDir ()Ljava/io/File;
@@ -89,12 +91,14 @@ public class com/chromia/cli/tools/config/OptionalChromiaModelConfigOption : com
 	public final fun getConfig ()Lcom/chromia/build/tools/config/ChromiaClientConfig;
 	public final fun getConfigFile ()Ljava/io/File;
 	public final fun getModel ()Lcom/chromia/cli/model/ChromiaModel;
+	public final fun getModelFilePath ()Ljava/lang/String;
 	public final fun getProjectFolder ()Ljava/io/File;
 }
 
 public class com/chromia/cli/tools/config/OptionalChromiaModelOption : com/github/ajalt/clikt/parameters/groups/OptionGroup {
 	public fun <init> (Lkotlin/jvm/functions/Function1;)V
 	public final fun getModel ()Lcom/chromia/cli/model/ChromiaModel;
+	public final fun getModelFilePath ()Ljava/lang/String;
 	public final fun getProjectFolder ()Ljava/io/File;
 	public final fun getSourceDir ()Ljava/io/File;
 	public final fun getTargetDir ()Ljava/io/File;
@@ -103,6 +107,7 @@ public class com/chromia/cli/tools/config/OptionalChromiaModelOption : com/githu
 public class com/chromia/cli/tools/config/SafeOptionalChromiaModelOption : com/github/ajalt/clikt/parameters/groups/OptionGroup {
 	public fun <init> (Lkotlin/jvm/functions/Function1;)V
 	public final fun getModel ()Lcom/chromia/cli/model/ChromiaModel;
+	public final fun getModelFilePath ()Ljava/lang/String;
 	public final fun getProjectFolder ()Ljava/io/File;
 	public final fun getSourceDir ()Ljava/io/File;
 	public final fun getTargetDir ()Ljava/io/File;
