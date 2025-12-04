@@ -1,13 +1,14 @@
 package com.chromia.build.tools.keystore
 
+import com.chromia.build.tools.config.chromiaHome
 import mu.KLogging
 import net.postchain.common.exception.UserMistake
 import net.postchain.crypto.KeyPair
 import java.nio.file.Files
 import java.nio.file.attribute.PosixFilePermission
-import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.createDirectories
+import kotlin.io.path.div
 import kotlin.io.path.exists
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
@@ -15,17 +16,16 @@ import kotlin.io.path.writeText
 class ChromiaKeyStore(val keyId: String = "chromia_key") {
     companion object : KLogging()
 
-    val chromiaHome = System.getenv("CHROMIA_HOME") ?: (System.getProperty("user.home") + "/.chromia")
-    val publicKeyFile = Path("$chromiaHome/$keyId.pubkey")
-    val privateKeyFile = Path("$chromiaHome/$keyId")
-    val mnemonicFile = Path("$chromiaHome/${keyId}_mnemonic")
+    val publicKeyFile = chromiaHome / "$keyId.pubkey"
+    val privateKeyFile = chromiaHome / keyId
+    val mnemonicFile = chromiaHome / "${keyId}_mnemonic"
 
     fun saveKeyPair(keyPair: KeyPair, mnemonic: String? = null): String {
         if (findKeyPair() != null) {
             throw UserMistake("Key pair with keyId: $keyId already exists in $chromiaHome")
         }
 
-        Path(chromiaHome).createDirectories()
+        chromiaHome.createDirectories()
         publicKeyFile.writeText(keyPair.pubKey.hex())
         privateKeyFile.writeText(keyPair.privKey.hex())
         try {
@@ -62,7 +62,7 @@ class ChromiaKeyStore(val keyId: String = "chromia_key") {
             |Keypair is written to $chromiaHome. To use this key pair, set key.id = $keyId in your configuration file
         """.trimMargin()
         )
-        return chromiaHome
+        return chromiaHome.toString()
     }
 
     fun loadKeyPair(): KeyPair {
