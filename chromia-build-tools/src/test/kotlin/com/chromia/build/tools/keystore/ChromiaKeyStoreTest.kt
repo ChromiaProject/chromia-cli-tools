@@ -8,7 +8,6 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import net.postchain.common.exception.UserMistake
 import net.postchain.crypto.KeyPair
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
@@ -28,56 +27,60 @@ class ChromiaKeyStoreTest {
 
     @TempDir
     private lateinit var testDir: Path
-    private lateinit var chromiaKeyStore: ChromiaKeyStore
-
-    @BeforeEach
-    fun setupKeyStory() {
-        EnvironmentVariables("CHROMIA_HOME", testDir.absolutePathString()).execute {
-            chromiaKeyStore = ChromiaKeyStore()
-        }
-    }
 
     @Test
     fun `Save and load key pair flow`() {
-        chromiaKeyStore.saveKeyPair(keyPair, mnemonic)
-        val loadedKeyPair = chromiaKeyStore.loadKeyPair()
-        assertThat(chromiaKeyStore.publicKeyFile.readText()).contains(keyPair.pubKey.hex())
-        assertThat(chromiaKeyStore.mnemonicFile.readText()).contains(mnemonic)
-        assertThat(chromiaKeyStore.privateKeyFile.readText()).contains(keyPair.privKey.hex())
-        assertThat(chromiaKeyStore.mnemonicFile.readText()).contains(mnemonic)
-        assertThat(loadedKeyPair.pubKey.hex()).isEqualTo(keyPair.pubKey.hex())
-        assertThat(loadedKeyPair.privKey.hex()).isEqualTo(keyPair.privKey.hex())
+        EnvironmentVariables("CHROMIA_HOME", testDir.absolutePathString()).execute {
+            val chromiaKeyStore = ChromiaKeyStore()
+            chromiaKeyStore.saveKeyPair(keyPair, mnemonic)
+            val loadedKeyPair = chromiaKeyStore.loadKeyPair()
+            assertThat(chromiaKeyStore.publicKeyFile.readText()).contains(keyPair.pubKey.hex())
+            assertThat(chromiaKeyStore.mnemonicFile.readText()).contains(mnemonic)
+            assertThat(chromiaKeyStore.privateKeyFile.readText()).contains(keyPair.privKey.hex())
+            assertThat(chromiaKeyStore.mnemonicFile.readText()).contains(mnemonic)
+            assertThat(loadedKeyPair.pubKey.hex()).isEqualTo(keyPair.pubKey.hex())
+            assertThat(loadedKeyPair.privKey.hex()).isEqualTo(keyPair.privKey.hex())
 
-        // only test this on POSIX compatible OS (e.g. not on Windows)
-        val os = System.getProperty("os.name").lowercase()
-        if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
-            assertThat(Files.getPosixFilePermissions(chromiaKeyStore.privateKeyFile))
-                    .containsExactlyInAnyOrder(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)
-            assertThat(Files.getPosixFilePermissions(chromiaKeyStore.mnemonicFile))
-                    .containsExactlyInAnyOrder(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)
+            // only test this on POSIX compatible OS (e.g. not on Windows)
+            val os = System.getProperty("os.name").lowercase()
+            if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+                assertThat(Files.getPosixFilePermissions(chromiaKeyStore.privateKeyFile))
+                        .containsExactlyInAnyOrder(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)
+                assertThat(Files.getPosixFilePermissions(chromiaKeyStore.mnemonicFile))
+                        .containsExactlyInAnyOrder(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)
+            }
         }
     }
 
     @Test
     fun `Save and find key pair flow`() {
-        assertThat(chromiaKeyStore.findKeyPair()).isNull()
-        chromiaKeyStore.saveKeyPair(keyPair)
-        val foundKeyPair = chromiaKeyStore.findKeyPair()
-        assertThat(foundKeyPair).isNotNull()
-        assertThat(foundKeyPair!!.pubKey.hex()).isEqualTo(keyPair.pubKey.hex())
-        assertThat(foundKeyPair.privKey.hex()).isEqualTo(keyPair.privKey.hex())
+        EnvironmentVariables("CHROMIA_HOME", testDir.absolutePathString()).execute {
+            val chromiaKeyStore = ChromiaKeyStore()
+            assertThat(chromiaKeyStore.findKeyPair()).isNull()
+            chromiaKeyStore.saveKeyPair(keyPair)
+            val foundKeyPair = chromiaKeyStore.findKeyPair()
+            assertThat(foundKeyPair).isNotNull()
+            assertThat(foundKeyPair!!.pubKey.hex()).isEqualTo(keyPair.pubKey.hex())
+            assertThat(foundKeyPair.privKey.hex()).isEqualTo(keyPair.privKey.hex())
+        }
     }
 
     @Test
     fun `loadKeyPair throws when load key pair do not find expected keys`() {
-        val throwable = assertThrows<UserMistake> { chromiaKeyStore.loadKeyPair() }
-        assertThat(throwable.message).isEqualTo("Could not find key pair with key id: chromia_key in $testDir")
+        EnvironmentVariables("CHROMIA_HOME", testDir.absolutePathString()).execute {
+            val chromiaKeyStore = ChromiaKeyStore()
+            val throwable = assertThrows<UserMistake> { chromiaKeyStore.loadKeyPair() }
+            assertThat(throwable.message).isEqualTo("Could not find key pair with key id: chromia_key in $testDir")
+        }
     }
 
     @Test
     fun `saveKeyPair throws when key pair with same id already exists`() {
-        chromiaKeyStore.saveKeyPair(keyPair)
-        val throwable = assertThrows<UserMistake> { chromiaKeyStore.saveKeyPair(keyPair) }
-        assertThat(throwable.message).isEqualTo("Key pair with keyId: chromia_key already exists in $testDir")
+        EnvironmentVariables("CHROMIA_HOME", testDir.absolutePathString()).execute {
+            val chromiaKeyStore = ChromiaKeyStore()
+            chromiaKeyStore.saveKeyPair(keyPair)
+            val throwable = assertThrows<UserMistake> { chromiaKeyStore.saveKeyPair(keyPair) }
+            assertThat(throwable.message).isEqualTo("Key pair with keyId: chromia_key already exists in $testDir")
+        }
     }
 }
