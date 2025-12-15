@@ -14,8 +14,8 @@ public final class com/chromia/api/ChromiaDeploymentApi {
 
 public final class com/chromia/api/ChromiaLibrariesApi {
 	public static final field INSTANCE Lcom/chromia/api/ChromiaLibrariesApi;
-	public final fun install (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;Lcom/chromia/build/tools/lib/RepositoryCloner;Z)V
-	public static synthetic fun install$default (Lcom/chromia/api/ChromiaLibrariesApi;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;Lcom/chromia/build/tools/lib/RepositoryCloner;ZILjava/lang/Object;)V
+	public final fun install (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;Lcom/chromia/build/tools/lib/RepositoryCloner;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;Z)V
+	public static synthetic fun install$default (Lcom/chromia/api/ChromiaLibrariesApi;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;Lcom/chromia/build/tools/lib/RepositoryCloner;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZILjava/lang/Object;)V
 }
 
 public abstract interface annotation class com/chromia/api/ExperimentalApi : java/lang/annotation/Annotation {
@@ -41,7 +41,7 @@ public final class com/chromia/api/impl/DeploymentKt {
 }
 
 public final class com/chromia/api/impl/LibsKt {
-	public static final fun install (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/build/tools/lib/RepositoryCloner;Lcom/chromia/cli/model/ChromiaModel;Z)V
+	public static final fun install (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/build/tools/lib/RepositoryCloner;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;Z)V
 }
 
 public final class com/chromia/api/impl/compile/DefaultsKt {
@@ -448,11 +448,21 @@ public final class com/chromia/build/tools/keystore/ChromiaKeyStore {
 public final class com/chromia/build/tools/keystore/ChromiaKeyStore$Companion : mu/KLogging {
 }
 
+public final class com/chromia/build/tools/lib/ChromiaFileLibUpdaterKt {
+	public static final fun printYamlDiff (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public static final fun updateChromiaYamlForLibrary (Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun updateChromiaYamlForLibrary$default (Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
 public final class com/chromia/build/tools/lib/ChromiaLibInstaller {
+	public static final field Companion Lcom/chromia/build/tools/lib/ChromiaLibInstaller$Companion;
 	public fun <init> ()V
 	public final fun calculateRid (Ljava/nio/file/Path;)[B
-	public final fun installChromiaLibrary (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Ljava/nio/file/Path;Z)Ljava/nio/file/Path;
-	public static synthetic fun installChromiaLibrary$default (Lcom/chromia/build/tools/lib/ChromiaLibInstaller;Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Ljava/nio/file/Path;ZILjava/lang/Object;)Ljava/nio/file/Path;
+	public final fun installChromiaLibrary (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Ljava/nio/file/Path;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun installChromiaLibrary$default (Lcom/chromia/build/tools/lib/ChromiaLibInstaller;Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Ljava/nio/file/Path;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/chromia/build/tools/lib/ChromiaLibInstaller$Companion {
 }
 
 public final class com/chromia/build/tools/lib/DirectoryHashCalculator {
@@ -502,13 +512,23 @@ public final class com/chromia/build/tools/lib/LibraryInstallException : java/la
 	public fun <init> (Ljava/lang/String;)V
 }
 
+public abstract interface class com/chromia/build/tools/lib/LibraryInstallProgress {
+	public abstract fun onError (Ljava/lang/String;Ljava/lang/String;)V
+	public abstract fun onPostInstall (Ljava/lang/String;Ljava/lang/String;)V
+	public abstract fun onProgress (Ljava/lang/String;JJLjava/lang/String;)V
+	public abstract fun onStart (Ljava/lang/String;)V
+	public abstract fun onSuccess (Ljava/lang/String;)V
+}
+
 public final class com/chromia/build/tools/lib/LibraryInstaller {
-	public fun <init> (Lcom/chromia/build/tools/lib/RepositoryCloner;Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;Ljava/nio/file/Path;Z)V
+	public fun <init> (Lcom/chromia/build/tools/lib/RepositoryCloner;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;Z)V
+	public synthetic fun <init> (Lcom/chromia/build/tools/lib/RepositoryCloner;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun installLibs (Ljava/util/Map;)V
 }
 
 public final class com/chromia/build/tools/lib/LibraryVerifyer {
-	public fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;)V
+	public fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;Lcom/chromia/build/tools/lib/LibraryInstallProgress;)V
+	public synthetic fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;Lcom/chromia/build/tools/lib/LibraryInstallProgress;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun verifyLib (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Z)Z
 	public static synthetic fun verifyLib$default (Lcom/chromia/build/tools/lib/LibraryVerifyer;Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;ZILjava/lang/Object;)Z
 	public final fun verifyLibs (Ljava/util/Map;)V
@@ -659,6 +679,7 @@ public final class com/chromia/build/tools/util/ApiVersionKt {
 public final class com/chromia/build/tools/util/LibUtilsKt {
 	public static final fun ifNotEmpty (Ljava/util/Collection;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public static final fun ifNotEmpty (Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Lkotlin/Unit;
+	public static final fun isChromiaLib (Lcom/chromia/cli/model/RellLibraryModel;)Z
 	public static final fun safeDelete (Ljava/io/File;)Z
 	public static final fun safeDelete (Ljava/nio/file/Path;)Z
 }
