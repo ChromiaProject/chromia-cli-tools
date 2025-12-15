@@ -4,6 +4,7 @@ import com.chromia.api.impl.compileGtv
 import com.chromia.api.result.BlockchainConfiguration
 import com.chromia.api.result.BlockchainDeploymentResult
 import com.chromia.build.tools.config.ChromiaClientConfig
+import com.chromia.build.tools.lib.LibraryInstallProgress
 import com.chromia.build.tools.lib.RepositoryCloner
 import com.chromia.cli.model.ChromiaModel
 import com.chromia.cli.model.DeploymentModel
@@ -32,8 +33,14 @@ object ChromiaLibrariesApi {
      * Installs libraries to src/lib folder.
      */
     @ExperimentalApi("May want to remove RepositoryCloner parameter from this api")
-    fun install(cliEnv: RellCliEnv, model: ChromiaModel, repositoryCloner: RepositoryCloner, forceInstall: Boolean = false)
-        = com.chromia.api.impl.install(cliEnv, repositoryCloner, model, forceInstall)
+    fun install(
+        cliEnv: RellCliEnv,
+        model: ChromiaModel,
+        repositoryCloner: RepositoryCloner,
+        forceInstall: Boolean = false,
+        progress: LibraryInstallProgress? = null,
+        isExplicitInstall: Boolean = false
+    ) = com.chromia.api.impl.install(cliEnv, repositoryCloner, model, forceInstall, progress, isExplicitInstall)
 }
 
 object ChromiaDeploymentApi {

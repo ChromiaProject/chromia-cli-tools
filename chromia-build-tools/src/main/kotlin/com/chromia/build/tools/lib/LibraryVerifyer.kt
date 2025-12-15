@@ -2,6 +2,7 @@ package com.chromia.build.tools.lib
 
 import com.chromia.build.tools.compile.ValidationException
 import com.chromia.build.tools.lib.DirectoryHashCalculator.RidStrategy
+import com.chromia.build.tools.util.isChromiaLib
 import com.chromia.cli.model.RellLibraryModel
 import com.chromia.library.chain.versioning.external.getLibraryRid
 import net.postchain.common.wrap
@@ -9,7 +10,11 @@ import java.nio.file.Path
 import kotlin.io.path.notExists
 import net.postchain.rell.api.base.RellCliEnv
 
-class LibraryVerifyer(private val env: RellCliEnv, private val libRoot: Path) {
+class LibraryVerifyer(
+    private val env: RellCliEnv,
+    private val libRoot: Path,
+    private val libraryProgress: LibraryInstallProgress? = null
+) {
 
     fun verifyLibs(libs: Map<String, RellLibraryModel>) {
         libs.forEach { (name, rellLibrary) ->
@@ -23,7 +28,7 @@ class LibraryVerifyer(private val env: RellCliEnv, private val libRoot: Path) {
     fun verifyLib(name: String, model: RellLibraryModel, quiet: Boolean = false): Boolean {
         if (model.insecure) return true
 
-        val (finalModel, finalName) = if (model.isChromiaLib()) {
+        val (finalModel, finalName) = if (model.isChromiaLib) {
             val client = createLibraryChainClient(model.registry, model.brid)
             val expectedRid = model.rid
                     ?: client.getLibraryRid(name, model.version!!)?.wrap()
@@ -38,19 +43,19 @@ class LibraryVerifyer(private val env: RellCliEnv, private val libRoot: Path) {
         val libraryRid = hashCalculator.compute(libDir, RidStrategy.LIST)
         if (finalModel.rid == libraryRid) return true
         if (!quiet) {
-            env.error("""
+            val message = """
                 The rid for library $name does not match the configured value.
                 Should be: ${model.rid}
                 Was: $libraryRid
                 Do not blindly copy the calculated rid as the integrity of the library cannot be verified.
-                """.trimIndent())
+                """.trimIndent()
+                libraryProgress?.onError(name, message)
+                    ?: env.error(message)
         }
         return false
     }
 
     private fun RellLibraryModel.getSimpleName(originalName: String): String =
-        if (isChromiaLib()) originalName.substringAfterLast(".") else originalName
-
-    private fun RellLibraryModel.isChromiaLib() = this.version != null
+        if (isChromiaLib) originalName.substringAfterLast(".") else originalName
 
 }

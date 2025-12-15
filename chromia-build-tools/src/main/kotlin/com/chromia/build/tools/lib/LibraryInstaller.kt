@@ -1,8 +1,12 @@
 package com.chromia.build.tools.lib
 
+import com.chromia.build.tools.util.isChromiaLib
 import com.chromia.build.tools.util.safeDelete
+import com.chromia.cli.model.ChromiaModel
 import com.chromia.cli.model.RellLibraryModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.nio.file.Files
@@ -14,57 +18,104 @@ import kotlin.io.path.isDirectory
 import net.postchain.rell.api.base.RellCliEnv
 
 class LibraryInstaller(
-        private val repositoryCloner: RepositoryCloner,
-        private val env: RellCliEnv,
-        sourceDir: Path,
-        private val tempDir: Path,
-        private val forceInstall: Boolean
+    private val repositoryCloner: RepositoryCloner,
+    private val env: RellCliEnv,
+    private val model: ChromiaModel,
+    private val forceInstall: Boolean,
+    private val libraryProgress: LibraryInstallProgress? = null,
+    private val isExplicitInstall: Boolean = false
 ) {
 
-    private val libRoot: Path = sourceDir.resolve("lib")
-    private val tmpLibRoot: Path = tempDir.resolve(".tmp/lib")
-    private val libraryVerifyer = LibraryVerifyer(env, libRoot)
+    private val libRoot: Path = model.compile.source.resolve("lib")
+    private val tmpLibRoot: Path = model.compile.target.resolve(".tmp/lib")
+    private val libraryVerifier = LibraryVerifyer(env, libRoot, libraryProgress)
     private val chromiaLibInstaller = ChromiaLibInstaller()
 
-    fun installLibs(libs: Map<String, RellLibraryModel>) = runBlocking {
-        coroutineScope {
-            libs.forEach { (id, libModel) ->
-                launch { libModel.install(id) }
-            }
-        }
+    fun installLibs(libs: Map<String, RellLibraryModel>)  = runBlocking {
+        if (libs.isEmpty()) return@runBlocking
+        installLibrariesAsync(libs)
     }
 
-    private fun RellLibraryModel.install(id: String) =
-        version?.let {
-            chromiaLibInstaller.installChromiaLibrary(id, this, libRoot, forceInstall)
-        } ?: installGitLibrary(id, this)
+    private suspend fun installLibrariesAsync(chromiaLibs: Map<String, RellLibraryModel>) = coroutineScope {
+        val jobs = chromiaLibs.map { (id, libModel) ->
+            launch(Dispatchers.IO) {
+                installLibraryWithProgress(id, libModel)
+            }
+        }
+        jobs.joinAll()
+    }
 
-    private fun installGitLibrary(name: String, model: RellLibraryModel) {
-        cleanupTempDir()
+    private suspend fun installLibraryWithProgress(
+        libraryId: String,
+        libModel: RellLibraryModel
+    ) = runCatching {
+        libraryProgress?.onStart(libraryId)
+        if (libModel.isChromiaLib) {
+            chromiaLibInstaller.installChromiaLibrary(
+                libraryId = libraryId,
+                libModel = libModel,
+                libRoot = libRoot,
+                forceInstall = forceInstall,
+                libraryProgress
+            )
+        } else {
+            installGitLibrary(libraryId, libModel, libraryProgress)
+        }
+    }.fold(
+        onSuccess = {
+            libraryProgress?.onSuccess(libraryId)
+            if (isExplicitInstall && libModel.version != null) {
+                libraryProgress?.onPostInstall(libraryId, libModel.version)
+            }
+        },
+        onFailure = { e ->
+            libraryProgress?.onError(libraryId, e.message)
+                ?: env.error("Failed to install library $libraryId: ${e.message}")
+        }
+    )
+
+    private fun installGitLibrary(
+        name: String,
+        model: RellLibraryModel,
+        progress: LibraryInstallProgress?
+    ) {
         val installDir = libRoot.resolve(name)
         if (installDir.exists() && installDir.isNotEmptyDir()) {
-            if (libraryVerifyer.verifyLib(name, model, true)) return
-            env.print("Library $name not up to date, reinstalling")
+            if (libraryVerifier.verifyLib(name, model, true)) return
+            val message = "Library $name not up to date, reinstalling"
+
+            progress?.onProgress(name, 5, 100, message)
+                ?: env.print(message)
+
             installDir.safeDelete()
         }
-        cloneRepository(name, model, installDir)
-        if (!libraryVerifyer.verifyLib(name, model)) {
+        cloneRepository(name, model, installDir, progress)
+        progress?.onProgress(name, 10, 100, "Verifying installation")
+        if (!libraryVerifier.verifyLib(name, model)) {
             installDir.toFile().deleteRecursively()
             throw LibraryInstallException("Failed to install lib $name")
         }
     }
 
-    private fun cloneRepository(name: String, model: RellLibraryModel, installDir: Path) {
+    private fun cloneRepository(
+        name: String,
+        model: RellLibraryModel,
+        installDir: Path,
+        progress: LibraryInstallProgress?
+    ) {
         model.registry ?: throw LibraryInstallException("Registry not set for library $name")
         val tmpInstallDir = tmpLibRoot.resolve(name)
         try {
+            progress?.onProgress(name, 20, 100, "Cloning repository")
             repositoryCloner.clone(model.registry, tmpInstallDir, model.tagOrBranch)
-
             val sourcePath = tmpInstallDir.resolve(model.path)
+            progress?.onProgress(name, 40, 100, "validating installation library path")
             validateLibPath(sourcePath, model, name)
+            progress?.onProgress(name, 60, 100, "Copying files to project's lib directory")
             copyRellFilesInFolder(sourcePath, installDir)
         } finally {
-            cleanupTempDir()
+            progress?.onProgress(name, 80, 100, "Cleaning up temporary files")
+            tmpInstallDir.safeDelete()
         }
     }
 
@@ -87,7 +138,7 @@ class LibraryInstaller(
     }
 
     private fun cleanupTempDir() {
-        tempDir.resolve(".tmp").let {
+        model.compile.target.resolve(".tmp").let {
             if (it.exists()) it.toFile().deleteRecursively()
         }
     }
