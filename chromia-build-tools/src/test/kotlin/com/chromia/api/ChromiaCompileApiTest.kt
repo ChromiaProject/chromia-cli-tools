@@ -195,16 +195,18 @@ internal class ChromiaCompileApiTest {
 
     @Test
     fun `Native functions configuration `() {
+        val module_name = "main"
         testData(dir) {
             config {
                 blockchains("""
                     blockchains:
                       hello:
-                        module: main
+                        module: $module_name
                         config:
                           gtx:
                             rell:
-                              native: native_function
+                              native:
+                                $module_name: com.example.MyModuleRellNative
                 """.trimIndent())
             }
             addFile("web/index.html", "<html></html>")
@@ -216,7 +218,7 @@ internal class ChromiaCompileApiTest {
 
         val rellConfig = outputGtv["gtx"]?.get("rell")?.asDict()
         assertThat(rellConfig?.get("modules")).isEqualTo(gtv(listOf(gtv("main"))))
-        assertThat(rellConfig?.get("native")).isEqualTo(gtv("native_function"))
+        assertThat(rellConfig?.get("native")?.get(module_name)).isEqualTo(gtv("com.example.MyModuleRellNative"))
     }
 
     @Test

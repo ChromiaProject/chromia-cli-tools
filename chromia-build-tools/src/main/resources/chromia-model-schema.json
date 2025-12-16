@@ -499,10 +499,11 @@
         "rell": {
           "type": "object",
           "description": "Rell configurations",
+          "additionalProperties": true,
           "properties": {
             "native": {
-              "type": "string",
-              "description": "Native Function"
+              "type": "object",
+              "description": "Map module names to their native function implementations (format: \"moduleName\": \"nativeFunctionName\")"
             }
           }
         }
