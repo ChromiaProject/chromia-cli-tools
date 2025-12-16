@@ -5,10 +5,10 @@ import com.chromia.build.tools.util.safeDelete
 import com.chromia.cli.model.ChromiaModel
 import com.chromia.cli.model.RellLibraryModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.supervisorScope
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
@@ -16,6 +16,7 @@ import kotlin.io.path.exists
 import kotlin.io.path.extension
 import kotlin.io.path.isDirectory
 import net.postchain.rell.api.base.RellCliEnv
+import java.util.concurrent.ConcurrentHashMap
 
 class LibraryInstaller(
     private val repositoryCloner: RepositoryCloner,
@@ -30,19 +31,33 @@ class LibraryInstaller(
     private val tmpLibRoot: Path = model.compile.target.resolve(".tmp/lib")
     private val libraryVerifier = LibraryVerifyer(env, libRoot, libraryProgress)
     private val chromiaLibInstaller = ChromiaLibInstaller()
+    //NOTE: we don't want to throw instantly as it breaks the progressBar animations
+    //  first accumulate errors, after all tasks are finished, only then we throw
+    private val errors = ConcurrentHashMap<String, String>()
 
     fun installLibs(libs: Map<String, RellLibraryModel>)  = runBlocking {
         if (libs.isEmpty()) return@runBlocking
         installLibrariesAsync(libs)
     }
 
-    private suspend fun installLibrariesAsync(chromiaLibs: Map<String, RellLibraryModel>) = coroutineScope {
+    private suspend fun installLibrariesAsync(chromiaLibs: Map<String, RellLibraryModel>) = supervisorScope {
         val jobs = chromiaLibs.map { (id, libModel) ->
             launch(Dispatchers.IO) {
                 installLibraryWithProgress(id, libModel)
             }
         }
         jobs.joinAll()
+
+        // "rell-maven-plugin" uses the exit code to terminate a running pipeline. (Gitlab)
+        // we need to throw here after all installations are complete to not break progress
+        if (errors.isNotEmpty()) {
+            libraryProgress?.onSummary(errors)
+
+            val errorMessages = errors.entries.joinToString("\n") { (libraryId, errorMsg) ->
+                "Library $libraryId: $errorMsg"
+            }
+            throw LibraryInstallException("Failed to install ${errors.size} library/libraries:\n$errorMessages")
+        }
     }
 
     private suspend fun installLibraryWithProgress(
@@ -69,8 +84,10 @@ class LibraryInstaller(
             }
         },
         onFailure = { e ->
-            libraryProgress?.onError(libraryId, e.message)
-                ?: env.error("Failed to install library $libraryId: ${e.message}")
+            val errorMessage = e.message ?: "Unknown error"
+            errors.computeIfAbsent(libraryId) { errorMessage }
+            libraryProgress?.onError(libraryId)
+                ?: env.error("Failed to install library $libraryId: $errorMessage")
         }
     )
 
@@ -91,7 +108,7 @@ class LibraryInstaller(
         }
         cloneRepository(name, model, installDir, progress)
         progress?.onProgress(name, 10, 100, "Verifying installation")
-        if (!libraryVerifier.verifyLib(name, model)) {
+        if (!libraryVerifier.verifyLib(name, model, errors = errors)) {
             installDir.toFile().deleteRecursively()
             throw LibraryInstallException("Failed to install lib $name")
         }
@@ -134,12 +151,6 @@ class LibraryInstaller(
                 append("Please update the 'path' accordingly in chromia.yml 'libs->$name->path'")
             }
             throw LibraryInstallException(pathNotFoundMsg)
-        }
-    }
-
-    private fun cleanupTempDir() {
-        model.compile.target.resolve(".tmp").let {
-            if (it.exists()) it.toFile().deleteRecursively()
         }
     }
 

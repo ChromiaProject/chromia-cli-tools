@@ -9,6 +9,7 @@ import net.postchain.common.wrap
 import java.nio.file.Path
 import kotlin.io.path.notExists
 import net.postchain.rell.api.base.RellCliEnv
+import java.util.concurrent.ConcurrentHashMap
 
 class LibraryVerifyer(
     private val env: RellCliEnv,
@@ -25,7 +26,12 @@ class LibraryVerifyer(
         }
     }
 
-    fun verifyLib(name: String, model: RellLibraryModel, quiet: Boolean = false): Boolean {
+    fun verifyLib(
+        name: String,
+        model: RellLibraryModel,
+        quiet: Boolean = false,
+        errors: ConcurrentHashMap<String, String>? = null
+    ): Boolean {
         if (model.insecure) return true
 
         val (finalModel, finalName) = if (model.isChromiaLib) {
@@ -49,8 +55,9 @@ class LibraryVerifyer(
                 Was: $libraryRid
                 Do not blindly copy the calculated rid as the integrity of the library cannot be verified.
                 """.trimIndent()
-                libraryProgress?.onError(name, message)
-                    ?: env.error(message)
+            errors?.put(name, message)
+            libraryProgress?.onError(name)
+                ?: env.error(message)
         }
         return false
     }

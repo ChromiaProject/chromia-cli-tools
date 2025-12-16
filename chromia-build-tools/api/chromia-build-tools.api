@@ -513,11 +513,12 @@ public final class com/chromia/build/tools/lib/LibraryInstallException : java/la
 }
 
 public abstract interface class com/chromia/build/tools/lib/LibraryInstallProgress {
-	public abstract fun onError (Ljava/lang/String;Ljava/lang/String;)V
+	public abstract fun onError (Ljava/lang/String;)V
 	public abstract fun onPostInstall (Ljava/lang/String;Ljava/lang/String;)V
 	public abstract fun onProgress (Ljava/lang/String;JJLjava/lang/String;)V
 	public abstract fun onStart (Ljava/lang/String;)V
 	public abstract fun onSuccess (Ljava/lang/String;)V
+	public abstract fun onSummary (Ljava/util/Map;)V
 }
 
 public final class com/chromia/build/tools/lib/LibraryInstaller {
@@ -529,8 +530,8 @@ public final class com/chromia/build/tools/lib/LibraryInstaller {
 public final class com/chromia/build/tools/lib/LibraryVerifyer {
 	public fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;Lcom/chromia/build/tools/lib/LibraryInstallProgress;)V
 	public synthetic fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;Lcom/chromia/build/tools/lib/LibraryInstallProgress;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun verifyLib (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Z)Z
-	public static synthetic fun verifyLib$default (Lcom/chromia/build/tools/lib/LibraryVerifyer;Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;ZILjava/lang/Object;)Z
+	public final fun verifyLib (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;ZLjava/util/concurrent/ConcurrentHashMap;)Z
+	public static synthetic fun verifyLib$default (Lcom/chromia/build/tools/lib/LibraryVerifyer;Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;ZLjava/util/concurrent/ConcurrentHashMap;ILjava/lang/Object;)Z
 	public final fun verifyLibs (Ljava/util/Map;)V
 }
 
