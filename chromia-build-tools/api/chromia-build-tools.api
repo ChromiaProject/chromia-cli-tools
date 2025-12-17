@@ -465,6 +465,19 @@ public final class com/chromia/build/tools/lib/ChromiaLibInstaller {
 public final class com/chromia/build/tools/lib/ChromiaLibInstaller$Companion {
 }
 
+public final class com/chromia/build/tools/lib/CliLibraryInstallProgress : com/chromia/build/tools/lib/LibraryInstallProgress {
+	public fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/util/concurrent/ConcurrentHashMap;)V
+	public synthetic fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/util/concurrent/ConcurrentHashMap;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getErrors ()Ljava/util/concurrent/ConcurrentHashMap;
+	public fun getHasError ()Z
+	public fun onError (Ljava/lang/String;Ljava/lang/String;)V
+	public fun onPostInstall (Ljava/lang/String;Ljava/lang/String;)V
+	public fun onProgress (Ljava/lang/String;JJLjava/lang/String;)V
+	public fun onStart (Ljava/lang/String;)V
+	public fun onSuccess (Ljava/lang/String;)V
+	public fun onSummary ()V
+}
+
 public final class com/chromia/build/tools/lib/DirectoryHashCalculator {
 	public static final field Companion Lcom/chromia/build/tools/lib/DirectoryHashCalculator$Companion;
 	public static final field EOL_UNIX Ljava/lang/String;
@@ -484,40 +497,6 @@ public abstract interface class com/chromia/build/tools/lib/DirectoryHashCalcula
 public final class com/chromia/build/tools/lib/DirectoryHashCalculator$RidStrategy$Companion {
 	public final fun getLIST ()Lcom/chromia/build/tools/lib/DirectoryHashCalculator$RidStrategy;
 	public final fun getMAP ()Lcom/chromia/build/tools/lib/DirectoryHashCalculator$RidStrategy;
-}
-
-public abstract class com/chromia/build/tools/lib/ErrorReporting {
-}
-
-public final class com/chromia/build/tools/lib/ErrorReporting$Silent : com/chromia/build/tools/lib/ErrorReporting {
-	public static final field INSTANCE Lcom/chromia/build/tools/lib/ErrorReporting$Silent;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/chromia/build/tools/lib/ErrorReporting$ToCli : com/chromia/build/tools/lib/ErrorReporting {
-	public fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;)V
-	public final fun component1 ()Lnet/postchain/rell/api/base/RellCliEnv;
-	public final fun copy (Lnet/postchain/rell/api/base/RellCliEnv;)Lcom/chromia/build/tools/lib/ErrorReporting$ToCli;
-	public static synthetic fun copy$default (Lcom/chromia/build/tools/lib/ErrorReporting$ToCli;Lnet/postchain/rell/api/base/RellCliEnv;ILjava/lang/Object;)Lcom/chromia/build/tools/lib/ErrorReporting$ToCli;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getEnv ()Lnet/postchain/rell/api/base/RellCliEnv;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/chromia/build/tools/lib/ErrorReporting$ToInstallationProgress : com/chromia/build/tools/lib/ErrorReporting {
-	public fun <init> (Lcom/chromia/build/tools/lib/LibraryInstallProgress;Ljava/util/concurrent/ConcurrentHashMap;)V
-	public final fun component1 ()Lcom/chromia/build/tools/lib/LibraryInstallProgress;
-	public final fun component2 ()Ljava/util/concurrent/ConcurrentHashMap;
-	public final fun copy (Lcom/chromia/build/tools/lib/LibraryInstallProgress;Ljava/util/concurrent/ConcurrentHashMap;)Lcom/chromia/build/tools/lib/ErrorReporting$ToInstallationProgress;
-	public static synthetic fun copy$default (Lcom/chromia/build/tools/lib/ErrorReporting$ToInstallationProgress;Lcom/chromia/build/tools/lib/LibraryInstallProgress;Ljava/util/concurrent/ConcurrentHashMap;ILjava/lang/Object;)Lcom/chromia/build/tools/lib/ErrorReporting$ToInstallationProgress;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getErrors ()Ljava/util/concurrent/ConcurrentHashMap;
-	public final fun getProgress ()Lcom/chromia/build/tools/lib/LibraryInstallProgress;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/chromia/build/tools/lib/GitRepositoryCloner : com/chromia/build/tools/lib/RepositoryCloner {
@@ -547,12 +526,18 @@ public final class com/chromia/build/tools/lib/LibraryInstallException : java/la
 }
 
 public abstract interface class com/chromia/build/tools/lib/LibraryInstallProgress {
-	public abstract fun onError (Ljava/lang/String;)V
+	public abstract fun getErrors ()Ljava/util/concurrent/ConcurrentHashMap;
+	public abstract fun getHasError ()Z
+	public abstract fun onError (Ljava/lang/String;Ljava/lang/String;)V
 	public abstract fun onPostInstall (Ljava/lang/String;Ljava/lang/String;)V
 	public abstract fun onProgress (Ljava/lang/String;JJLjava/lang/String;)V
 	public abstract fun onStart (Ljava/lang/String;)V
 	public abstract fun onSuccess (Ljava/lang/String;)V
-	public abstract fun onSummary (Ljava/util/Map;)V
+	public abstract fun onSummary ()V
+}
+
+public final class com/chromia/build/tools/lib/LibraryInstallProgress$DefaultImpls {
+	public static fun getHasError (Lcom/chromia/build/tools/lib/LibraryInstallProgress;)Z
 }
 
 public final class com/chromia/build/tools/lib/LibraryInstaller {
@@ -562,9 +547,10 @@ public final class com/chromia/build/tools/lib/LibraryInstaller {
 }
 
 public final class com/chromia/build/tools/lib/LibraryVerifyer {
-	public fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;)V
-	public final fun verifyLib (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Lcom/chromia/build/tools/lib/ErrorReporting;)Z
-	public static synthetic fun verifyLib$default (Lcom/chromia/build/tools/lib/LibraryVerifyer;Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Lcom/chromia/build/tools/lib/ErrorReporting;ILjava/lang/Object;)Z
+	public fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;Lcom/chromia/build/tools/lib/LibraryInstallProgress;)V
+	public synthetic fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;Lcom/chromia/build/tools/lib/LibraryInstallProgress;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun verifyLib (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Z)Z
+	public static synthetic fun verifyLib$default (Lcom/chromia/build/tools/lib/LibraryVerifyer;Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;ZILjava/lang/Object;)Z
 	public final fun verifyLibs (Ljava/util/Map;)V
 }
 

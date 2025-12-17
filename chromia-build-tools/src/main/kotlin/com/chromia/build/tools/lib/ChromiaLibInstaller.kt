@@ -27,13 +27,13 @@ class ChromiaLibInstaller {
             libModel: RellLibraryModel,
             libRoot: Path,
             forceInstall: Boolean = false,
-            libraryProgress: LibraryInstallProgress? = null
+            progress: LibraryInstallProgress?
     ) {
-        libraryProgress?.onProgress(libraryId, 5, 100, "Connecting to library chain")
+        progress?.onProgress(libraryId, 5, 100, "Connecting to library chain")
         val client = createLibraryChainClient(libModel.registry, libModel.brid)
         val version = requireNotNull(libModel.version) { "version is required for library $libraryId" }
 
-        libraryProgress?.onProgress(libraryId, 10, 100, "Fetching library metadata")
+        progress?.onProgress(libraryId, 10, 100, "Fetching library metadata")
         val name = requireNotNull(client.getLibrary(libraryId)?.displayName) {
             "Library '$libraryId' not found."
         }
@@ -45,29 +45,29 @@ class ChromiaLibInstaller {
         val targetDir = libRoot / name
 
         try {
-            libraryProgress?.onProgress(libraryId, 30, 100, "Downloading library files")
+            progress?.onProgress(libraryId, 30, 100, "Downloading library files")
             val allFiles = fetchLibraryFiles(client, libraryId, version) { filesCount ->
                 // FIXME: need to update library-chain Rell code, so that we can have
                 //  metadata of files count beforehand to report real stats to the user
                 val message = "Downloaded $filesCount ${if (filesCount == 1L) "file" else "files"}"
-                libraryProgress?.onProgress(libraryId, filesCount, filesCount + 1, message)
+                progress?.onProgress(libraryId, filesCount, filesCount + 1, message)
             }
 
-            libraryProgress?.onProgress(libraryId, 60, 100, "Processing downloaded files")
+            progress?.onProgress(libraryId, 60, 100, "Processing downloaded files")
             val installableFiles = allFiles
-                    .flatMap { it.files.entries }
-                    .filter { (filePath, _) -> shouldInstallFile(filePath, libModel) }
+                .flatMap { it.files.entries }
+                .filter { (filePath, _) -> shouldInstallFile(filePath, libModel) }
 
             installableFiles.forEach { (filePath, content) ->
                 val tempPath = tempLibraryDir / filePath
                 installFile(tempPath, content.data)
             }
 
-            libraryProgress?.onProgress(libraryId, 85, 100, "Verifying installation")
+            progress?.onProgress(libraryId, 85, 100, "Verifying installation")
             val calculatedRid = calculateRid(tempLibraryDir)
 
             if (calculatedRid.contentEquals(expectedRid) || forceInstall) {
-                libraryProgress?.onProgress(libraryId, 90, 100, "Finalizing installation")
+                progress?.onProgress(libraryId, 90, 100, "Finalizing installation")
                 targetDir.safeDelete()
                 targetDir.parent?.createDirectories()
                 tempLibraryDir.copyToRecursively(targetDir, overwrite = true, followLinks = false)

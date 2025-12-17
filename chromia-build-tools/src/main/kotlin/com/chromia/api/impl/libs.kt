@@ -1,5 +1,6 @@
 package com.chromia.api.impl
 
+import com.chromia.build.tools.lib.CliLibraryInstallProgress
 import com.chromia.build.tools.lib.LibraryInstallProgress
 import com.chromia.build.tools.lib.LibraryInstaller
 import com.chromia.build.tools.lib.RepositoryCloner
@@ -19,7 +20,7 @@ fun install(
         cliEnv,
         model,
         forceInstall,
-        libraryProgress,
+        libraryProgress ?: CliLibraryInstallProgress(cliEnv),
         isExplicitInstall
     ).installLibs(model.libs)
 }

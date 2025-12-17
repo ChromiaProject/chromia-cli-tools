@@ -16,24 +16,20 @@ import kotlin.io.path.exists
 import kotlin.io.path.extension
 import kotlin.io.path.isDirectory
 import net.postchain.rell.api.base.RellCliEnv
-import java.util.concurrent.ConcurrentHashMap
 
 class LibraryInstaller(
     private val repositoryCloner: RepositoryCloner,
     private val env: RellCliEnv,
     private val model: ChromiaModel,
     private val forceInstall: Boolean,
-    private val libraryProgress: LibraryInstallProgress? = null,
+    private val progress: LibraryInstallProgress? = CliLibraryInstallProgress(env),
     private val isExplicitInstall: Boolean = false
 ) {
 
     private val libRoot: Path = model.compile.source.resolve("lib")
     private val tmpLibRoot: Path = model.compile.target.resolve(".tmp/lib")
-    private val libraryVerifier = LibraryVerifyer(env, libRoot)
+    private val libraryVerifier = LibraryVerifyer(env, libRoot, progress)
     private val chromiaLibInstaller = ChromiaLibInstaller()
-    //NOTE: we don't want to throw instantly as it breaks the progressBar animations
-    //  first accumulate errors, after all tasks are finished, only then we throw
-    private val errors = ConcurrentHashMap<String, String>()
 
     fun installLibs(libs: Map<String, RellLibraryModel>)  = runBlocking {
         if (libs.isEmpty()) return@runBlocking
@@ -48,13 +44,10 @@ class LibraryInstaller(
         }
         jobs.joinAll()
 
-        if (errors.isNotEmpty()) {
-            libraryProgress?.onSummary(errors)
-
-            val errorMessages = errors.entries.joinToString("\n") { (libraryId, errorMsg) ->
-                "Library $libraryId: $errorMsg"
-            }
-            throw LibraryInstallException("Failed to install ${errors.size} library/libraries:\n$errorMessages")
+        if (progress?.hasError == true) {
+            progress.onSummary()
+            val size = progress.errors.size
+            throw LibraryInstallException("Failed to install $size ${if (size == 1) "library" else "libraries"}")
         }
     }
 
@@ -62,76 +55,56 @@ class LibraryInstaller(
         libraryId: String,
         libModel: RellLibraryModel
     ) = runCatching {
-        libraryProgress?.onStart(libraryId)
+        progress?.onStart(libraryId)
         if (libModel.isChromiaLib) {
             chromiaLibInstaller.installChromiaLibrary(
                 libraryId = libraryId,
                 libModel = libModel,
                 libRoot = libRoot,
                 forceInstall = forceInstall,
-                libraryProgress
+                progress
             )
         } else {
-            installGitLibrary(libraryId, libModel, libraryProgress)
+            installGitLibrary(libraryId, libModel)
         }
     }.fold(
         onSuccess = {
-            libraryProgress?.onSuccess(libraryId)
+            progress?.onSuccess(libraryId)
             if (isExplicitInstall && libModel.version != null) {
-                libraryProgress?.onPostInstall(libraryId, libModel.version)
+                progress?.onPostInstall(libraryId, libModel.version)
             }
         },
         onFailure = { e ->
             val errorMessage = e.message ?: "Unknown error"
-            errors.computeIfAbsent(libraryId) { errorMessage }
-            reportError(libraryId, "Failed to install library $libraryId: $errorMessage")
+            progress?.onError(libraryId, errorMessage)
         }
     )
 
-    private fun installGitLibrary(
-        name: String,
-        model: RellLibraryModel,
-        progress: LibraryInstallProgress?
-    ) {
+    private fun installGitLibrary(name: String, model: RellLibraryModel) {
         val installDir = libRoot.resolve(name)
         if (installDir.exists() && installDir.isNotEmptyDir()) {
-            if (libraryVerifier.verifyLib(name, model, ErrorReporting.Silent)) return
-            val message = "Library $name not up to date, reinstalling"
-
-            progress?.onProgress(name, 5, 100, message)
-                ?: env.print(message)
-
+            if (libraryVerifier.verifyLib(name, model)) return
+            progress?.onProgress(name, 5, 100, "Library $name not up to date, reinstalling")
             installDir.safeDelete()
         }
-        cloneRepository(name, model, installDir, progress)
+        cloneRepository(name, model, installDir)
         progress?.onProgress(name, 10, 100, "Verifying installation")
-
-        val errorReporting = if (libraryProgress != null) {
-            ErrorReporting.ToInstallationProgress(libraryProgress, errors)
-        } else {
-            ErrorReporting.ToCli(env)
-        }
-        if (!libraryVerifier.verifyLib(name, model, errorReporting)) {
+        if (!libraryVerifier.verifyLib(name, model)) {
             installDir.toFile().deleteRecursively()
             throw LibraryInstallException("Failed to install lib $name")
         }
     }
 
-    private fun cloneRepository(
-        name: String,
-        model: RellLibraryModel,
-        installDir: Path,
-        progress: LibraryInstallProgress?
-    ) {
+    private fun cloneRepository(name: String, model: RellLibraryModel, installDir: Path) {
         model.registry ?: throw LibraryInstallException("Registry not set for library $name")
         val tmpInstallDir = tmpLibRoot.resolve(name)
         try {
             progress?.onProgress(name, 20, 100, "Cloning repository")
             repositoryCloner.clone(model.registry, tmpInstallDir, model.tagOrBranch)
             val sourcePath = tmpInstallDir.resolve(model.path)
-            progress?.onProgress(name, 40, 100, "validating installation library path")
+            progress?.onProgress(name, 40, 100, "Validating library path")
             validateLibPath(sourcePath, model, name)
-            progress?.onProgress(name, 60, 100, "Copying files to project's lib directory")
+            progress?.onProgress(name, 60, 100, "Copying files to lib directory")
             copyRellFilesInFolder(sourcePath, installDir)
         } finally {
             progress?.onProgress(name, 80, 100, "Cleaning up temporary files")
@@ -173,8 +146,4 @@ class LibraryInstaller(
 
     private val Path.hasEntries: Boolean
         get() = Files.list(this).use { it.findAny().isPresent }
-
-    private fun reportError(libraryId: String, message: String) {
-        libraryProgress?.onError(libraryId) ?: env.error(message)
-    }
 }
