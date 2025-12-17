@@ -48,8 +48,6 @@ class LibraryInstaller(
         }
         jobs.joinAll()
 
-        // "rell-maven-plugin" uses the exit code to terminate a running pipeline. (Gitlab)
-        // we need to throw here after all installations are complete to not break progress
         if (errors.isNotEmpty()) {
             libraryProgress?.onSummary(errors)
 
