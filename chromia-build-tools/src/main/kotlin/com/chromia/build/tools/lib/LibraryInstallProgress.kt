@@ -10,7 +10,6 @@ interface LibraryInstallProgress {
     fun onSuccess(libraryId: String)
     fun onError(libraryId: String, errMessage: String)
     fun onPostInstall(libraryId: String, libraryVersion: String)
-    fun onSummary()
     val hasError: Boolean
         get() = errors.isNotEmpty()
 }
@@ -36,13 +35,9 @@ class CliLibraryInstallProgress(
 
     override fun onError(libraryId: String, errMessage: String) {
         errors.putIfAbsent(libraryId, errMessage)
+        env.error("- Failed to install library $libraryId: $errMessage")
     }
 
     override fun onPostInstall(libraryId: String, libraryVersion: String) {}
-    override fun onSummary() {
-        errors.forEach { (libraryId, errorMsg) ->
-            env.error("- Failed to install library $libraryId: $errorMsg")
-        }
-    }
 }
 

@@ -13,7 +13,7 @@ import net.postchain.rell.api.base.RellCliEnv
 class LibraryVerifyer(
     private val env: RellCliEnv,
     private val libRoot: Path,
-    private val libraryProgress: LibraryInstallProgress? = CliLibraryInstallProgress(env)
+    private val libraryProgress: LibraryInstallProgress = CliLibraryInstallProgress(env)
 ) {
 
     fun verifyLibs(libs: Map<String, RellLibraryModel>) {
@@ -49,7 +49,7 @@ class LibraryVerifyer(
                 Was: $libraryRid
                 Do not blindly copy the calculated rid as the integrity of the library cannot be verified.
                 """.trimIndent()
-            libraryProgress?.onError(libraryId = name, errMessage = message)
+            libraryProgress.onError(libraryId = name, errMessage = message)
         }
         return false
     }

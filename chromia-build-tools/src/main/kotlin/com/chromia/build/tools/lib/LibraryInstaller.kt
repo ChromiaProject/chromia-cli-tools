@@ -22,7 +22,7 @@ class LibraryInstaller(
     private val env: RellCliEnv,
     private val model: ChromiaModel,
     private val forceInstall: Boolean,
-    private val progress: LibraryInstallProgress? = CliLibraryInstallProgress(env),
+    private val progress: LibraryInstallProgress = CliLibraryInstallProgress(env),
     private val isExplicitInstall: Boolean = false
 ) {
 
@@ -44,8 +44,7 @@ class LibraryInstaller(
         }
         jobs.joinAll()
 
-        if (progress?.hasError == true) {
-            progress.onSummary()
+        if (progress.hasError) {
             val size = progress.errors.size
             throw LibraryInstallException("Failed to install $size ${if (size == 1) "library" else "libraries"}")
         }
@@ -55,7 +54,7 @@ class LibraryInstaller(
         libraryId: String,
         libModel: RellLibraryModel
     ) = runCatching {
-        progress?.onStart(libraryId)
+        progress.onStart(libraryId)
         if (libModel.isChromiaLib) {
             chromiaLibInstaller.installChromiaLibrary(
                 libraryId = libraryId,
@@ -69,14 +68,14 @@ class LibraryInstaller(
         }
     }.fold(
         onSuccess = {
-            progress?.onSuccess(libraryId)
+            progress.onSuccess(libraryId)
             if (isExplicitInstall && libModel.version != null) {
-                progress?.onPostInstall(libraryId, libModel.version)
+                progress.onPostInstall(libraryId, libModel.version)
             }
         },
         onFailure = { e ->
             val errorMessage = e.message ?: "Unknown error"
-            progress?.onError(libraryId, errorMessage)
+            progress.onError(libraryId, errorMessage)
         }
     )
 
@@ -84,11 +83,11 @@ class LibraryInstaller(
         val installDir = libRoot.resolve(name)
         if (installDir.exists() && installDir.isNotEmptyDir()) {
             if (libraryVerifier.verifyLib(name, model, true)) return
-            progress?.onProgress(name, 5, 100, "Library $name not up to date, reinstalling")
+            progress.onProgress(name, 5, 100, "Library $name not up to date, reinstalling")
             installDir.safeDelete()
         }
         cloneRepository(name, model, installDir)
-        progress?.onProgress(name, 10, 100, "Verifying installation")
+        progress.onProgress(name, 10, 100, "Verifying installation")
         if (!libraryVerifier.verifyLib(name, model)) {
             installDir.toFile().deleteRecursively()
             throw LibraryInstallException("Failed to install lib $name")
@@ -99,15 +98,15 @@ class LibraryInstaller(
         model.registry ?: throw LibraryInstallException("Registry not set for library $name")
         val tmpInstallDir = tmpLibRoot.resolve(name)
         try {
-            progress?.onProgress(name, 20, 100, "Cloning repository")
+            progress.onProgress(name, 20, 100, "Cloning repository")
             repositoryCloner.clone(model.registry, tmpInstallDir, model.tagOrBranch)
             val sourcePath = tmpInstallDir.resolve(model.path)
-            progress?.onProgress(name, 40, 100, "Validating library path")
+            progress.onProgress(name, 40, 100, "Validating library path")
             validateLibPath(sourcePath, model, name)
-            progress?.onProgress(name, 60, 100, "Copying files to lib directory")
+            progress.onProgress(name, 60, 100, "Copying files to lib directory")
             copyRellFilesInFolder(sourcePath, installDir)
         } finally {
-            progress?.onProgress(name, 80, 100, "Cleaning up temporary files")
+            progress.onProgress(name, 80, 100, "Cleaning up temporary files")
             tmpInstallDir.safeDelete()
         }
     }

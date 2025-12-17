@@ -475,7 +475,6 @@ public final class com/chromia/build/tools/lib/CliLibraryInstallProgress : com/c
 	public fun onProgress (Ljava/lang/String;JJLjava/lang/String;)V
 	public fun onStart (Ljava/lang/String;)V
 	public fun onSuccess (Ljava/lang/String;)V
-	public fun onSummary ()V
 }
 
 public final class com/chromia/build/tools/lib/DirectoryHashCalculator {
@@ -533,7 +532,6 @@ public abstract interface class com/chromia/build/tools/lib/LibraryInstallProgre
 	public abstract fun onProgress (Ljava/lang/String;JJLjava/lang/String;)V
 	public abstract fun onStart (Ljava/lang/String;)V
 	public abstract fun onSuccess (Ljava/lang/String;)V
-	public abstract fun onSummary ()V
 }
 
 public final class com/chromia/build/tools/lib/LibraryInstallProgress$DefaultImpls {
