@@ -11,10 +11,18 @@ import kotlin.io.path.notExists
 import net.postchain.rell.api.base.RellCliEnv
 import java.util.concurrent.ConcurrentHashMap
 
+sealed class ErrorReporting {
+    data object Silent : ErrorReporting()
+    data class ToCli(val env: RellCliEnv) : ErrorReporting()
+    data class ToInstallationProgress(
+        val progress: LibraryInstallProgress,
+        val errors: ConcurrentHashMap<String, String>
+    ) : ErrorReporting()
+}
+
 class LibraryVerifyer(
     private val env: RellCliEnv,
-    private val libRoot: Path,
-    private val libraryProgress: LibraryInstallProgress? = null
+    private val libRoot: Path
 ) {
 
     fun verifyLibs(libs: Map<String, RellLibraryModel>) {
@@ -29,8 +37,7 @@ class LibraryVerifyer(
     fun verifyLib(
         name: String,
         model: RellLibraryModel,
-        quiet: Boolean = false,
-        errors: ConcurrentHashMap<String, String>? = null
+        errorReporting: ErrorReporting = ErrorReporting.ToCli(env)
     ): Boolean {
         if (model.insecure) return true
 
@@ -48,16 +55,21 @@ class LibraryVerifyer(
         val hashCalculator = DirectoryHashCalculator(libRoot.parent)
         val libraryRid = hashCalculator.compute(libDir, RidStrategy.LIST)
         if (finalModel.rid == libraryRid) return true
-        if (!quiet) {
-            val message = """
-                The rid for library $name does not match the configured value.
-                Should be: ${model.rid}
-                Was: $libraryRid
-                Do not blindly copy the calculated rid as the integrity of the library cannot be verified.
-                """.trimIndent()
-            errors?.put(name, message)
-            libraryProgress?.onError(name)
-                ?: env.error(message)
+
+        val message = """
+            The rid for library $name does not match the configured value.
+            Should be: ${model.rid}
+            Was: $libraryRid
+            Do not blindly copy the calculated rid as the integrity of the library cannot be verified.
+        """.trimIndent()
+
+        when (errorReporting) {
+            is ErrorReporting.Silent -> Unit
+            is ErrorReporting.ToCli -> errorReporting.env.error(message)
+            is ErrorReporting.ToInstallationProgress -> {
+                errorReporting.errors[name] = message
+                errorReporting.progress.onError(name)
+            }
         }
         return false
     }

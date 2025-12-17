@@ -29,7 +29,7 @@ class LibraryInstaller(
 
     private val libRoot: Path = model.compile.source.resolve("lib")
     private val tmpLibRoot: Path = model.compile.target.resolve(".tmp/lib")
-    private val libraryVerifier = LibraryVerifyer(env, libRoot, libraryProgress)
+    private val libraryVerifier = LibraryVerifyer(env, libRoot)
     private val chromiaLibInstaller = ChromiaLibInstaller()
     //NOTE: we don't want to throw instantly as it breaks the progressBar animations
     //  first accumulate errors, after all tasks are finished, only then we throw
@@ -84,8 +84,7 @@ class LibraryInstaller(
         onFailure = { e ->
             val errorMessage = e.message ?: "Unknown error"
             errors.computeIfAbsent(libraryId) { errorMessage }
-            libraryProgress?.onError(libraryId)
-                ?: env.error("Failed to install library $libraryId: $errorMessage")
+            reportError(libraryId, "Failed to install library $libraryId: $errorMessage")
         }
     )
 
@@ -96,7 +95,7 @@ class LibraryInstaller(
     ) {
         val installDir = libRoot.resolve(name)
         if (installDir.exists() && installDir.isNotEmptyDir()) {
-            if (libraryVerifier.verifyLib(name, model, true)) return
+            if (libraryVerifier.verifyLib(name, model, ErrorReporting.Silent)) return
             val message = "Library $name not up to date, reinstalling"
 
             progress?.onProgress(name, 5, 100, message)
@@ -106,7 +105,13 @@ class LibraryInstaller(
         }
         cloneRepository(name, model, installDir, progress)
         progress?.onProgress(name, 10, 100, "Verifying installation")
-        if (!libraryVerifier.verifyLib(name, model, errors = errors)) {
+
+        val errorReporting = if (libraryProgress != null) {
+            ErrorReporting.ToInstallationProgress(libraryProgress, errors)
+        } else {
+            ErrorReporting.ToCli(env)
+        }
+        if (!libraryVerifier.verifyLib(name, model, errorReporting)) {
             installDir.toFile().deleteRecursively()
             throw LibraryInstallException("Failed to install lib $name")
         }
@@ -168,4 +173,8 @@ class LibraryInstaller(
 
     private val Path.hasEntries: Boolean
         get() = Files.list(this).use { it.findAny().isPresent }
+
+    private fun reportError(libraryId: String, message: String) {
+        libraryProgress?.onError(libraryId) ?: env.error(message)
+    }
 }
