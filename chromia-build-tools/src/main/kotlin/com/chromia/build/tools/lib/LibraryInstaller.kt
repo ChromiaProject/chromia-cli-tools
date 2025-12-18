@@ -91,7 +91,7 @@ class LibraryInstaller(
     private fun installGitLibrary(name: String, model: RellLibraryModel) {
         val installDir = libRoot.resolve(name)
         if (installDir.exists() && installDir.isNotEmptyDir()) {
-            if (libraryVerifier.verifyLib(name, model, true)) return
+            if (libraryVerifier.hasMatchingRid(name, model)) return
             progress.onProgress(name, 5, 100, "Library $name not up to date, reinstalling")
             installDir.safeDelete()
         }
