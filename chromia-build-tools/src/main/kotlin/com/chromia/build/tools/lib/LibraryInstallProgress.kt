@@ -34,8 +34,10 @@ class CliLibraryInstallProgress(
     }
 
     override fun onError(libraryId: String, errMessage: String) {
-        errors.putIfAbsent(libraryId, errMessage)
-        env.error("- Failed to install library $libraryId: $errMessage")
+        errors.computeIfAbsent(libraryId) {
+            env.error("- Failed to install library $libraryId: $errMessage")
+            errMessage
+        }
     }
 
     override fun onPostInstall(libraryId: String, libraryVersion: String) {}

@@ -1,5 +1,7 @@
-package com.chromia.build.tools.lib
-
+package com.chromia.build.tools.lib.installers
+import com.chromia.build.tools.lib.DirectoryHashCalculator
+import com.chromia.build.tools.lib.LibraryInstallProgress
+import com.chromia.build.tools.lib.createLibraryChainClient
 import com.chromia.build.tools.util.safeDelete
 import com.chromia.cli.model.RellLibraryModel
 import com.chromia.library.chain.versioning.TypesSLibraryVersionFilesInBytes
@@ -12,6 +14,8 @@ import kotlinx.coroutines.coroutineScope
 import net.postchain.client.core.PostchainClient
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.collections.component1
+import kotlin.collections.component2
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.copyToRecursively
 import kotlin.io.path.createDirectories
@@ -19,21 +23,19 @@ import kotlin.io.path.createTempDirectory
 import kotlin.io.path.div
 import kotlin.io.path.writeBytes
 
-class ChromiaLibInstaller {
-
+class ChromiaLibChainInstaller(private val progress: LibraryInstallProgress): LibrarySourceInstaller {
     @OptIn(ExperimentalPathApi::class)
-    suspend fun installChromiaLibrary(
-            libraryId: String,
-            libModel: RellLibraryModel,
-            libRoot: Path,
-            forceInstall: Boolean = false,
-            progress: LibraryInstallProgress?
+    override suspend fun install(
+        libraryId: String,
+        libModel: RellLibraryModel,
+        libRoot: Path,
+        forceInstall: Boolean,
     ) {
-        progress?.onProgress(libraryId, 5, 100, "Connecting to library chain")
+        progress.onProgress(libraryId, 5, 100, "Connecting to library chain")
         val client = createLibraryChainClient(libModel.registry, libModel.brid)
         val version = requireNotNull(libModel.version) { "version is required for library $libraryId" }
 
-        progress?.onProgress(libraryId, 10, 100, "Fetching library metadata")
+        progress.onProgress(libraryId, 10, 100, "Fetching library metadata")
         val name = requireNotNull(client.getLibrary(libraryId)?.displayName) {
             "Library '$libraryId' not found."
         }
@@ -45,31 +47,31 @@ class ChromiaLibInstaller {
         val targetDir = libRoot / name
 
         try {
-            progress?.onProgress(libraryId, 30, 100, "Downloading library files")
+            progress.onProgress(libraryId, 30, 100, "Downloading library files")
             val allFiles = fetchLibraryFiles(client, libraryId, version) { filesCount ->
                 // FIXME: need to update library-chain Rell code, so that we can have
                 //  metadata of files count beforehand to report real stats to the user
                 val message = "Downloaded $filesCount ${if (filesCount == 1L) "file" else "files"}"
-                progress?.onProgress(libraryId, filesCount, filesCount + 1, message)
+                progress.onProgress(libraryId, filesCount, filesCount + 1, message)
             }
 
-            progress?.onProgress(libraryId, 60, 100, "Processing downloaded files")
+            progress.onProgress(libraryId, 60, 100, "Processing downloaded files")
             val installableFiles = allFiles
-                .flatMap { it.files.entries }
-                .filter { (filePath, _) -> shouldInstallFile(filePath, libModel) }
+                    .flatMap { it.files.entries }
+                    .filter { (filePath, _) -> shouldInstallFile(filePath, libModel) }
 
             installableFiles.forEach { (filePath, content) ->
                 val tempPath = tempLibraryDir / filePath
                 installFile(tempPath, content.data)
             }
 
-            progress?.onProgress(libraryId, 85, 100, "Verifying installation")
+            progress.onProgress(libraryId, 85, 100, "Verifying installation")
             val calculatedRid = calculateRid(tempLibraryDir)
 
             if (calculatedRid.contentEquals(expectedRid) || forceInstall) {
-                progress?.onProgress(libraryId, 90, 100, "Finalizing installation")
+                progress.onProgress(libraryId, 90, 100, "Finalizing installation")
                 targetDir.safeDelete()
-                targetDir.parent?.createDirectories()
+                targetDir.parent.createDirectories()
                 tempLibraryDir.copyToRecursively(targetDir, overwrite = true, followLinks = false)
             } else {
                 error(
@@ -86,10 +88,10 @@ class ChromiaLibInstaller {
     }
 
     private suspend fun fetchLibraryFiles(
-        client: PostchainClient,
-        libraryId: String,
-        version: String,
-        onFilesFetched: ((filesCount: Long) -> Unit)? = null
+            client: PostchainClient,
+            libraryId: String,
+            version: String,
+            onFilesFetched: ((filesCount: Long) -> Unit)? = null
     ) = coroutineScope {
         val allFiles = mutableListOf<TypesSLibraryVersionFilesInBytes>()
         var offset = 0L
@@ -117,8 +119,8 @@ class ChromiaLibInstaller {
     }
 
     private fun shouldInstallFile(filePath: String, libModel: RellLibraryModel): Boolean =
-        filePath.endsWith(".rell") &&
-            (libModel.path?.let { filePath.startsWith(it) } ?: true)
+            filePath.endsWith(".rell") &&
+                    (libModel.path?.let { filePath.startsWith(it) } ?: true)
 
     private fun installFile(targetPath: Path, content: ByteArray) {
         targetPath.parent?.let { Files.createDirectories(it) }
@@ -126,10 +128,10 @@ class ChromiaLibInstaller {
     }
 
     private fun getLibraryFilesBatch(
-        client: PostchainClient,
-        libraryId: String,
-        offset: Long,
-        version: String
+            client: PostchainClient,
+            libraryId: String,
+            offset: Long,
+            version: String
     ) = client.getLibraryVersionFilesInBytes(libraryId, version, LIBRARY_PAGE_SIZE, offset)
 
     fun calculateRid(libDir: Path): ByteArray {
