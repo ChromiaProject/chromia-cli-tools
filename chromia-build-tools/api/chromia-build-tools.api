@@ -465,16 +465,6 @@ public final class com/chromia/build/tools/lib/ChromiaLibInstaller {
 public final class com/chromia/build/tools/lib/ChromiaLibInstaller$Companion {
 }
 
-public final class com/chromia/build/tools/lib/ChromiaSourceLibInstaller : com/chromia/build/tools/lib/LibrarySourceInstaller {
-	public static final field Companion Lcom/chromia/build/tools/lib/ChromiaSourceLibInstaller$Companion;
-	public fun <init> ()V
-	public final fun calculateRid (Ljava/nio/file/Path;)[B
-	public fun install (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Ljava/nio/file/Path;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class com/chromia/build/tools/lib/ChromiaSourceLibInstaller$Companion {
-}
-
 public final class com/chromia/build/tools/lib/CliLibraryInstallProgress : com/chromia/build/tools/lib/LibraryInstallProgress {
 	public fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/util/concurrent/ConcurrentHashMap;)V
 	public synthetic fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/util/concurrent/ConcurrentHashMap;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -506,11 +496,6 @@ public abstract interface class com/chromia/build/tools/lib/DirectoryHashCalcula
 public final class com/chromia/build/tools/lib/DirectoryHashCalculator$RidStrategy$Companion {
 	public final fun getLIST ()Lcom/chromia/build/tools/lib/DirectoryHashCalculator$RidStrategy;
 	public final fun getMAP ()Lcom/chromia/build/tools/lib/DirectoryHashCalculator$RidStrategy;
-}
-
-public final class com/chromia/build/tools/lib/GitLibInstaller : com/chromia/build/tools/lib/LibrarySourceInstaller {
-	public fun <init> (Lcom/chromia/build/tools/lib/RepositoryCloner;Ljava/nio/file/Path;Lcom/chromia/build/tools/lib/LibraryVerifyer;)V
-	public fun install (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Ljava/nio/file/Path;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/chromia/build/tools/lib/GitRepositoryCloner : com/chromia/build/tools/lib/RepositoryCloner {
@@ -587,10 +572,6 @@ public final class com/chromia/build/tools/lib/LibraryRidCompared$Valid : com/ch
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-}
-
-public abstract interface class com/chromia/build/tools/lib/LibrarySourceInstaller {
-	public abstract fun install (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Ljava/nio/file/Path;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/chromia/build/tools/lib/LibraryVerifyer {
