@@ -20,7 +20,7 @@ fun install(
         cliEnv,
         model,
         forceInstall,
-        libraryProgress ?: CliLibraryInstallProgress(cliEnv),
+        libraryProgress,
         isExplicitInstall
     ).installLibs(model.libs)
 }

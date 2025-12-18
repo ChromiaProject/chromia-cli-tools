@@ -22,9 +22,18 @@ class LibraryInstaller(
     private val env: RellCliEnv,
     private val model: ChromiaModel,
     private val forceInstall: Boolean,
-    private val progress: LibraryInstallProgress = CliLibraryInstallProgress(env),
+    private val progress: LibraryInstallProgress,
     private val isExplicitInstall: Boolean = false
 ) {
+
+    constructor(
+        repositoryCloner: RepositoryCloner,
+        env: RellCliEnv,
+        model: ChromiaModel,
+        forceInstall: Boolean,
+        progress: LibraryInstallProgress?,
+        isExplicitInstall: Boolean = false
+    ): this(repositoryCloner, env, model, forceInstall, progress ?: CliLibraryInstallProgress(env), isExplicitInstall)
 
     private val libRoot: Path = model.compile.source.resolve("lib")
     private val tmpLibRoot: Path = model.compile.target.resolve(".tmp/lib")
