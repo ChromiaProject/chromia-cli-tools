@@ -13,7 +13,6 @@ val predefinedNetworks: Map<String, List<String>> = mapOf(
         "https://chromia-mainnet-systemnode-1.stakin-nodes.com",
         "https://chroma.node.monster:7741",
         "https://chromia.mainnet-system.nodeops.ninja",
-        "https://chromia-mainnet-1.dappradar.com:7740",
         "https://sys-main.chromia.coinhall.org:7740",
         "https://chromia-api.hashkey.cloud",
         "https://chromia-mainnet-system-node.asymm.ventures:7740",
