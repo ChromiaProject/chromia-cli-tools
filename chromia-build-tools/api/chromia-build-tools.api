@@ -265,7 +265,8 @@ public final class com/chromia/build/tools/config/ChromiaNetworkConfigKt {
 	public static final field DEVNET2 Ljava/lang/String;
 	public static final field MAINNET Ljava/lang/String;
 	public static final field TESTNET Ljava/lang/String;
-	public static final fun getPredefinedNetworks ()Ljava/util/Map;
+	public static final fun getDirectoryChainRidFor (Ljava/lang/String;)Lnet/postchain/common/BlockchainRid;
+	public static final fun getProviderUrlsForNetwork (Ljava/lang/String;)Ljava/util/List;
 }
 
 public final class com/chromia/build/tools/config/CompressedKey {

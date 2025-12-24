@@ -1,45 +1,52 @@
 package com.chromia.build.tools.config
 
+import com.chromia.directory1.common.queries.getBlockchainApiUrls
+import net.postchain.client.request.EndpointPool
+import net.postchain.common.BlockchainRid
+import net.postchain.d1.client.StandardChromiaClient
+
 const val MAINNET = "mainnet"
 const val TESTNET = "testnet"
 const val DEVNET1 = "devnet1"
 const val DEVNET2 = "devnet2"
 const val CHROMIA_PREDEFINED_TESTING_NETWORK = "chromia_predefined_testing_network_chromia_cli"
 
-val predefinedNetworks: Map<String, List<String>> = mapOf(
-    MAINNET to listOf(
-        "https://system.chromaway.com",
-        "https://chromia.validatrium.club",
-        "https://chromia-mainnet-systemnode-1.stakin-nodes.com",
-        "https://chroma.node.monster:7741",
-        "https://chromia.mainnet-system.nodeops.ninja",
-        "https://chromia-mainnet-1.dappradar.com:7740",
-        "https://sys-main.chromia.coinhall.org:7740",
-        "https://chromia-api.hashkey.cloud",
-        "https://chromia-mainnet-system-node.asymm.ventures:7740",
-        "https://chr.bbbnnnbbb.net:443",
-        "https://chromia-system-node.moca-services.xyz:7740",
-        "https://chromia-mainnet-system.dwellir.com:443",
-    ),
-    TESTNET to listOf(
-        "https://node0.testnet.chromia.com",
-        "https://node1.testnet.chromia.com",
-        "https://node2.testnet.chromia.com",
-    ),
-    DEVNET1 to listOf(
-        "https://node0.devnet1.chromia.dev",
-        "https://node1.devnet1.chromia.dev",
-        "https://node2.devnet1.chromia.dev",
-        "https://node3.devnet1.chromia.dev",
-    ),
-    DEVNET2 to listOf(
-        "https://node0.devnet2.chromia.dev",
-        "https://node1.devnet2.chromia.dev",
-        "https://node2.devnet2.chromia.dev",
-        "https://node3.devnet2.chromia.dev",
-    ),
-    CHROMIA_PREDEFINED_TESTING_NETWORK to listOf(
-        "http://localhost:7745"
-    )
+fun getProviderUrlsForNetwork(network: String): List<String>? =
+    predefinedNetworks[network]?.value
 
+fun getDirectoryChainRidFor(network: String): BlockchainRid? =
+    predefinedDirectoryChains[network]?.getDirectoryChainRid
+
+
+private val predefinedDirectoryChains: Map<String,DirectoryChainNetwork> = mapOf(
+    MAINNET to DirectoryChainNetwork("https://system.chromaway.com"),
+    TESTNET to DirectoryChainNetwork("https://node0.testnet.chromia.com"),
+    DEVNET1 to DirectoryChainNetwork("https://node0.devnet1.chromia.dev"),
+    DEVNET2 to DirectoryChainNetwork("https://node0.devnet2.chromia.dev"),
+    CHROMIA_PREDEFINED_TESTING_NETWORK to DirectoryChainNetwork("http://localhost:7745")
 )
+
+// NOTE: This will only be evaluated when accessed, preventing network calls during initialization
+//  otherwise for devnet1 it will hang without openvpn connected
+private val predefinedNetworks: Map<String, Lazy<List<String>>> =
+    predefinedDirectoryChains.mapValues { (_, chain) ->
+        lazy { chain.getProvidersFromDirectoryChain }
+    }
+
+private data class DirectoryChainNetwork(
+    val nodeUrl: String,
+) {
+    private val client by lazy {
+        StandardChromiaClient(EndpointPool.singleUrl(nodeUrl))
+            .getDirectoryChainClient()
+    }
+
+    val getProvidersFromDirectoryChain  by lazy {
+        val directoryChainRid = client.getBlockchainRID(0L)
+        client.getBlockchainApiUrls(directoryChainRid)
+    }
+
+    val getDirectoryChainRid by lazy {
+        client.getBlockchainRID(0L)
+    }
+}
