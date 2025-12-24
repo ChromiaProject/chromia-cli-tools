@@ -2,7 +2,7 @@ package com.chromia.build.tools.lib
 
 import com.chromia.build.tools.blockchain.BridFetcher
 import com.chromia.build.tools.config.ChromiaClientConfig.Companion.DEFAULT_API_URL
-import com.chromia.build.tools.config.predefinedNetworks
+import com.chromia.build.tools.config.getProviderUrlsForNetwork
 import com.chromia.build.tools.lib.LibraryChainNetworkUtils.CHROMIA_MAINNET
 import com.chromia.build.tools.lib.LibraryChainNetworkUtils.libraryPredefinedNetworks
 import net.postchain.client.config.PostchainClientConfig
@@ -55,10 +55,8 @@ fun createLibraryChainClient(explicitUrl: String? = null, explicitBrid: Blockcha
         .getClient(libraryChainBrid)
 }
 
-private fun resolveLibraryChainNetworkUrls(networkOrUrl: String) = when {
-    predefinedNetworks[networkOrUrl] != null -> predefinedNetworks[networkOrUrl]!!
-    else -> listOf(networkOrUrl)
-}
+private fun resolveLibraryChainNetworkUrls(networkOrUrl: String) =
+    getProviderUrlsForNetwork(networkOrUrl) ?: listOf(networkOrUrl)
 
 private fun resolveLibraryChainBrid(explicitBrid: BlockchainRid?, networkOrUrl: String) =
     explicitBrid
