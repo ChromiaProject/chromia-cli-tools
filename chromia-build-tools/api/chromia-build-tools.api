@@ -5864,16 +5864,18 @@ public final class com/chromia/library/chain/versioning/TypesSLibraryVersion {
 }
 
 public final class com/chromia/library/chain/versioning/TypesSLibraryVersionFilesInBytes {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lnet/postchain/common/types/WrappedByteArray;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/util/Map;
 	public final fun component4 ()Lnet/postchain/common/types/WrappedByteArray;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lnet/postchain/common/types/WrappedByteArray;)Lcom/chromia/library/chain/versioning/TypesSLibraryVersionFilesInBytes;
-	public static synthetic fun copy$default (Lcom/chromia/library/chain/versioning/TypesSLibraryVersionFilesInBytes;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lnet/postchain/common/types/WrappedByteArray;ILjava/lang/Object;)Lcom/chromia/library/chain/versioning/TypesSLibraryVersionFilesInBytes;
+	public final fun component5 ()Ljava/lang/Long;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;)Lcom/chromia/library/chain/versioning/TypesSLibraryVersionFilesInBytes;
+	public static synthetic fun copy$default (Lcom/chromia/library/chain/versioning/TypesSLibraryVersionFilesInBytes;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/Long;ILjava/lang/Object;)Lcom/chromia/library/chain/versioning/TypesSLibraryVersionFilesInBytes;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getFiles ()Ljava/util/Map;
 	public final fun getLibraryId ()Ljava/lang/String;
+	public final fun getNextOffset ()Ljava/lang/Long;
 	public final fun getRid ()Lnet/postchain/common/types/WrappedByteArray;
 	public final fun getVersion ()Ljava/lang/String;
 	public fun hashCode ()I
