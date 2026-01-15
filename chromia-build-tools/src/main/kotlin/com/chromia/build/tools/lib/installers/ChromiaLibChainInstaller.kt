@@ -95,26 +95,20 @@ class ChromiaLibChainInstaller(private val progress: LibraryInstallProgress): Li
     ) = coroutineScope {
         val allFiles = mutableListOf<TypesSLibraryVersionFilesInBytes>()
         var offset = 0L
-        var hasMoreFiles = true
 
-        while (hasMoreFiles) {
-            val filesAtOffset = async {
-                // note: this function call needs an offset and number of files per page
-                //  we need to track both until no files were returned
-                getLibraryFilesBatch(client, libraryId, offset, version)
-            }.await()
+        while (true) {
+            val batch = getLibraryFilesBatch(client, libraryId, offset, version)
 
-            if (filesAtOffset.files.isNotEmpty()) {
-                allFiles += filesAtOffset
-                offset++
-                if (filesAtOffset.files.size < LIBRARY_PAGE_SIZE) {
-                    hasMoreFiles = false
-                }
-                onFilesFetched?.invoke(allFiles.size.toLong())
-            } else {
-                hasMoreFiles = false
+            if (batch.files.isEmpty()) {
+                break
             }
+
+            allFiles += batch
+            onFilesFetched?.invoke(allFiles.sumOf { it.files.size.toLong() })
+
+            offset = batch.nextOffset ?: break
         }
+
         allFiles.toImmutableList()
     }
 
