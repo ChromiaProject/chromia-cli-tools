@@ -76,9 +76,9 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
             } else if (verbose) {
                 actual.readLines().forEach { println(it) }
             }
-            return
+        } else {
+            expected("process to complete successfully, but exit code was ${actual.process.exitValue()} with logs: \n${actual.readLines().joinToString("\n")}")
         }
-        expected("process to complete successfully, but exit code was ${actual.process.exitValue()} with logs: \n${actual.readLines().joinToString("\n")}")
     }
 
     class Builder(vararg val args: String) {

@@ -516,7 +516,7 @@ public final class com/chromia/build/tools/lib/LibraryInstallException : java/la
 
 public abstract interface class com/chromia/build/tools/lib/LibraryInstallProgress {
 	public abstract fun getErrors ()Ljava/util/concurrent/ConcurrentHashMap;
-	public abstract fun getHasError ()Z
+	public fun getHasError ()Z
 	public abstract fun onError (Ljava/lang/String;Ljava/lang/String;)V
 	public abstract fun onPostInstall (Ljava/lang/String;Ljava/lang/String;)V
 	public abstract fun onProgress (Ljava/lang/String;JJLjava/lang/String;)V
@@ -689,6 +689,7 @@ public final class com/chromia/build/tools/template/PlainTemplateFactory : com/c
 
 public abstract interface class com/chromia/build/tools/template/TemplateFactory {
 	public abstract fun createProjectFromTemplate (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
+	public static synthetic fun createProjectFromTemplate$default (Lcom/chromia/build/tools/template/TemplateFactory;Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;ILjava/lang/Object;)V
 }
 
 public final class com/chromia/build/tools/template/TemplateFactory$DefaultImpls {
