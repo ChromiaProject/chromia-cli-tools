@@ -7,7 +7,7 @@ import java.io.File
  * Creates an empty template with several modules
  */
 class PlainLibraryTemplateFactory : AbstractTemplateFactory() {
-    override fun createProjectFiles(targetDir: File, projectName: String, optiona: TemplateOptions?) {
+    override fun createProjectFiles(targetDir: File, projectName: String, options: TemplateOptions?) {
         val projectFileName = snakeCaseName(projectName)
         with(FileBuilder(targetDir, "plain-library")) {
             createGitIgnore() {
