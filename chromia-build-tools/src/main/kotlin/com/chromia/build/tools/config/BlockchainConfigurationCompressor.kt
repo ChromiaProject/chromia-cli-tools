@@ -58,17 +58,17 @@ object BlockchainConfigurationCompressor {
 }
 
 data class CompressedRoot(
-        @Name("path")
+        @param:Name("path")
         val path: List<String>,
 
-        @Name("compressed_keys")
+        @param:Name("compressed_keys")
         val compressedKeys: List<CompressedKey>
 )
 
 data class CompressedKey(
-        @Name("content_key")
+        @param:Name("content_key")
         val contentKey: String,
 
-        @Name("content_hash")
+        @param:Name("content_hash")
         val contentHash: ByteArray
 )

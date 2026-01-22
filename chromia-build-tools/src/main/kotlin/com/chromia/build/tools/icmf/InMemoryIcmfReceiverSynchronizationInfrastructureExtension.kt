@@ -40,11 +40,11 @@ class InMemoryIcmfReceiverSynchronizationInfrastructureExtension(private val pos
     }
 
     data class IcmfReceiverSpecificBlockChainConfig(
-            @Nullable // Nullable on local node since we do not read it. Must be non-null in production
-            @Name("bc-rid")
+            @param:Nullable // Nullable on local node since we do not read it. Must be non-null in production
+            @param:Name("bc-rid")
             val blockchainRid: ByteArray?,
 
-            @Name("topic")
+            @param:Name("topic")
             val topic: String
     )
 }
