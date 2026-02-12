@@ -1,4 +1,4 @@
-/assign_reviewer @misha-chromaway @tim.steinholtz @issame.zguiri @eugene.tykulov @mikael.staldal.cw @robert_wideberg @johan.nilsson
+/assign_reviewer @tim.steinholtz @eugene.tykulov @robert_wideberg
 ## What does this Solve?
 
 ## Release Notes
