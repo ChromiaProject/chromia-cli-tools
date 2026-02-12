@@ -29,8 +29,8 @@ import kotlin.io.path.readText
 
 const val BlockchainConfigurationMaxSize = 26 * 1024 * 1024 // 26 MiB
 
-fun compileGtv(cliEnv: RellCliEnv, model: ChromiaModel): List<BlockchainConfiguration> {
-    LibraryVerifyer(cliEnv, model.compile.libFolder).verifyLibs(model.libs)
+fun compileGtv(cliEnv: RellCliEnv, model: ChromiaModel, verifyLibraries: Boolean = true): List<BlockchainConfiguration> {
+    if (verifyLibraries) LibraryVerifyer(cliEnv, model.compile.libFolder).verifyLibs(model.libs)
     val (libraries, blockchains) = model.blockchains.toList().partition { it.second.type == BlockchainModel.Type.LIBRARY }
             .let { (libs, chains) -> libs.toMap() to chains.toMap() }
 

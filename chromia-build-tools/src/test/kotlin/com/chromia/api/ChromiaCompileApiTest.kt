@@ -8,15 +8,18 @@ import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
+import com.chromia.build.tools.compile.ValidationException
+import com.chromia.build.tools.rell.RellCliEnvImpl
 import com.chromia.build.tools.lib.DirectoryHashCalculator
 import com.chromia.build.tools.lib.DirectoryHashCalculator.RidStrategy
 import com.chromia.build.tools.lib.LibraryVerifyer
 import com.chromia.build.tools.testData
 import com.chromia.cli.model.RellLibraryModel
 import com.chromia.cli.model.parseModel
+import net.postchain.common.BlockchainRid
 import net.postchain.common.exception.UserMistake
-import java.nio.file.Path
 import net.postchain.common.hexStringToByteArray
+import net.postchain.common.hexStringToWrappedByteArray
 import net.postchain.common.types.WrappedByteArray
 import net.postchain.common.wrap
 import net.postchain.gtv.GtvFactory.gtv
@@ -26,6 +29,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
 
 internal class ChromiaCompileApiTest {
     private val cliEnv = RellCliEnv.NULL
@@ -307,5 +311,162 @@ internal class ChromiaCompileApiTest {
         }
 //        val e = assertFailsWith<UserMistake> { ChromiaCompileApi.build(cliEnv, parseModel(dir.resolve("chromia.yml"))) }
 //        assertThat(e.message!!).contains("bogus")
+    }
+
+    @Test
+    fun `Build pass when verifyLibraries is false and uninstalled lib not referenced in source code`() {
+        testData(dir) {
+            config {
+                addLib(
+                    "foo",
+                    RellLibraryModel(
+                        registry = "http://foo.com",
+                        path = "lib",
+                        rid = BlockchainRid.ZERO_RID.wData
+                    )
+                )
+            }
+        }
+        assertDoesNotThrow {
+            ChromiaCompileApi.build(cliEnv, parseModel(dir.resolve("chromia.yml")), verifyLibraries = false)
+        }
+    }
+
+    @Test
+    fun `Build fails when verifyLibraries is false and uninstalled lib is referenced in source code`() {
+        testData(dir) {
+            content("""module; import lib.foo;""")
+            config {
+                addLib(
+                    "foo",
+                    RellLibraryModel(
+                        registry = "http://foo.com",
+                        path = "lib",
+                        rid = BlockchainRid.ZERO_RID.wData
+                    )
+                )
+            }
+        }
+        assertThrows<RellCliExitException> {
+            ChromiaCompileApi.build(cliEnv, parseModel(dir.resolve("chromia.yml")), verifyLibraries = false)
+        }
+    }
+
+    @Test
+    fun `Build fails at verification when verifyLibraries is true and library is not installed`() {
+        testData(dir) {
+            config {
+                addLib(
+                    "foo",
+                    RellLibraryModel(
+                        registry = "http://foo.com",
+                        path = "lib",
+                        rid = BlockchainRid.ZERO_RID.wData
+                    )
+                )
+            }
+        }
+        val err = assertThrows<ValidationException> {
+            ChromiaCompileApi.build(cliEnv, parseModel(dir.resolve("chromia.yml")))
+        }
+        assertThat(err.message).isNotNull().equals("Library foo is not installed, install before building")
+    }
+
+    @Test
+    fun `Build skips RID check when verifyLibraries is false - wrong RID does not fail`() {
+        testData(dir) {
+            content("""module; import lib.foo;""")
+            config {
+                addLib(
+                    "foo",
+                    RellLibraryModel(
+                        registry = "http://foo.com",
+                        path = "lib",
+                        rid = BlockchainRid.ZERO_RID.wData
+                    )
+                )
+            }
+            addSourceFile("lib/foo/module.rell", """module;""")
+        }
+        assertDoesNotThrow {
+            ChromiaCompileApi.build(cliEnv, parseModel(dir.resolve("chromia.yml")), verifyLibraries = false)
+        }
+    }
+
+    @Test
+    fun `Build fails at verification when verifyLibraries is true and library RID is wrong`() {
+        testData(dir) {
+            content("""module; import lib.foo;""")
+            config {
+                addLib(
+                    "foo",
+                    RellLibraryModel(
+                        registry = "http://foo.com",
+                        path = "lib",
+                        rid = BlockchainRid.ZERO_RID.wData
+                    )
+                )
+            }
+            addSourceFile("lib/foo/module.rell", """module;""")
+        }
+        val errors = mutableListOf<String>()
+        val recordingEnv = RellCliEnvImpl(printer = {}, errorPrinter = { errors.add(it) })
+
+        val err = assertThrows<ValidationException> {
+            ChromiaCompileApi.build(recordingEnv, parseModel(dir.resolve("chromia.yml")))
+        }
+
+        assertThat(err.message).isNotNull().contains("Failed validation of library foo")
+        assertThat(errors.single()).contains("does not match the configured value")
+    }
+
+    @Test
+    fun `Build with no libraries succeeds with verifyLibraries false`() {
+        testData(dir)
+        val result = ChromiaCompileApi.build(cliEnv, parseModel(dir.resolve("chromia.yml")), verifyLibraries = false)
+        assertThat(result.size).isEqualTo(1)
+        assertThat(result.first().name).isEqualTo("hello")
+    }
+
+    @Test
+    fun `Build with correctly installed library succeeds with verifyLibraries false`() {
+        testData(dir) {
+            content("""module; import lib.foo;""")
+            config {
+                addLib(
+                    "foo",
+                    RellLibraryModel(
+                        registry = "http://foo.com",
+                        path = "lib",
+                        rid = BlockchainRid.ZERO_RID.wData
+                    )
+                )
+            }
+            addSourceFile("lib/foo/module.rell", """module; function greet(): text = "hello";""")
+        }
+        assertDoesNotThrow {
+            ChromiaCompileApi.build(cliEnv, parseModel(dir.resolve("chromia.yml")), verifyLibraries = false)
+        }
+    }
+
+    @Test
+    fun `Build with correctly installed library succeeds with verifyLibraries true`() {
+        testData(dir) {
+            content("""module; import lib.foo;""")
+            config {
+                addLib(
+                        "foo",
+                        RellLibraryModel(
+                                registry = "http://foo.com",
+                                path = "lib",
+                                rid = "66C9D550F5D4C61F6C19D3ECAD0E804FEE3FB28B3791B5E194089B1F71786935".hexStringToWrappedByteArray()
+                        )
+                )
+            }
+            addSourceFile("lib/foo/module.rell", """module; function greet(): text = "hello";""")
+        }
+        assertDoesNotThrow {
+            ChromiaCompileApi.build(cliEnv, parseModel(dir.resolve("chromia.yml")), verifyLibraries = true)
+        }
     }
 }
