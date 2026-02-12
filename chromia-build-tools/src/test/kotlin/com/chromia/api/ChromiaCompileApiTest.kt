@@ -19,6 +19,7 @@ import com.chromia.cli.model.parseModel
 import net.postchain.common.BlockchainRid
 import net.postchain.common.exception.UserMistake
 import net.postchain.common.hexStringToByteArray
+import net.postchain.common.hexStringToWrappedByteArray
 import net.postchain.common.types.WrappedByteArray
 import net.postchain.common.wrap
 import net.postchain.gtv.GtvFactory.gtv
@@ -445,6 +446,27 @@ internal class ChromiaCompileApiTest {
         }
         assertDoesNotThrow {
             ChromiaCompileApi.build(cliEnv, parseModel(dir.resolve("chromia.yml")), verifyLibraries = false)
+        }
+    }
+
+    @Test
+    fun `Build with correctly installed library succeeds with verifyLibraries true`() {
+        testData(dir) {
+            content("""module; import lib.foo;""")
+            config {
+                addLib(
+                        "foo",
+                        RellLibraryModel(
+                                registry = "http://foo.com",
+                                path = "lib",
+                                rid = "66C9D550F5D4C61F6C19D3ECAD0E804FEE3FB28B3791B5E194089B1F71786935".hexStringToWrappedByteArray()
+                        )
+                )
+            }
+            addSourceFile("lib/foo/module.rell", """module; function greet(): text = "hello";""")
+        }
+        assertDoesNotThrow {
+            ChromiaCompileApi.build(cliEnv, parseModel(dir.resolve("chromia.yml")), verifyLibraries = true)
         }
     }
 }
