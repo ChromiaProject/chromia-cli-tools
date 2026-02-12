@@ -566,11 +566,6 @@ public final class com/chromia/build/tools/lib/LibraryRidCompared$Valid : com/ch
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/chromia/build/tools/lib/LibraryRidResolver {
-	public static final field INSTANCE Lcom/chromia/build/tools/lib/LibraryRidResolver;
-	public final fun resolveLibraryRids (Lcom/chromia/cli/model/ChromiaModel;)Lcom/chromia/cli/model/ChromiaModel;
-}
-
 public final class com/chromia/build/tools/lib/LibraryVerifyer {
 	public fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;Lcom/chromia/build/tools/lib/LibraryInstallProgress;)V
 	public synthetic fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/nio/file/Path;Lcom/chromia/build/tools/lib/LibraryInstallProgress;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
