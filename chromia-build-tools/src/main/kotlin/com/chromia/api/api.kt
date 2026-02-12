@@ -17,8 +17,8 @@ object ChromiaCompileApi {
     /**
      * Builds blockchain configurations
      */
-    fun build(cliEnv: RellCliEnv, model: ChromiaModel)
-            : List<BlockchainConfiguration> = compileGtv(cliEnv, model)
+    fun build(cliEnv: RellCliEnv, model: ChromiaModel, verifyLibraries: Boolean = true)
+            : List<BlockchainConfiguration> = compileGtv(cliEnv, model, verifyLibraries)
 
     /**
      * Verifies rell source code and computes the RID

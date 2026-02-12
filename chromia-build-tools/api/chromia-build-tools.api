@@ -1,6 +1,7 @@
 public final class com/chromia/api/ChromiaCompileApi {
 	public static final field INSTANCE Lcom/chromia/api/ChromiaCompileApi;
-	public final fun build (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;)Ljava/util/List;
+	public final fun build (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;Z)Ljava/util/List;
+	public static synthetic fun build$default (Lcom/chromia/api/ChromiaCompileApi;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;ZILjava/lang/Object;)Ljava/util/List;
 	public final fun verify (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;)Z
 }
 
@@ -31,7 +32,8 @@ public final class com/chromia/api/ExtensionsKt {
 
 public final class com/chromia/api/impl/CompileKt {
 	public static final field BlockchainConfigurationMaxSize I
-	public static final fun compileGtv (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;)Ljava/util/List;
+	public static final fun compileGtv (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;Z)Ljava/util/List;
+	public static synthetic fun compileGtv$default (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;ZILjava/lang/Object;)Ljava/util/List;
 	public static final fun verify (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;)Z
 }
 
@@ -562,6 +564,11 @@ public final class com/chromia/build/tools/lib/LibraryRidCompared$Valid : com/ch
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/build/tools/lib/LibraryRidResolver {
+	public static final field INSTANCE Lcom/chromia/build/tools/lib/LibraryRidResolver;
+	public final fun resolveLibraryRids (Lcom/chromia/cli/model/ChromiaModel;)Lcom/chromia/cli/model/ChromiaModel;
 }
 
 public final class com/chromia/build/tools/lib/LibraryVerifyer {
