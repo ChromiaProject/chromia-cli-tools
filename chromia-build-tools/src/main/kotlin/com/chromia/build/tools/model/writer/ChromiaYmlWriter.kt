@@ -27,6 +27,13 @@ object ChromiaYmlWriter {
         onYamlUpdateCallback: OnYamlUpdateCallback = {}
     ) = update(yamlFile, onYamlUpdateCallback, deploymentUpdater(networkName, chainName, brid, onYamlUpdateCallback))
 
+    fun updateLibraryNode(
+        yamlFile: File,
+        libraryName: String,
+        libraryVersion: String,
+        onYamlUpdateCallback: OnYamlUpdateCallback = {}
+    ) = update(yamlFile, onYamlUpdateCallback, libraryUpdater(libraryName, libraryVersion, onYamlUpdateCallback))
+
     private fun update(
         yamlFile: File,
         onYamlUpdateCallback: OnYamlUpdateCallback,
@@ -84,4 +91,3 @@ internal fun printYamlDiff(fileName: String, originalContent: String, updatedCon
     )
     onYamlUpdateCallback(unifiedDiff.joinToString("\n"))
 }
-

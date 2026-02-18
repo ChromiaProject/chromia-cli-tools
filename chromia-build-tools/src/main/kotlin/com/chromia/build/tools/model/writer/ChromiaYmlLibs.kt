@@ -15,33 +15,12 @@ import kotlin.run
 
 typealias OnYamlUpdateCallback = (String) -> Unit
 
-fun updateChromiaYamlForLibrary(
-    yamlFile: File,
-    libraryName: String,
-    libraryVersion: String,
-    onYamlUpdateCallback: OnYamlUpdateCallback = {
-    }
-) {
-    val originalContent = yamlFile.readText()
-
-    val yamlDir = yamlFile.parentFile
-    val updatedRootNode = yamlFile.bufferedReader().use { reader ->
-        val rootNode = reader.parseYaml()
-        addNodeForChromiaLib(rootNode, libraryName, libraryVersion, yamlDir, onYamlUpdateCallback)
-        rootNode
-    }
-
-    val stringWriter = StringWriter()
-    BufferedWriter(stringWriter).use { writer ->
-        dumpYaml(updatedRootNode, writer)
-    }
-    val updatedContent = stringWriter.toString()
-
-    printYamlDiff(yamlFile.name, originalContent, updatedContent, onYamlUpdateCallback)
-
-    yamlFile.bufferedWriter().use { writer ->
-        dumpYaml(updatedRootNode, writer)
-    }
+internal fun libraryUpdater(
+        libraryName: String,
+        libraryVersion: String,
+        onYamlUpdateCallback: OnYamlUpdateCallback
+): YamlNodeUpdater = { rootNode, yamlDir ->
+    addNodeForChromiaLib(rootNode, libraryName, libraryVersion, yamlDir, onYamlUpdateCallback)
 }
 
 private fun Node.findMappingNode(key: String): MappingNode? = when (this) {
@@ -49,8 +28,8 @@ private fun Node.findMappingNode(key: String): MappingNode? = when (this) {
     else -> null
 }
 
-private fun addNodeForChromiaLib(rootNode: Node, libraryName: String, libraryVersion: String, yamlDir: File, onYamlUpdateCallback: OnYamlUpdateCallback) {
-    if (rootNode !is MappingNode) return
+private fun addNodeForChromiaLib(rootNode: Node, libraryName: String, libraryVersion: String, yamlDir: File, onYamlUpdateCallback: OnYamlUpdateCallback): Boolean {
+    if (rootNode !is MappingNode) return false
 
     val libsTuple = rootNode.value.find { it.keyNode.isScalarWithValue("libs") }
     if (libsTuple != null) {
@@ -72,6 +51,7 @@ private fun addNodeForChromiaLib(rootNode: Node, libraryName: String, libraryVer
     } else {
         createLibsNodeInRoot(rootNode, libraryName, libraryVersion)
     }
+    return true
 }
 
 private fun updateIncludedLibsFile(includeFile: File, libraryName: String, libraryVersion: String, onYamlUpdateCallback: OnYamlUpdateCallback) {
