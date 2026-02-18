@@ -66,17 +66,21 @@ object ChromiaYmlWriter {
 }
 
 internal fun Node.isScalarWithValue(value: String): Boolean =
-        this is ScalarNode && this.value == value
+    this is ScalarNode && this.value == value
 
 internal fun createScalarNode(value: String): ScalarNode =
-        ScalarNode(Tag.STR, value, null, null, DumperOptions.ScalarStyle.PLAIN)
+    ScalarNode(Tag.STR, value, null, null, DumperOptions.ScalarStyle.PLAIN)
 
-internal fun Node.findMappingNode(key: String): MappingNode? = when (this) {
-    is MappingNode -> value.find { it.keyNode.isScalarWithValue(key) }?.valueNode as? MappingNode
-    else -> null
-}
+internal fun MappingNode.getOrCreateMappingNode(key: String): MappingNode {
+    val existing = value.find { it.keyNode.isScalarWithValue(key) }?.valueNode
 
-internal fun MappingNode.getOrCreateMappingNode(key: String): MappingNode =
-    this.findMappingNode(key) ?: MappingNode(Tag.MAP, mutableListOf(), DumperOptions.FlowStyle.BLOCK).also {
-        value.add(NodeTuple(createScalarNode(key), it))
+    return when (existing) {
+        null -> MappingNode(Tag.MAP, mutableListOf(), DumperOptions.FlowStyle.BLOCK).also {
+            value.add(NodeTuple(createScalarNode(key), it))
+        }
+        is MappingNode -> existing
+        else -> throw InvalidChromiaModel(
+            "Expected '$key' to be a mapping node but found ${existing::class.simpleName}"
+        )
     }
+}

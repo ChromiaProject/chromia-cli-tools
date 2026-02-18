@@ -7,6 +7,7 @@ import assertk.assertions.support.expected
 import assertk.assertions.support.show
 import net.postchain.common.BlockchainRid
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
 import org.yaml.snakeyaml.Yaml
 import java.io.File
@@ -129,5 +130,44 @@ class ChromiaYmlWriterDeploymentTest {
         val updatedContent = yamlFile.readText()
 
         assertThat(updatedContent).isEqualTo(expectedYamlContent)
+    }
+
+    @Test
+    fun `incomplete deployment config`() {
+        val yamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+            deployments:
+        """.trimIndent()
+
+        val yamlFile = File(tempDir.toFile(), "chromia.yml").apply {
+            writeText(yamlContent)
+        }
+
+        val res = assertThrows<InvalidChromiaModel> {
+            ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_zero", BlockchainRid.ZERO_RID)
+        }
+        assertThat(res.message).isEqualTo("Expected 'deployments' to be a mapping node but found ScalarNode")
+    }
+
+    @Test
+    fun `incomplete networks config`() {
+        val yamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+            deployments:
+              testnet:
+        """.trimIndent()
+
+        val yamlFile = File(tempDir.toFile(), "chromia.yml").apply {
+            writeText(yamlContent)
+        }
+
+        val res = assertThrows<InvalidChromiaModel> {
+            ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_zero", BlockchainRid.ZERO_RID)
+        }
+        assertThat(res.message).isEqualTo("Expected 'testnet' to be a mapping node but found ScalarNode")
     }
 }
