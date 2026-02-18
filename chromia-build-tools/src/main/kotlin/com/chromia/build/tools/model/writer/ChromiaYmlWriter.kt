@@ -6,6 +6,7 @@ import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.composer.Composer
+import org.yaml.snakeyaml.nodes.MappingNode
 import org.yaml.snakeyaml.nodes.Node
 import org.yaml.snakeyaml.nodes.ScalarNode
 import org.yaml.snakeyaml.nodes.Tag
@@ -68,3 +69,8 @@ internal fun Node.isScalarWithValue(value: String): Boolean =
 
 internal fun createScalarNode(value: String): ScalarNode =
         ScalarNode(Tag.STR, value, null, null, DumperOptions.ScalarStyle.PLAIN)
+
+internal fun Node.findMappingNode(key: String): MappingNode? = when (this) {
+    is MappingNode -> value.find { it.keyNode.isScalarWithValue(key) }?.valueNode as? MappingNode
+    else -> null
+}

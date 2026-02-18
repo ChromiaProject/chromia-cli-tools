@@ -14,8 +14,7 @@ internal fun updateChromiaDeploymentNode(rootNode: Node, networkName: String, ch
 
     val deploymentNode = rootNode.value.find { it.keyNode.isScalarWithValue("deployments") }
     if (deploymentNode != null) {
-        // TODO: Handle updating on existing deployment configuration
-        return
+        updateDeploymentsNode(deploymentNode, networkName, chainName, brid)
     } else {
         createDeploymentsNodeInRoot(rootNode, networkName, chainName, brid)
     }
@@ -39,4 +38,21 @@ private fun createDeploymentsNodeInRoot(rootNode: MappingNode, networkName: Stri
     networksNode.value.add(NodeTuple(chainsKeyNode, chainsNode))
     deploymentsNode.value.add(NodeTuple(networkKeyNode, networksNode))
     rootNode.value.add(NodeTuple(deploymentKeyNode, deploymentsNode))
+}
+
+private fun updateDeploymentsNode(deploymentsNode: NodeTuple, networkName: String, chainName: String, brid: BlockchainRid) {
+
+    when {
+        deploymentsNode.valueNode is MappingNode -> {
+            val deploymentsNodeAsMapping = deploymentsNode.valueNode as MappingNode
+            val networksNode = deploymentsNodeAsMapping.findMappingNode(networkName) ?: throw Exception("handle this")
+            val chainsNode = networksNode.findMappingNode("chains") ?: throw Exception("handle this")
+
+            val chainKeyNode = createScalarNode(chainName)
+            val bridKeyNode = createScalarNode("x\"${brid.toHex()}\"")
+            val chainNode = NodeTuple(chainKeyNode, bridKeyNode)
+
+            chainsNode.value.add(chainNode)
+        }
+    }
 }

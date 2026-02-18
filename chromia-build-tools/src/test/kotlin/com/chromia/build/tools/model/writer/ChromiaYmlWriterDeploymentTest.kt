@@ -59,4 +59,42 @@ class ChromiaYmlWriterDeploymentTest {
 
         assertThat(updatedContent).isEqualTo(expectedYamlContent)
     }
+
+    @Test
+    fun `should extend chains with new deployed chain`() {
+        val yamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+              chain_one:
+                module: main
+            deployments:
+              testnet:
+                chains:
+                  chain_zero: x"${BlockchainRid.ZERO_RID}"
+        """.trimIndent()
+
+        val yamlFile = File(tempDir.toFile(), "chromia.yml").apply {
+            writeText(yamlContent)
+        }
+
+        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_one", BlockchainRid.buildRepeat(1))
+
+        val expectedYamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+              chain_one:
+                module: main
+            deployments:
+              testnet:
+                chains:
+                  chain_zero: x"${BlockchainRid.ZERO_RID}"
+                  chain_one: x"${BlockchainRid.buildRepeat(1)}"
+
+        """.trimIndent()
+        val updatedContent = yamlFile.readText()
+
+        assertThat(updatedContent).isEqualTo(expectedYamlContent)
+    }
 }
