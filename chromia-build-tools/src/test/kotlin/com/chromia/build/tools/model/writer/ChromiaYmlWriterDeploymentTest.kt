@@ -2,7 +2,9 @@ package com.chromia.build.tools.model.writer
 
 import assertk.Assert
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
 import assertk.assertions.support.expected
 import assertk.assertions.support.show
 import net.postchain.common.BlockchainRid
@@ -41,7 +43,8 @@ class ChromiaYmlWriterDeploymentTest {
             writeText(yamlContent)
         }
 
-        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_zero", BlockchainRid.ZERO_RID)
+        var capturedDiff: String? = null
+        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_zero", BlockchainRid.ZERO_RID) { capturedDiff = it }
 
         val expectedYamlContent = """
             blockchains:
@@ -56,6 +59,11 @@ class ChromiaYmlWriterDeploymentTest {
         val updatedContent = yamlFile.readText()
 
         assertThat(updatedContent).isEqualTo(expectedYamlContent)
+        assertThat(capturedDiff).isNotNull()
+        assertThat(capturedDiff!!).contains("+deployments:")
+        assertThat(capturedDiff!!).contains("+  testnet:")
+        assertThat(capturedDiff!!).contains("+    chains:")
+        assertThat(capturedDiff!!).contains("+      chain_zero: x\"${BlockchainRid.ZERO_RID}\"")
     }
 
     @Test
@@ -76,7 +84,8 @@ class ChromiaYmlWriterDeploymentTest {
             writeText(yamlContent)
         }
 
-        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_one", BlockchainRid.buildRepeat(1))
+        var capturedDiff: String? = null
+        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_one", BlockchainRid.buildRepeat(1)) { capturedDiff = it }
 
         val expectedYamlContent = """
             blockchains:
@@ -94,6 +103,8 @@ class ChromiaYmlWriterDeploymentTest {
         val updatedContent = yamlFile.readText()
 
         assertThat(updatedContent).isEqualTo(expectedYamlContent)
+        assertThat(capturedDiff).isNotNull()
+        assertThat(capturedDiff!!).contains("+      chain_one: x\"${BlockchainRid.buildRepeat(1)}\"")
     }
 
     @Test
@@ -112,7 +123,8 @@ class ChromiaYmlWriterDeploymentTest {
             writeText(yamlContent)
         }
 
-        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "mainnet", "chain_zero", BlockchainRid.ZERO_RID)
+        var capturedDiff: String? = null
+        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "mainnet", "chain_zero", BlockchainRid.ZERO_RID) { capturedDiff = it }
 
         val expectedYamlContent = """
             blockchains:
@@ -130,6 +142,10 @@ class ChromiaYmlWriterDeploymentTest {
         val updatedContent = yamlFile.readText()
 
         assertThat(updatedContent).isEqualTo(expectedYamlContent)
+        assertThat(capturedDiff).isNotNull()
+        assertThat(capturedDiff!!).contains("+  mainnet:")
+        assertThat(capturedDiff!!).contains("+    chains:")
+        assertThat(capturedDiff!!).contains("+      chain_zero: x\"${BlockchainRid.ZERO_RID}\"")
     }
 
     @Test
@@ -191,7 +207,8 @@ class ChromiaYmlWriterDeploymentTest {
         val yamlFile = File(tempDir.toFile(), "chromia.yml").apply { writeText(yamlContent) }
         val deploymentFile = File(tempDir.toFile(), "deployments.yml").apply { writeText(deploymentsContent) }
 
-        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_one", BlockchainRid.buildRepeat(1))
+        var capturedDiff: String? = null
+        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_one", BlockchainRid.buildRepeat(1)) { capturedDiff = it }
 
         val expectedDeploymentsContent = """
             testnet:
@@ -203,6 +220,9 @@ class ChromiaYmlWriterDeploymentTest {
 
         assertThat(yamlFile.readText()).isEqualTo(yamlContent)
         assertThat(deploymentFile.readText()).isEqualTo(expectedDeploymentsContent)
+        assertThat(capturedDiff).isNotNull()
+        assertThat(capturedDiff!!).contains("--- deployments.yml")
+        assertThat(capturedDiff!!).contains("+    chain_one: x\"${BlockchainRid.buildRepeat(1)}\"")
     }
 
     @Test

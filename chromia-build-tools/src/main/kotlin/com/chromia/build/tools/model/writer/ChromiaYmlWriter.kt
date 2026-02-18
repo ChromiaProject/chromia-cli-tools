@@ -1,16 +1,14 @@
 package com.chromia.build.tools.model.writer
 
 import com.chromia.build.tools.lib.OnYamlUpdateCallback
+import com.github.difflib.DiffUtils
+import com.github.difflib.UnifiedDiffUtils
 import net.postchain.common.BlockchainRid
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.composer.Composer
-import org.yaml.snakeyaml.nodes.MappingNode
 import org.yaml.snakeyaml.nodes.Node
-import org.yaml.snakeyaml.nodes.NodeTuple
-import org.yaml.snakeyaml.nodes.ScalarNode
-import org.yaml.snakeyaml.nodes.Tag
 import org.yaml.snakeyaml.parser.ParserImpl
 import org.yaml.snakeyaml.reader.StreamReader
 import org.yaml.snakeyaml.resolver.Resolver
@@ -27,7 +25,6 @@ object ChromiaYmlWriter {
         brid: BlockchainRid,
         onYamlUpdateCallback: OnYamlUpdateCallback = {}
     ) {
-        // TODO: Used to print yaml differences
         val originalContent = yamlFile.readText()
 
         var rootNodeModified = false
@@ -42,6 +39,8 @@ object ChromiaYmlWriter {
             yamlFile.bufferedWriter().use { writer ->
                 dumpYaml(updatedRootNode, writer)
             }
+            val updatedContent = yamlFile.readText()
+            printYamlDiff(yamlFile.name, originalContent, updatedContent, onYamlUpdateCallback)
         }
     }
 }
@@ -66,5 +65,24 @@ internal fun dumpYaml(yamlNode: Node, writer: BufferedWriter) {
 
     val yaml = Yaml(options)
     yaml.serialize(yamlNode, writer)
+}
+
+internal fun printYamlDiff(fileName: String, originalContent: String, updatedContent: String, onYamlUpdateCallback: OnYamlUpdateCallback) {
+    val originalLines = originalContent.lines()
+    val updatedLines = updatedContent.lines()
+
+    if (originalLines == updatedLines) {
+        return
+    }
+
+    val patch = DiffUtils.diff(originalLines, updatedLines)
+    val unifiedDiff = UnifiedDiffUtils.generateUnifiedDiff(
+        fileName,
+        fileName,
+        originalLines,
+        patch,
+        3
+    )
+    onYamlUpdateCallback(unifiedDiff.joinToString("\n"))
 }
 

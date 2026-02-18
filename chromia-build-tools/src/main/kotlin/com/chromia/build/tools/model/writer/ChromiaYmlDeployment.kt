@@ -14,7 +14,7 @@ internal fun updateChromiaDeploymentNode(rootNode: Node, networkName: String, ch
     val deploymentsNode = rootNode.value.find { it.keyNode.isScalarWithValue("deployments") }
     if (deploymentsNode != null && deploymentsNode.valueNode.isIncludeNode()) {
         val includePath = (deploymentsNode.valueNode as ScalarNode).value
-        updateIncludedDeploymentsFile(File(yamlDir, includePath), networkName, chainName, brid)
+        updateIncludedDeploymentsFile(File(yamlDir, includePath), networkName, chainName, brid, onYamlUpdateCallback)
         return false
     } else {
         val chainsNode = rootNode
@@ -29,9 +29,10 @@ internal fun updateChromiaDeploymentNode(rootNode: Node, networkName: String, ch
     }
 }
 
-private fun updateIncludedDeploymentsFile(includeFile: File, networkName: String, chainName: String, brid: BlockchainRid) {
+private fun updateIncludedDeploymentsFile(includeFile: File, networkName: String, chainName: String, brid: BlockchainRid, onYamlUpdateCallback: OnYamlUpdateCallback) {
     if (!includeFile.exists()) throw InvalidChromiaModel("Included deployments file not found: ${includeFile.path}")
 
+    val originalContent = includeFile.readText()
     val rootNode = includeFile.bufferedReader().use { it.parseYaml() }
     val deploymentsNode = rootNode as? MappingNode ?: throw InvalidChromiaModel("Expected root of ${includeFile.name} to be a mapping node but found ${rootNode::class.simpleName}")
 
@@ -41,5 +42,6 @@ private fun updateIncludedDeploymentsFile(includeFile: File, networkName: String
         .value.add(NodeTuple(createScalarNode(chainName), createScalarNode("x\"${brid.toHex()}\"")))
 
     includeFile.bufferedWriter().use { dumpYaml(deploymentsNode, it) }
+    printYamlDiff(includeFile.name, originalContent, includeFile.readText(), onYamlUpdateCallback)
 }
 
