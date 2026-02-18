@@ -1,13 +1,10 @@
 package com.chromia.build.tools.model.writer
 
 import assertk.Assert
-import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.support.expected
 import assertk.assertions.support.show
-import com.chromia.build.tools.lib.updateChromiaYamlForLibrary
 import net.postchain.common.BlockchainRid
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -91,6 +88,42 @@ class ChromiaYmlWriterDeploymentTest {
                 chains:
                   chain_zero: x"${BlockchainRid.ZERO_RID}"
                   chain_one: x"${BlockchainRid.buildRepeat(1)}"
+
+        """.trimIndent()
+        val updatedContent = yamlFile.readText()
+
+        assertThat(updatedContent).isEqualTo(expectedYamlContent)
+    }
+
+    @Test
+    fun `should extend networks section with new chain deployment on new network`() {
+        val yamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+            deployments:
+              testnet:
+                chains:
+                  chain_zero: x"${BlockchainRid.ZERO_RID}"
+        """.trimIndent()
+
+        val yamlFile = File(tempDir.toFile(), "chromia.yml").apply {
+            writeText(yamlContent)
+        }
+
+        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "mainnet", "chain_zero", BlockchainRid.ZERO_RID)
+
+        val expectedYamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+            deployments:
+              testnet:
+                chains:
+                  chain_zero: x"${BlockchainRid.ZERO_RID}"
+              mainnet:
+                chains:
+                  chain_zero: x"${BlockchainRid.ZERO_RID}"
 
         """.trimIndent()
         val updatedContent = yamlFile.readText()
