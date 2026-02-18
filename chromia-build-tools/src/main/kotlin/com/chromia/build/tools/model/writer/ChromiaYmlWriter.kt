@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.composer.Composer
 import org.yaml.snakeyaml.nodes.MappingNode
 import org.yaml.snakeyaml.nodes.Node
+import org.yaml.snakeyaml.nodes.NodeTuple
 import org.yaml.snakeyaml.nodes.ScalarNode
 import org.yaml.snakeyaml.nodes.Tag
 import org.yaml.snakeyaml.parser.ParserImpl
@@ -74,3 +75,8 @@ internal fun Node.findMappingNode(key: String): MappingNode? = when (this) {
     is MappingNode -> value.find { it.keyNode.isScalarWithValue(key) }?.valueNode as? MappingNode
     else -> null
 }
+
+internal fun MappingNode.getOrCreateMappingNode(key: String): MappingNode =
+    this.findMappingNode(key) ?: MappingNode(Tag.MAP, mutableListOf(), DumperOptions.FlowStyle.BLOCK).also {
+        value.add(NodeTuple(createScalarNode(key), it))
+    }
