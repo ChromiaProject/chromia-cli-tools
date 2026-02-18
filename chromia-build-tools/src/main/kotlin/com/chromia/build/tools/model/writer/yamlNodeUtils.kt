@@ -29,3 +29,8 @@ internal fun MappingNode.getOrCreateMappingNode(key: String): MappingNode {
         )
     }
 }
+
+internal fun Node.findMappingNode(key: String): MappingNode? = when (this) {
+    is MappingNode -> value.find { it.keyNode.isScalarWithValue(key) }?.valueNode as? MappingNode
+    else -> null
+}

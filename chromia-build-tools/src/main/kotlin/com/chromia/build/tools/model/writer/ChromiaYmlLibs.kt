@@ -23,11 +23,6 @@ internal fun libraryUpdater(
     addNodeForChromiaLib(rootNode, libraryName, libraryVersion, yamlDir, onYamlUpdateCallback)
 }
 
-private fun Node.findMappingNode(key: String): MappingNode? = when (this) {
-    is MappingNode -> value.find { it.keyNode.isScalarWithValue(key) }?.valueNode as? MappingNode
-    else -> null
-}
-
 private fun addNodeForChromiaLib(rootNode: Node, libraryName: String, libraryVersion: String, yamlDir: File, onYamlUpdateCallback: OnYamlUpdateCallback): Boolean {
     if (rootNode !is MappingNode) return false
 
