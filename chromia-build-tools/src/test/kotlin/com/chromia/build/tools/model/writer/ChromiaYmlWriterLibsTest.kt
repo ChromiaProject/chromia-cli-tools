@@ -13,7 +13,7 @@ import java.io.File
 import java.nio.file.Path
 
 @Suppress("UNCHECKED_CAST")
-class ChromiaYamlUpdaterTest {
+class ChromiaYmlWriterLibsTest {
 
     @TempDir
     lateinit var tempDir: Path
