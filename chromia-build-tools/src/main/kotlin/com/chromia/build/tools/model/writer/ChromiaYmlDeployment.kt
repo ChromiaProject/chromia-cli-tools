@@ -8,7 +8,16 @@ import org.yaml.snakeyaml.nodes.NodeTuple
 import org.yaml.snakeyaml.nodes.ScalarNode
 import java.io.File
 
-internal fun updateChromiaDeploymentNode(rootNode: Node, networkName: String, chainName: String, brid: BlockchainRid, yamlDir: File, onYamlUpdateCallback: OnYamlUpdateCallback): Boolean {
+internal fun deploymentUpdater(
+    networkName: String,
+    chainName: String,
+    brid: BlockchainRid,
+    onYamlUpdateCallback: OnYamlUpdateCallback
+): YamlNodeUpdater = { rootNode, yamlDir ->
+    updateChromiaDeploymentNode(rootNode, networkName, chainName, brid, yamlDir, onYamlUpdateCallback)
+}
+
+private fun updateChromiaDeploymentNode(rootNode: Node, networkName: String, chainName: String, brid: BlockchainRid, yamlDir: File, onYamlUpdateCallback: OnYamlUpdateCallback): Boolean {
     if (rootNode !is MappingNode) return false
 
     val deploymentsNode = rootNode.value.find { it.keyNode.isScalarWithValue("deployments") }

@@ -16,6 +16,8 @@ import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.File
 
+typealias YamlNodeUpdater = (rootNode: Node, yamlDir: File) -> Boolean
+
 object ChromiaYmlWriter {
 
     fun updateDeploymentNode(
@@ -24,23 +26,21 @@ object ChromiaYmlWriter {
         chainName: String,
         brid: BlockchainRid,
         onYamlUpdateCallback: OnYamlUpdateCallback = {}
+    ) = update(yamlFile, onYamlUpdateCallback, deploymentUpdater(networkName, chainName, brid, onYamlUpdateCallback))
+
+    private fun update(
+        yamlFile: File,
+        onYamlUpdateCallback: OnYamlUpdateCallback,
+        updater: YamlNodeUpdater
     ) {
         val originalContent = yamlFile.readText()
-
-        var rootNodeModified = false
         val yamlDir = yamlFile.parentFile
-        val updatedRootNode = yamlFile.bufferedReader().use { reader ->
-            val rootNode = reader.parseYaml()
-            rootNodeModified = updateChromiaDeploymentNode(rootNode, networkName, chainName, brid, yamlDir, onYamlUpdateCallback)
-            rootNode
-        }
+        val rootNode = yamlFile.bufferedReader().use { it.parseYaml() }
+        val rootModified = updater(rootNode, yamlDir)
 
-        if (rootNodeModified) {
-            yamlFile.bufferedWriter().use { writer ->
-                dumpYaml(updatedRootNode, writer)
-            }
-            val updatedContent = yamlFile.readText()
-            printYamlDiff(yamlFile.name, originalContent, updatedContent, onYamlUpdateCallback)
+        if (rootModified) {
+            yamlFile.bufferedWriter().use { dumpYaml(rootNode, it) }
+            printYamlDiff(yamlFile.name, originalContent, yamlFile.readText(), onYamlUpdateCallback)
         }
     }
 }
