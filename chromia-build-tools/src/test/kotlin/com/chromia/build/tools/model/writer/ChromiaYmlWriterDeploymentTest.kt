@@ -170,4 +170,77 @@ class ChromiaYmlWriterDeploymentTest {
         }
         assertThat(res.message).isEqualTo("Expected 'testnet' to be a mapping node but found ScalarNode")
     }
+
+    @Test
+    fun `should write to included deployments file when deployments uses include tag`() {
+        val deploymentsContent = """
+            testnet:
+              chains:
+                chain_zero: x"${BlockchainRid.ZERO_RID}"
+        """.trimIndent()
+
+        val yamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+              chain_one:
+                module: main
+            deployments: !include deployments.yml
+        """.trimIndent()
+
+        val yamlFile = File(tempDir.toFile(), "chromia.yml").apply { writeText(yamlContent) }
+        val deploymentFile = File(tempDir.toFile(), "deployments.yml").apply { writeText(deploymentsContent) }
+
+        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_one", BlockchainRid.buildRepeat(1))
+
+        val expectedDeploymentsContent = """
+            testnet:
+              chains:
+                chain_zero: x"${BlockchainRid.ZERO_RID}"
+                chain_one: x"${BlockchainRid.buildRepeat(1)}"
+
+        """.trimIndent()
+
+        assertThat(yamlFile.readText()).isEqualTo(yamlContent)
+        assertThat(deploymentFile.readText()).isEqualTo(expectedDeploymentsContent)
+    }
+
+    @Test
+    fun `should throw when included deployments file does not exist`() {
+        val yamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+            deployments: !include deployments.yml
+        """.trimIndent()
+
+        val yamlFile = File(tempDir.toFile(), "chromia.yml").apply { writeText(yamlContent) }
+
+        val res = assertThrows<InvalidChromiaModel> {
+            ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_zero", BlockchainRid.ZERO_RID)
+        }
+        assertThat(res.message).isEqualTo("Included deployments file not found: ${tempDir.resolve("deployments.yml")}")
+    }
+
+    @Test
+    fun `should throw when included deployments file is with invalid format`() {
+        val deploymentsContent = """
+            testnet:
+        """.trimIndent()
+
+        val yamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+            deployments: !include deployments.yml
+        """.trimIndent()
+
+        val yamlFile = File(tempDir.toFile(), "chromia.yml").apply { writeText(yamlContent) }
+        File(tempDir.toFile(), "deployments.yml").apply { writeText(deploymentsContent) }
+
+        val res = assertThrows<InvalidChromiaModel> {
+            ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_one", BlockchainRid.buildRepeat(1))
+        }
+        assertThat(res.message).isEqualTo("Expected 'testnet' to be a mapping node but found ScalarNode")
+    }
 }

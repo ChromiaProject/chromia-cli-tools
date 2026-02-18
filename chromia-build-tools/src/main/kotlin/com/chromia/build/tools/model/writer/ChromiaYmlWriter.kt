@@ -30,40 +30,46 @@ object ChromiaYmlWriter {
         // TODO: Used to print yaml differences
         val originalContent = yamlFile.readText()
 
+        var rootNodeModified = false
         val yamlDir = yamlFile.parentFile
         val updatedRootNode = yamlFile.bufferedReader().use { reader ->
             val rootNode = reader.parseYaml()
-            updateChromiaDeploymentNode(rootNode, networkName, chainName, brid, yamlDir, onYamlUpdateCallback)
+            rootNodeModified = updateChromiaDeploymentNode(rootNode, networkName, chainName, brid, yamlDir, onYamlUpdateCallback)
             rootNode
         }
 
-        yamlFile.bufferedWriter().use { writer ->
-            dumpYaml(updatedRootNode, writer)
+        if (rootNodeModified) {
+            yamlFile.bufferedWriter().use { writer ->
+                dumpYaml(updatedRootNode, writer)
+            }
         }
-    }
-
-    private fun BufferedReader.parseYaml(): Node {
-        val reader = StreamReader(this)
-        val loaderOptions = LoaderOptions().apply {
-            isProcessComments = true
-        }
-        val parser = ParserImpl(reader, loaderOptions)
-        val composer = Composer(parser, Resolver(), loaderOptions)
-        return composer.singleNode
-    }
-
-    private fun dumpYaml(yamlNode: Node, writer: BufferedWriter) {
-        val options = DumperOptions().apply {
-            isProcessComments = true
-            indentWithIndicator = true
-            defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
-            defaultScalarStyle = DumperOptions.ScalarStyle.PLAIN
-        }
-
-        val yaml = Yaml(options)
-        yaml.serialize(yamlNode, writer)
     }
 }
+
+internal fun BufferedReader.parseYaml(): Node {
+    val reader = StreamReader(this)
+    val loaderOptions = LoaderOptions().apply {
+        isProcessComments = true
+    }
+    val parser = ParserImpl(reader, loaderOptions)
+    val composer = Composer(parser, Resolver(), loaderOptions)
+    return composer.singleNode
+}
+
+internal fun dumpYaml(yamlNode: Node, writer: BufferedWriter) {
+    val options = DumperOptions().apply {
+        isProcessComments = true
+        indentWithIndicator = true
+        defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
+        defaultScalarStyle = DumperOptions.ScalarStyle.PLAIN
+    }
+
+    val yaml = Yaml(options)
+    yaml.serialize(yamlNode, writer)
+}
+
+internal fun Node.isIncludeNode(): Boolean =
+    this is ScalarNode && this.tag == Tag("!include")
 
 internal fun Node.isScalarWithValue(value: String): Boolean =
     this is ScalarNode && this.value == value
