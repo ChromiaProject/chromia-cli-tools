@@ -1,4 +1,4 @@
-package com.chromia.build.tools.lib
+package com.chromia.build.tools.model.writer
 
 import assertk.Assert
 import assertk.all

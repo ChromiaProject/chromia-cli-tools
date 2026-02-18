@@ -1,20 +1,10 @@
-package com.chromia.build.tools.lib
+package com.chromia.build.tools.model.writer
 
 import org.yaml.snakeyaml.DumperOptions
-import org.yaml.snakeyaml.LoaderOptions
-import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.nodes.*
-import org.yaml.snakeyaml.composer.Composer
-import org.yaml.snakeyaml.parser.ParserImpl
-import org.yaml.snakeyaml.reader.StreamReader
-import org.yaml.snakeyaml.resolver.Resolver
-import com.github.difflib.DiffUtils
-import com.github.difflib.UnifiedDiffUtils
-import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.File
 import java.io.StringWriter
-import kotlin.apply
 import kotlin.collections.find
 import kotlin.collections.indexOfFirst
 import kotlin.io.bufferedReader
@@ -22,71 +12,41 @@ import kotlin.io.bufferedWriter
 import kotlin.io.readText
 import kotlin.io.use
 import kotlin.run
-import kotlin.text.lines
 
 typealias OnYamlUpdateCallback = (String) -> Unit
 
-fun updateChromiaYamlForLibrary(yamlFile: File, libraryName: String, libraryVersion: String, onYamlUpdateCallback: OnYamlUpdateCallback = {}) {
+fun updateChromiaYamlForLibrary(
+    yamlFile: File,
+    libraryName: String,
+    libraryVersion: String,
+    onYamlUpdateCallback: OnYamlUpdateCallback = {
+    }
+) {
     val originalContent = yamlFile.readText()
-    
+
     val yamlDir = yamlFile.parentFile
     val updatedRootNode = yamlFile.bufferedReader().use { reader ->
         val rootNode = reader.parseYaml()
         addNodeForChromiaLib(rootNode, libraryName, libraryVersion, yamlDir, onYamlUpdateCallback)
         rootNode
     }
-    
+
     val stringWriter = StringWriter()
     BufferedWriter(stringWriter).use { writer ->
         dumpYaml(updatedRootNode, writer)
     }
     val updatedContent = stringWriter.toString()
-    
+
     printYamlDiff(yamlFile.name, originalContent, updatedContent, onYamlUpdateCallback)
-    
+
     yamlFile.bufferedWriter().use { writer ->
         dumpYaml(updatedRootNode, writer)
     }
 }
 
-fun printYamlDiff(fileName: String, originalContent: String, updatedContent: String, onYamlUpdateCallback: OnYamlUpdateCallback) {
-    val originalLines = originalContent.lines()
-    val updatedLines = updatedContent.lines()
-    
-    if (originalLines == updatedLines) {
-        return
-    }
-
-    val patch = DiffUtils.diff(originalLines, updatedLines)
-    val unifiedDiff = UnifiedDiffUtils.generateUnifiedDiff(
-        fileName,
-        fileName,
-        originalLines,
-        patch,
-        3
-    )
-    onYamlUpdateCallback(unifiedDiff.joinToString("\n"))
-}
-
 private fun Node.findMappingNode(key: String): MappingNode? = when (this) {
     is MappingNode -> value.find { it.keyNode.isScalarWithValue(key) }?.valueNode as? MappingNode
     else -> null
-}
-
-private fun Node.isScalarWithValue(value: String): Boolean =
-    this is ScalarNode && this.value == value
-
-private fun Node.isIncludeNode(): Boolean =
-    this is ScalarNode && this.tag == Tag("!include")
-
-private fun BufferedReader.parseYaml(): Node {
-    val reader = StreamReader(this)
-    val loaderOptions = LoaderOptions().apply {
-        isProcessComments = true
-    }
-    val parser = ParserImpl(reader, loaderOptions)
-    val composer = Composer(parser, Resolver(), loaderOptions)
-    return composer.singleNode
 }
 
 private fun addNodeForChromiaLib(rootNode: Node, libraryName: String, libraryVersion: String, yamlDir: File, onYamlUpdateCallback: OnYamlUpdateCallback) {
@@ -166,7 +126,7 @@ private fun MappingNode.ensureChromiaLib(libraryName: String, libraryVersion: St
 
 private fun ensureVersion(libraryNode: MappingNode, version: String) {
     val versionIndex = libraryNode.value.indexOfFirst { it.keyNode.isScalarWithValue("version") }
-    
+
     if (versionIndex != -1) {
         val versionKey = libraryNode.value[versionIndex].keyNode
         val versionValue = createScalarNode(version)
@@ -178,17 +138,3 @@ private fun ensureVersion(libraryNode: MappingNode, version: String) {
     }
 }
 
-private fun dumpYaml(yamlNode: Node, writer: BufferedWriter) {
-    val options = DumperOptions().apply {
-        isProcessComments = true
-        indentWithIndicator = true
-        defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
-        defaultScalarStyle = DumperOptions.ScalarStyle.PLAIN
-    }
-    
-    val yaml = Yaml(options)
-    yaml.serialize(yamlNode, writer)
-}
-
-private fun createScalarNode(value: String): ScalarNode =
-    ScalarNode(Tag.STR, value, null, null, DumperOptions.ScalarStyle.PLAIN)

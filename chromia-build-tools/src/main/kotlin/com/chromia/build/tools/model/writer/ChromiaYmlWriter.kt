@@ -1,6 +1,5 @@
 package com.chromia.build.tools.model.writer
 
-import com.chromia.build.tools.lib.OnYamlUpdateCallback
 import com.github.difflib.DiffUtils
 import com.github.difflib.UnifiedDiffUtils
 import net.postchain.common.BlockchainRid

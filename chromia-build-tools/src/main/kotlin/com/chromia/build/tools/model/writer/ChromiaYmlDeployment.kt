@@ -1,6 +1,5 @@
 package com.chromia.build.tools.model.writer
 
-import com.chromia.build.tools.lib.OnYamlUpdateCallback
 import net.postchain.common.BlockchainRid
 import org.yaml.snakeyaml.nodes.MappingNode
 import org.yaml.snakeyaml.nodes.Node
