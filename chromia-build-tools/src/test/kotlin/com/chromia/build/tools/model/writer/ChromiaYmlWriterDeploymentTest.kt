@@ -35,7 +35,7 @@ class ChromiaYmlWriterDeploymentTest {
     fun `should add deployment section with deployment when it doesn't exist`() {
         val yamlContent = """
             blockchains:
-              chain_1:
+              chain_zero:
                 module: main
         """.trimIndent()
 
@@ -43,16 +43,16 @@ class ChromiaYmlWriterDeploymentTest {
             writeText(yamlContent)
         }
 
-        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "mna", BlockchainRid.ZERO_RID)
+        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_zero", BlockchainRid.ZERO_RID)
 
         val expectedYamlContent = """
             blockchains:
-              chain_1:
+              chain_zero:
                 module: main
             deployments:
               testnet:
                 chains:
-                  mna: x"${BlockchainRid.ZERO_RID}"
+                  chain_zero: x"${BlockchainRid.ZERO_RID}"
 
         """.trimIndent()
         val updatedContent = yamlFile.readText()
