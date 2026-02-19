@@ -62,9 +62,13 @@ internal fun BufferedReader.parseYaml(): Node {
 }
 
 internal fun dumpYaml(yamlNode: Node, writer: BufferedWriter) {
+    /*
+        Previous indentations in file not respected with snake YAML serialize. It does a complete re-writing
+     */
     val options = DumperOptions().apply {
         isProcessComments = true
         indentWithIndicator = true
+        indicatorIndent = 2
         defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
         defaultScalarStyle = DumperOptions.ScalarStyle.PLAIN
     }
