@@ -61,9 +61,9 @@ class ChromiaYmlWriterDeploymentTest {
         assertThat(updatedContent).isEqualTo(expectedYamlContent)
         assertThat(capturedDiff).isNotNull()
         assertThat(capturedDiff!!).contains("+deployments:")
-        assertThat(capturedDiff!!).contains("+  testnet:")
-        assertThat(capturedDiff!!).contains("+    chains:")
-        assertThat(capturedDiff!!).contains("+      chain_zero: x\"${BlockchainRid.ZERO_RID}\"")
+        assertThat(capturedDiff).contains("+  testnet:")
+        assertThat(capturedDiff).contains("+    chains:")
+        assertThat(capturedDiff).contains("+      chain_zero: x\"${BlockchainRid.ZERO_RID}\"")
     }
 
     @Test
@@ -103,8 +103,8 @@ class ChromiaYmlWriterDeploymentTest {
         val updatedContent = yamlFile.readText()
 
         assertThat(updatedContent).isEqualTo(expectedYamlContent)
-        assertThat(capturedDiff).isNotNull()
-        assertThat(capturedDiff!!).contains("+      chain_one: x\"${BlockchainRid.buildRepeat(1)}\"")
+        assertThat(capturedDiff!!).isNotNull()
+        assertThat(capturedDiff).contains("+      chain_one: x\"${BlockchainRid.buildRepeat(1)}\"")
     }
 
     @Test
@@ -144,8 +144,8 @@ class ChromiaYmlWriterDeploymentTest {
         assertThat(updatedContent).isEqualTo(expectedYamlContent)
         assertThat(capturedDiff).isNotNull()
         assertThat(capturedDiff!!).contains("+  mainnet:")
-        assertThat(capturedDiff!!).contains("+    chains:")
-        assertThat(capturedDiff!!).contains("+      chain_zero: x\"${BlockchainRid.ZERO_RID}\"")
+        assertThat(capturedDiff).contains("+    chains:")
+        assertThat(capturedDiff).contains("+      chain_zero: x\"${BlockchainRid.ZERO_RID}\"")
     }
 
     @Test
@@ -220,9 +220,9 @@ class ChromiaYmlWriterDeploymentTest {
 
         assertThat(yamlFile.readText()).isEqualTo(yamlContent)
         assertThat(deploymentFile.readText()).isEqualTo(expectedDeploymentsContent)
-        assertThat(capturedDiff).isNotNull()
-        assertThat(capturedDiff!!).contains("--- deployments.yml")
-        assertThat(capturedDiff!!).contains("+    chain_one: x\"${BlockchainRid.buildRepeat(1)}\"")
+        assertThat(capturedDiff!!).isNotNull()
+        assertThat(capturedDiff).contains("--- deployments.yml")
+        assertThat(capturedDiff).contains("+    chain_one: x\"${BlockchainRid.buildRepeat(1)}\"")
     }
 
     @Test
