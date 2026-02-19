@@ -597,10 +597,25 @@ public final class com/chromia/build/tools/model/EnsureTypeKt {
 
 public final class com/chromia/build/tools/model/writer/ChromiaYmlWriter {
 	public static final field INSTANCE Lcom/chromia/build/tools/model/writer/ChromiaYmlWriter;
-	public final fun updateDeploymentNode (Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Lkotlin/jvm/functions/Function1;)V
-	public static synthetic fun updateDeploymentNode$default (Lcom/chromia/build/tools/model/writer/ChromiaYmlWriter;Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun updateDeploymentNodes (Ljava/io/File;Ljava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun updateDeploymentNodes$default (Lcom/chromia/build/tools/model/writer/ChromiaYmlWriter;Ljava/io/File;Ljava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 	public final fun updateLibraryNode (Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
 	public static synthetic fun updateLibraryNode$default (Lcom/chromia/build/tools/model/writer/ChromiaYmlWriter;Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
+public final class com/chromia/build/tools/model/writer/DeploymentUpdate {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lnet/postchain/common/BlockchainRid;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;)Lcom/chromia/build/tools/model/writer/DeploymentUpdate;
+	public static synthetic fun copy$default (Lcom/chromia/build/tools/model/writer/DeploymentUpdate;Ljava/lang/String;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;ILjava/lang/Object;)Lcom/chromia/build/tools/model/writer/DeploymentUpdate;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBrid ()Lnet/postchain/common/BlockchainRid;
+	public final fun getChainName ()Ljava/lang/String;
+	public final fun getNetworkName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/chromia/build/tools/model/writer/InvalidChromiaModel : java/lang/IllegalStateException {

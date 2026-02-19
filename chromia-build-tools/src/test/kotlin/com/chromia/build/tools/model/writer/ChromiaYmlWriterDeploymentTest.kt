@@ -11,7 +11,6 @@ import net.postchain.common.BlockchainRid
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
-import org.yaml.snakeyaml.Yaml
 import java.io.File
 import java.nio.file.Path
 
@@ -19,8 +18,6 @@ class ChromiaYmlWriterDeploymentTest {
 
     @TempDir
     lateinit var tempDir: Path
-
-    private val yaml = Yaml()
 
     private fun <K, V> Assert<Map<K, V>>.containsKey(key: K): Assert<Map<K, V>> =
         transform("contains key ${show(key)}") { actual ->
@@ -44,7 +41,8 @@ class ChromiaYmlWriterDeploymentTest {
         }
 
         var capturedDiff: String? = null
-        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_zero", BlockchainRid.ZERO_RID) { capturedDiff = it }
+        val deploymentUpdates = listOf(DeploymentUpdate("testnet", "chain_zero", BlockchainRid.ZERO_RID))
+        ChromiaYmlWriter.updateDeploymentNodes(yamlFile, deploymentUpdates) { capturedDiff = it }
 
         val expectedYamlContent = """
             blockchains:
@@ -67,6 +65,53 @@ class ChromiaYmlWriterDeploymentTest {
     }
 
     @Test
+    fun `should extend explicit deployment target`() {
+        val yamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+            deployments:
+              explicit_network:
+                brid: x"${BlockchainRid.buildRepeat(1)}"
+                url:
+                  - "http://host"
+                  - "http://host_one"
+                container: 0943e41e7768ce84e7f977eb4ccd8383dc487bfd94d2b2653e1ab085e83ddf8a
+                chains:
+                  chain_zero: x"${BlockchainRid.ZERO_RID}"
+        """.trimIndent()
+
+        val yamlFile = File(tempDir.toFile(), "chromia.yml").apply {
+            writeText(yamlContent)
+        }
+
+        val deploymentUpdates = listOf(
+            DeploymentUpdate("explicit_network", "chain_three", BlockchainRid.buildRepeat(3))
+        )
+        ChromiaYmlWriter.updateDeploymentNodes(yamlFile, deploymentUpdates)
+
+        val expectedYamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+            deployments:
+              explicit_network:
+                brid: x"${BlockchainRid.buildRepeat(1)}"
+                url:
+                  - "http://host"
+                  - "http://host_one"
+                container: 0943e41e7768ce84e7f977eb4ccd8383dc487bfd94d2b2653e1ab085e83ddf8a
+                chains:
+                  chain_zero: x"${BlockchainRid.ZERO_RID}"
+                  chain_three: x"${BlockchainRid.buildRepeat(3)}"
+
+        """.trimIndent()
+        val updatedContent = yamlFile.readText()
+
+        assertThat(updatedContent).isEqualTo(expectedYamlContent)
+    }
+
+    @Test
     fun `should extend chains with new deployed chain`() {
         val yamlContent = """
             blockchains:
@@ -85,7 +130,8 @@ class ChromiaYmlWriterDeploymentTest {
         }
 
         var capturedDiff: String? = null
-        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_one", BlockchainRid.buildRepeat(1)) { capturedDiff = it }
+        val deploymentUpdates = listOf(DeploymentUpdate("testnet", "chain_one", BlockchainRid.buildRepeat(1)))
+        ChromiaYmlWriter.updateDeploymentNodes(yamlFile, deploymentUpdates) { capturedDiff = it }
 
         val expectedYamlContent = """
             blockchains:
@@ -124,7 +170,8 @@ class ChromiaYmlWriterDeploymentTest {
         }
 
         var capturedDiff: String? = null
-        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "mainnet", "chain_zero", BlockchainRid.ZERO_RID) { capturedDiff = it }
+        val deploymentsUpdate = listOf(DeploymentUpdate("mainnet", "chain_zero", BlockchainRid.ZERO_RID))
+        ChromiaYmlWriter.updateDeploymentNodes(yamlFile, deploymentsUpdate) { capturedDiff = it }
 
         val expectedYamlContent = """
             blockchains:
@@ -161,8 +208,9 @@ class ChromiaYmlWriterDeploymentTest {
             writeText(yamlContent)
         }
 
+        val deploymentUpdates = listOf(DeploymentUpdate("testnet", "chain_zero", BlockchainRid.ZERO_RID))
         val res = assertThrows<InvalidChromiaModel> {
-            ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_zero", BlockchainRid.ZERO_RID)
+            ChromiaYmlWriter.updateDeploymentNodes(yamlFile, deploymentUpdates)
         }
         assertThat(res.message).isEqualTo("Expected 'deployments' to be a mapping node but found ScalarNode")
     }
@@ -181,8 +229,9 @@ class ChromiaYmlWriterDeploymentTest {
             writeText(yamlContent)
         }
 
+        val deploymentUpdates = listOf(DeploymentUpdate("testnet", "chain_zero", BlockchainRid.ZERO_RID))
         val res = assertThrows<InvalidChromiaModel> {
-            ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_zero", BlockchainRid.ZERO_RID)
+            ChromiaYmlWriter.updateDeploymentNodes(yamlFile, deploymentUpdates)
         }
         assertThat(res.message).isEqualTo("Expected 'testnet' to be a mapping node but found ScalarNode")
     }
@@ -208,7 +257,7 @@ class ChromiaYmlWriterDeploymentTest {
         val deploymentFile = File(tempDir.toFile(), "deployments.yml").apply { writeText(deploymentsContent) }
 
         var capturedDiff: String? = null
-        ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_one", BlockchainRid.buildRepeat(1)) { capturedDiff = it }
+        ChromiaYmlWriter.updateDeploymentNodes(yamlFile, listOf(DeploymentUpdate("testnet", "chain_one", BlockchainRid.buildRepeat(1)))) { capturedDiff = it }
 
         val expectedDeploymentsContent = """
             testnet:
@@ -226,6 +275,105 @@ class ChromiaYmlWriterDeploymentTest {
     }
 
     @Test
+    fun `should write multiple deployments in a single pass`() {
+        val yamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+              chain_one:
+                module: main
+        """.trimIndent()
+
+        val yamlFile = File(tempDir.toFile(), "chromia.yml").apply {
+            writeText(yamlContent)
+        }
+
+        var callbackCount = 0
+        var capturedDiff: String? = null
+        ChromiaYmlWriter.updateDeploymentNodes(
+            yamlFile,
+            listOf(
+                DeploymentUpdate("testnet", "chain_zero", BlockchainRid.ZERO_RID),
+                DeploymentUpdate("testnet", "chain_one", BlockchainRid.buildRepeat(1)),
+                DeploymentUpdate("mainnet", "chain_zero", BlockchainRid.ZERO_RID)
+            )
+        ) {
+            callbackCount++
+            capturedDiff = it
+        }
+
+        val expectedYamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+              chain_one:
+                module: main
+            deployments:
+              testnet:
+                chains:
+                  chain_zero: x"${BlockchainRid.ZERO_RID}"
+                  chain_one: x"${BlockchainRid.buildRepeat(1)}"
+              mainnet:
+                chains:
+                  chain_zero: x"${BlockchainRid.ZERO_RID}"
+
+        """.trimIndent()
+
+        assertThat(yamlFile.readText()).isEqualTo(expectedYamlContent)
+        assertThat(callbackCount).isEqualTo(1)
+        assertThat(capturedDiff!!).contains("+deployments:")
+        assertThat(capturedDiff).contains("+  testnet:")
+        assertThat(capturedDiff).contains("+      chain_zero: x\"${BlockchainRid.ZERO_RID}\"")
+        assertThat(capturedDiff).contains("+      chain_one: x\"${BlockchainRid.buildRepeat(1)}\"")
+        assertThat(capturedDiff).contains("+  mainnet:")
+    }
+
+    @Test
+    fun `should write multiple deployments to included deployments file in a single pass`() {
+        val deploymentsContent = """
+            testnet:
+              chains:
+                chain_zero: x"${BlockchainRid.ZERO_RID}"
+        """.trimIndent()
+
+        val yamlContent = """
+            blockchains:
+              chain_zero:
+                module: main
+              chain_one:
+                module: main
+            deployments: !include deployments.yml
+        """.trimIndent()
+
+        val yamlFile = File(tempDir.toFile(), "chromia.yml").apply { writeText(yamlContent) }
+        val deploymentFile = File(tempDir.toFile(), "deployments.yml").apply { writeText(deploymentsContent) }
+
+        var callbackCount = 0
+        ChromiaYmlWriter.updateDeploymentNodes(
+            yamlFile,
+            listOf(
+                DeploymentUpdate("testnet", "chain_one", BlockchainRid.buildRepeat(1)),
+                DeploymentUpdate("mainnet", "chain_zero", BlockchainRid.ZERO_RID)
+            )
+        ) { callbackCount++ }
+
+        val expectedDeploymentsContent = """
+            testnet:
+              chains:
+                chain_zero: x"${BlockchainRid.ZERO_RID}"
+                chain_one: x"${BlockchainRid.buildRepeat(1)}"
+            mainnet:
+              chains:
+                chain_zero: x"${BlockchainRid.ZERO_RID}"
+
+        """.trimIndent()
+
+        assertThat(yamlFile.readText()).isEqualTo(yamlContent)
+        assertThat(deploymentFile.readText()).isEqualTo(expectedDeploymentsContent)
+        assertThat(callbackCount).isEqualTo(1)
+    }
+
+    @Test
     fun `should throw when included deployments file does not exist`() {
         val yamlContent = """
             blockchains:
@@ -236,8 +384,9 @@ class ChromiaYmlWriterDeploymentTest {
 
         val yamlFile = File(tempDir.toFile(), "chromia.yml").apply { writeText(yamlContent) }
 
+        val deploymentUpdates = listOf(DeploymentUpdate("testnet", "chain_zero", BlockchainRid.ZERO_RID))
         val res = assertThrows<InvalidChromiaModel> {
-            ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_zero", BlockchainRid.ZERO_RID)
+            ChromiaYmlWriter.updateDeploymentNodes(yamlFile, deploymentUpdates)
         }
         assertThat(res.message).isEqualTo("Included deployments file not found: ${tempDir.resolve("deployments.yml")}")
     }
@@ -258,8 +407,9 @@ class ChromiaYmlWriterDeploymentTest {
         val yamlFile = File(tempDir.toFile(), "chromia.yml").apply { writeText(yamlContent) }
         File(tempDir.toFile(), "deployments.yml").apply { writeText(deploymentsContent) }
 
+        val deploymentUpdates = listOf(DeploymentUpdate("testnet", "chain_one", BlockchainRid.buildRepeat(1)))
         val res = assertThrows<InvalidChromiaModel> {
-            ChromiaYmlWriter.updateDeploymentNode(yamlFile, "testnet", "chain_one", BlockchainRid.buildRepeat(1))
+            ChromiaYmlWriter.updateDeploymentNodes(yamlFile,deploymentUpdates)
         }
         assertThat(res.message).isEqualTo("Expected 'testnet' to be a mapping node but found ScalarNode")
     }

@@ -2,7 +2,6 @@ package com.chromia.build.tools.model.writer
 
 import com.github.difflib.DiffUtils
 import com.github.difflib.UnifiedDiffUtils
-import net.postchain.common.BlockchainRid
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
@@ -19,13 +18,11 @@ typealias YamlNodeUpdater = (rootNode: Node, yamlDir: File) -> Boolean
 
 object ChromiaYmlWriter {
 
-    fun updateDeploymentNode(
+    fun updateDeploymentNodes(
         yamlFile: File,
-        networkName: String,
-        chainName: String,
-        brid: BlockchainRid,
+        deployments: List<DeploymentUpdate>,
         onYamlUpdateCallback: OnYamlUpdateCallback = {}
-    ) = update(yamlFile, onYamlUpdateCallback, deploymentUpdater(networkName, chainName, brid, onYamlUpdateCallback))
+    ) = update(yamlFile, onYamlUpdateCallback, deploymentsUpdater(deployments, onYamlUpdateCallback))
 
     fun updateLibraryNode(
         yamlFile: File,
@@ -62,9 +59,13 @@ internal fun BufferedReader.parseYaml(): Node {
 }
 
 internal fun dumpYaml(yamlNode: Node, writer: BufferedWriter) {
+    /*
+        Previous indentations in file not respected with snake YAML serialize. It does a complete re-writing
+     */
     val options = DumperOptions().apply {
         isProcessComments = true
         indentWithIndicator = true
+        indicatorIndent = 2
         defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
         defaultScalarStyle = DumperOptions.ScalarStyle.PLAIN
     }
