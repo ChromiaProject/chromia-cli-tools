@@ -167,9 +167,6 @@
                                 <sourceDirs>
                                     <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
                                 </sourceDirs>
-                                <args>
-                                    <arg>-Xsuppress-warning=UNNECESSARY_NOT_NULL_ASSERTION</arg>
-                                </args>
                             </configuration>
                         </execution>
                     </executions>
