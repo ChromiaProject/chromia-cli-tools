@@ -1,4 +1,4 @@
-package com.chromia.build.tools.lib
+package com.chromia.build.tools.model.writer
 
 import assertk.Assert
 import assertk.all
@@ -13,7 +13,7 @@ import java.io.File
 import java.nio.file.Path
 
 @Suppress("UNCHECKED_CAST")
-class ChromiaYamlUpdaterTest {
+class ChromiaYmlWriterLibsTest {
 
     @TempDir
     lateinit var tempDir: Path
@@ -54,7 +54,7 @@ class ChromiaYamlUpdaterTest {
             writeText(yamlContent)
         }
 
-        updateChromiaYamlForLibrary(yamlFile, "com.chromia.ft4", "1.0.0")
+        ChromiaYmlWriter.updateLibraryNode(yamlFile, "com.chromia.ft4", "1.0.0")
 
         val updatedContent = yamlFile.readText()
         val parsed = yaml.load<Map<String, Any>>(updatedContent)
@@ -86,7 +86,7 @@ class ChromiaYamlUpdaterTest {
             writeText(yamlContent)
         }
 
-        updateChromiaYamlForLibrary(yamlFile, "com.chromia.ft4", "1.0.0")
+        ChromiaYmlWriter.updateLibraryNode(yamlFile, "com.chromia.ft4", "1.0.0")
 
         val updatedContent = yamlFile.readText()
         val parsed = yaml.load<Map<String, Any>>(updatedContent)
@@ -123,7 +123,7 @@ class ChromiaYamlUpdaterTest {
             writeText(libsYamlContent)
         }
 
-        updateChromiaYamlForLibrary(mainYamlFile, "com.chromia.ft4", "1.100.0")
+        ChromiaYmlWriter.updateLibraryNode(mainYamlFile, "com.chromia.ft4", "1.100.0")
 
         val mainContent = mainYamlFile.readText()
         assertThat(mainContent).contains("config/libs.yml")
@@ -177,7 +177,7 @@ class ChromiaYamlUpdaterTest {
             writeText(existingLibsContent)
         }
 
-        updateChromiaYamlForLibrary(mainYamlFile, "com.chromia.ft4", "1.5.0")
+        ChromiaYmlWriter.updateLibraryNode(mainYamlFile, "com.chromia.ft4", "1.5.0")
 
         val libsContent = libsYamlFile.readText()
         val libsParsed = yaml.load<Map<String, Any>>(libsContent)
@@ -225,7 +225,7 @@ class ChromiaYamlUpdaterTest {
             writeText(yamlContent)
         }
 
-        updateChromiaYamlForLibrary(yamlFile, "com.chromia.ft4", "1.0.0")
+        ChromiaYmlWriter.updateLibraryNode(yamlFile, "com.chromia.ft4", "1.0.0")
 
         val updatedContent = yamlFile.readText()
         assertThat(updatedContent).all {

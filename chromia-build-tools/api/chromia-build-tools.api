@@ -451,12 +451,6 @@ public final class com/chromia/build/tools/keystore/ChromiaKeyStore {
 public final class com/chromia/build/tools/keystore/ChromiaKeyStore$Companion : mu/KLogging {
 }
 
-public final class com/chromia/build/tools/lib/ChromiaFileLibUpdaterKt {
-	public static final fun printYamlDiff (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
-	public static final fun updateChromiaYamlForLibrary (Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
-	public static synthetic fun updateChromiaYamlForLibrary$default (Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
-}
-
 public final class com/chromia/build/tools/lib/CliLibraryInstallProgress : com/chromia/build/tools/lib/LibraryInstallProgress {
 	public fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/util/concurrent/ConcurrentHashMap;)V
 	public synthetic fun <init> (Lnet/postchain/rell/api/base/RellCliEnv;Ljava/util/concurrent/ConcurrentHashMap;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -599,6 +593,18 @@ public abstract interface class com/chromia/build/tools/lib/installers/LibrarySo
 
 public final class com/chromia/build/tools/model/EnsureTypeKt {
 	public static final fun ensureBrid (Ljava/lang/Object;[Ljava/lang/String;)Lnet/postchain/common/BlockchainRid;
+}
+
+public final class com/chromia/build/tools/model/writer/ChromiaYmlWriter {
+	public static final field INSTANCE Lcom/chromia/build/tools/model/writer/ChromiaYmlWriter;
+	public final fun updateDeploymentNode (Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun updateDeploymentNode$default (Lcom/chromia/build/tools/model/writer/ChromiaYmlWriter;Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun updateLibraryNode (Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun updateLibraryNode$default (Lcom/chromia/build/tools/model/writer/ChromiaYmlWriter;Ljava/io/File;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
+public final class com/chromia/build/tools/model/writer/InvalidChromiaModel : java/lang/IllegalStateException {
+	public fun <init> (Ljava/lang/String;)V
 }
 
 public final class com/chromia/build/tools/multisignature/MultiSignatureTxData {
