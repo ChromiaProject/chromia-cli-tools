@@ -16,7 +16,19 @@ class DirectoryChainModel(val model: CachedModel, val apiVersion: Long) : Cached
     override fun query(query: GtxQuery): Gtv {
         return when (query.name) {
             "api_version" -> gtv(apiVersion)
-            "get_container_data" -> GtvObjectMapper.toGtvDictionary(ContainerData("test_container", "test_cluster", "", "".hexStringToWrappedByteArray(), "deployer_name", false, null, null))
+            "get_container_data" -> GtvObjectMapper.toGtvDictionary(
+                    ContainerData(
+                            "test_container",
+                            "test_cluster",
+                            "",
+                            "".hexStringToWrappedByteArray(),
+                            "deployer_name",
+                            false,
+                            null,
+                            null,
+                            jarExtensions = null
+                    )
+            )
             "get_cluster_api_urls" -> gtv(gtv(RestApiInstance.apiUrl))
             "cm_get_blockchain_api_urls" -> gtv(gtv(RestApiInstance.apiUrl))
             "get_compressed_configuration_parts" -> gtv(emptyList())
