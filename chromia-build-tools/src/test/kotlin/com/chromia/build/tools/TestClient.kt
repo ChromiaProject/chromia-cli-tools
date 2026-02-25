@@ -161,6 +161,7 @@ fun getLeaseData(): Gtv {
         bridgeLeases = listOf(),
         leaseOwnerAccountId = null,
         extraComputeRequests = null,
+        subnodeJarExtensionNames = emptyList()
     )
 
     return GtvObjectMapper.toGtvDictionary(leaseData)
