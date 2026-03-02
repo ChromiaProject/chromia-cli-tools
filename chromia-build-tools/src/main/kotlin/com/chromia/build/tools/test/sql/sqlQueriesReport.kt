@@ -1,18 +1,17 @@
 package com.chromia.build.tools.test.sql
 
-fun List<SqlStatisticsEntry>.htmlSqlLogReport(name: String, sqlLoggingType: SqlLoggingType): String {
-    val filtered = filter { shouldLogEntry(it, sqlLoggingType) }
-    val totalCount = filtered.size
-    val totalDurationMs = filtered.sumOf { it.event.durationMs }
+fun List<SqlStatisticsEntry>.htmlSqlLogReport(name: String): String {
+    val totalCount = size
+    val totalDurationMs = sumOf { it.event.durationMs }
 
     val jsonData = buildString {
         append("[")
-        filtered.forEachIndexed { idx, entry ->
+        this@htmlSqlLogReport.forEachIndexed { idx, entry ->
             if (idx > 0) append(",")
             val errMsg = entry.event.error?.let { it.message ?: "FAILED" }
             append("{")
             append("\"idx\":${idx + 1},")
-            append("\"type\":\"${entry.queryType.name}\",")
+            append("\"type\":\"${if (entry.event.isSystem) "SYSTEM" else "USER"}\",")
             append("\"durationMs\":${entry.event.durationMs},")
             append("\"testCase\":${jsonString(entry.testCaseName ?: "(no test case)")},")
             append("\"sql\":${jsonString(entry.event.sql)},")
@@ -62,8 +61,7 @@ fun List<SqlStatisticsEntry>.htmlSqlLogReport(name: String, sqlLoggingType: SqlL
 <h1>SQL Log Report: $name</h1>
 <div class="summary">
   <strong>Total Queries:</strong> $totalCount &nbsp;|&nbsp;
-  <strong>Total Time:</strong> ${formatDuration(totalDurationMs)} &nbsp;|&nbsp;
-  <strong>Source Filter:</strong> $sqlLoggingType
+  <strong>Total Time:</strong> ${formatDuration(totalDurationMs)}
 </div>
 <div class="controls">
   <div class="filter-group">
@@ -190,13 +188,6 @@ renderTable();
 </script>
 </body>
 </html>"""
-}
-
-private fun shouldLogEntry(entry: SqlStatisticsEntry, sqlLoggingType: SqlLoggingType) = when (sqlLoggingType) {
-    SqlLoggingType.USER -> !entry.event.isSystem
-    SqlLoggingType.SYSTEM -> entry.event.isSystem
-    SqlLoggingType.BOTH -> true
-    SqlLoggingType.NONE -> false
 }
 
 private fun formatParams(parameters: List<Any?>): String =

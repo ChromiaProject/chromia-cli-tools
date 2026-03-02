@@ -40,24 +40,23 @@ class SqlQueriesReportTest {
 
     @Test
     fun `report title contains provided name`() {
-        val html = emptyList<SqlStatisticsEntry>().htmlSqlLogReport("my-chain", SqlLoggingType.BOTH)
+        val html = emptyList<SqlStatisticsEntry>().htmlSqlLogReport("my-chain")
 
         assertThat(html).contains("<title>SQL Log Report: my-chain</title>")
         assertThat(html).contains("<h1>SQL Log Report: my-chain</h1>")
     }
 
     @Test
-    fun `summary shows total count total duration and filter type`() {
+    fun `summary shows total count and total duration`() {
         val entries = listOf(
             createEntry(sql = "SELECT 1", durationMs = 30L),
             createEntry(sql = "SELECT 2", durationMs = 70L),
         )
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains("Total Queries:</strong> 2")
         assertThat(html).contains("Total Time:</strong> 100ms")
-        assertThat(html).contains("Filter:</strong> BOTH")
     }
 
     // -------------------------------------------------------------------------
@@ -66,7 +65,7 @@ class SqlQueriesReportTest {
 
     @Test
     fun `filter buttons for user system and both are present`() {
-        val html = emptyList<SqlStatisticsEntry>().htmlSqlLogReport("test", SqlLoggingType.BOTH)
+        val html = emptyList<SqlStatisticsEntry>().htmlSqlLogReport("test")
 
         assertThat(html).contains("""data-filter="BOTH"""")
         assertThat(html).contains("""data-filter="USER"""")
@@ -75,7 +74,7 @@ class SqlQueriesReportTest {
 
     @Test
     fun `table has sortable duration and test case column headers`() {
-        val html = emptyList<SqlStatisticsEntry>().htmlSqlLogReport("test", SqlLoggingType.BOTH)
+        val html = emptyList<SqlStatisticsEntry>().htmlSqlLogReport("test")
 
         assertThat(html).contains("""data-col="durationMs"""")
         assertThat(html).contains("""data-col="testCase"""")
@@ -83,66 +82,9 @@ class SqlQueriesReportTest {
 
     @Test
     fun `search input is present`() {
-        val html = emptyList<SqlStatisticsEntry>().htmlSqlLogReport("test", SqlLoggingType.BOTH)
+        val html = emptyList<SqlStatisticsEntry>().htmlSqlLogReport("test")
 
         assertThat(html).contains("""id="search"""")
-    }
-
-    // -------------------------------------------------------------------------
-    // Filtering by SqlLoggingType
-    // -------------------------------------------------------------------------
-
-    @Test
-    fun `USER filter excludes system queries`() {
-        val entries = listOf(
-            createEntry(sql = "SELECT user", isSystem = false),
-            createEntry(sql = "SELECT system", isSystem = true),
-        )
-
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.USER)
-
-        assertThat(html).contains("SELECT user")
-        assertThat(html).doesNotContain("SELECT system")
-    }
-
-    @Test
-    fun `SYSTEM filter excludes user queries`() {
-        val entries = listOf(
-            createEntry(sql = "SELECT user", isSystem = false),
-            createEntry(sql = "SELECT system", isSystem = true),
-        )
-
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.SYSTEM)
-
-        assertThat(html).doesNotContain("SELECT user")
-        assertThat(html).contains("SELECT system")
-    }
-
-    @Test
-    fun `BOTH filter includes all queries`() {
-        val entries = listOf(
-            createEntry(sql = "SELECT user", isSystem = false),
-            createEntry(sql = "SELECT system", isSystem = true),
-        )
-
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
-
-        assertThat(html).contains("SELECT user")
-        assertThat(html).contains("SELECT system")
-    }
-
-    @Test
-    fun `NONE filter produces no query data`() {
-        val entries = listOf(
-            createEntry(sql = "SELECT user", isSystem = false),
-            createEntry(sql = "SELECT system", isSystem = true),
-        )
-
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.NONE)
-
-        assertThat(html).doesNotContain("SELECT user")
-        assertThat(html).doesNotContain("SELECT system")
-        assertThat(html).contains("Total Queries:</strong> 0")
     }
 
     // -------------------------------------------------------------------------
@@ -150,13 +92,26 @@ class SqlQueriesReportTest {
     // -------------------------------------------------------------------------
 
     @Test
-    fun `entry type is embedded correctly in json data`() {
+    fun `all entries are included in json data`() {
+        val entries = listOf(
+            createEntry(sql = "SELECT user", isSystem = false),
+            createEntry(sql = "SELECT system", isSystem = true),
+        )
+
+        val html = entries.htmlSqlLogReport("rell")
+
+        assertThat(html).contains("SELECT user")
+        assertThat(html).contains("SELECT system")
+    }
+
+    @Test
+    fun `entry type is derived from isSystem flag`() {
         val entries = listOf(
             createEntry(sql = "SELECT 1", isSystem = false),
             createEntry(sql = "SELECT 2", isSystem = true),
         )
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains(""""type":"USER"""")
         assertThat(html).contains(""""type":"SYSTEM"""")
@@ -166,7 +121,7 @@ class SqlQueriesReportTest {
     fun `test case name is embedded in json data`() {
         val entries = listOf(createEntry(sql = "SELECT 1", testCaseName = "my-test"))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains(""""testCase":"my-test"""")
     }
@@ -175,7 +130,7 @@ class SqlQueriesReportTest {
     fun `null test case name defaults to no test case in json`() {
         val entries = listOf(createEntry(sql = "SELECT 1", testCaseName = null))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains(""""testCase":"(no test case)"""")
     }
@@ -184,7 +139,7 @@ class SqlQueriesReportTest {
     fun `duration is embedded in json data`() {
         val entries = listOf(createEntry(sql = "SELECT 1", durationMs = 250L))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains(""""durationMs":250""")
     }
@@ -193,7 +148,7 @@ class SqlQueriesReportTest {
     fun `non-null row count is embedded in json data`() {
         val entries = listOf(createEntry(sql = "SELECT 1", rowCount = 7))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains(""""rowCount":7""")
     }
@@ -202,7 +157,7 @@ class SqlQueriesReportTest {
     fun `null row count is embedded as null in json data`() {
         val entries = listOf(createEntry(sql = "SELECT 1", rowCount = null))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains(""""rowCount":null""")
     }
@@ -211,7 +166,7 @@ class SqlQueriesReportTest {
     fun `error message is embedded in json data`() {
         val entries = listOf(createEntry(sql = "SELECT 1", error = Exception("constraint violation")))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains(""""error":"constraint violation"""")
     }
@@ -220,7 +175,7 @@ class SqlQueriesReportTest {
     fun `null error is embedded as null in json data`() {
         val entries = listOf(createEntry(sql = "SELECT 1", error = null))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains(""""error":null""")
     }
@@ -234,7 +189,7 @@ class SqlQueriesReportTest {
     fun `angle brackets in sql are unicode-escaped in json`() {
         val entries = listOf(createEntry(sql = "SELECT <b> & 'x'"))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains("\\u003cb\\u003e")
         assertThat(html).doesNotContain("<b>")
@@ -244,7 +199,7 @@ class SqlQueriesReportTest {
     fun `ampersand in sql is unicode-escaped in json`() {
         val entries = listOf(createEntry(sql = "a & b"))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains("\\u0026")
         assertThat(html).doesNotContain(""""sql":"a & b"""")
@@ -254,11 +209,12 @@ class SqlQueriesReportTest {
     fun `script tag in error message cannot escape the script block`() {
         val entries = listOf(createEntry(sql = "SELECT 1", error = Exception("<script>alert(1)</script>")))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
-        // Angle brackets must be Unicode-escaped; a raw </script> would break the page
-        assertThat(html).contains("\\u003cscript\\u003e")
-        assertThat(html).doesNotContain("<script>")
+        // Angle brackets in the error payload must be Unicode-escaped in JSON
+        assertThat(html).contains("\\u003cscript\\u003ealert(1)\\u003c/script\\u003e")
+        // The raw injection string must not appear unescaped
+        assertThat(html).doesNotContain("<script>alert(1)")
     }
 
     // -------------------------------------------------------------------------
@@ -269,7 +225,7 @@ class SqlQueriesReportTest {
     fun `parameters are joined with comma separator`() {
         val entries = listOf(createEntry(sql = "SELECT ?", parameters = listOf("alice", 42)))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains("alice, 42")
     }
@@ -278,7 +234,7 @@ class SqlQueriesReportTest {
     fun `null parameters are shown as null`() {
         val entries = listOf(createEntry(sql = "SELECT ?", parameters = listOf(null, "val")))
 
-        val html = entries.htmlSqlLogReport("rell", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("rell")
 
         assertThat(html).contains("null, val")
     }

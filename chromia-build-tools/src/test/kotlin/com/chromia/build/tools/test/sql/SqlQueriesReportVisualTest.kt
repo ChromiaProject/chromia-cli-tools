@@ -17,7 +17,7 @@ class SqlQueriesReportVisualTest {
         val rng = Random(42)
         val entries = buildRealisticEntries(rng)
 
-        val html = entries.htmlSqlLogReport("dapp-mainnet", SqlLoggingType.BOTH)
+        val html = entries.htmlSqlLogReport("dapp-mainnet")
 
         val outDir = Paths.get("target", "test-reports", "sql")
         Files.createDirectories(outDir)
