@@ -47,7 +47,7 @@ class SqlQueriesReportTest {
     }
 
     @Test
-    fun `summary shows total count and total duration`() {
+    fun `header chip shows total count and total duration`() {
         val entries = listOf(
             createEntry(sql = "SELECT 1", durationMs = 30L),
             createEntry(sql = "SELECT 2", durationMs = 70L),
@@ -55,8 +55,8 @@ class SqlQueriesReportTest {
 
         val html = entries.htmlSqlLogReport("rell")
 
-        assertThat(html).contains("Total Queries:</strong> 2")
-        assertThat(html).contains("Total Time:</strong> 100ms")
+        assertThat(html).contains("2 queries")
+        assertThat(html).contains("100ms")
     }
 
     // -------------------------------------------------------------------------

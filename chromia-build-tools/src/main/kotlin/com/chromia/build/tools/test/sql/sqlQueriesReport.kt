@@ -1,12 +1,13 @@
 package com.chromia.build.tools.test.sql
 
 fun List<SqlStatisticsEntry>.htmlSqlLogReport(name: String): String {
-    val totalCount = size
-    val totalDurationMs = sumOf { it.event.durationMs }
+    val entries = this
+    val totalCount = entries.size
+    val totalDurationMs = entries.sumOf { it.event.durationMs }
 
     val jsonData = buildString {
         append("[")
-        this@htmlSqlLogReport.forEachIndexed { idx, entry ->
+        entries.forEachIndexed { idx, entry ->
             if (idx > 0) append(",")
             val errMsg = entry.event.error?.let { it.message ?: "FAILED" }
             append("{")
@@ -72,23 +73,6 @@ fun List<SqlStatisticsEntry>.htmlSqlLogReport(name: String): String {
 
   /* ── Main content ── */
   .main { padding: 1.5rem 2rem; }
-
-  /* ── Summary bar ── */
-  .summary {
-    background: #fff;
-    padding: 0.8rem 1.2rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--primary);
-    margin-bottom: 1.2rem;
-    font-size: 0.88rem;
-    color: #555;
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-  .summary span { display: flex; align-items: center; gap: 0.35rem; }
-  .summary strong { color: #1f1a23; font-weight: 600; }
 
   /* ── Controls ── */
   .controls { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; }
@@ -192,10 +176,6 @@ fun List<SqlStatisticsEntry>.htmlSqlLogReport(name: String): String {
   <span class="chip">$totalCount queries &nbsp;·&nbsp; ${formatDuration(totalDurationMs)}</span>
 </header>
 <main class="main">
-<div class="summary">
-  <span><strong>Total Queries:</strong> $totalCount</span>
-  <span><strong>Total Time:</strong> ${formatDuration(totalDurationMs)}</span>
-</div>
 <div class="controls">
   <div class="filter-group">
     <button class="filter-btn active" data-filter="BOTH">Both</button>
