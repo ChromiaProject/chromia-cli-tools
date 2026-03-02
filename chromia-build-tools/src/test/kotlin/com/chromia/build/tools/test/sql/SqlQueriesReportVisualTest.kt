@@ -1,6 +1,7 @@
 package com.chromia.build.tools.test.sql
 
 import net.postchain.rell.api.gtx.SqlExecutionEvent
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -13,6 +14,7 @@ import kotlin.random.Random
 class SqlQueriesReportVisualTest {
 
     @Test
+    @Disabled("Only used to manually check generated sql report html file")
     fun `generate production-like html report`() {
         val rng = Random(42)
         val entries = buildRealisticEntries(rng)
