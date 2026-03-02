@@ -28,40 +28,173 @@ fun List<SqlStatisticsEntry>.htmlSqlLogReport(name: String): String {
 <head>
 <meta charset="UTF-8">
 <title>SQL Log Report: $name</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
 <style>
-  body { font-family: sans-serif; margin: 2rem; background: #f5f5f5; color: #333; }
-  h1 { color: #222; }
-  .summary { background: #fff; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-  .controls { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
-  .filter-group { display: flex; gap: 0.3rem; }
-  .filter-btn { padding: 0.3rem 0.8rem; border: 1px solid #999; border-radius: 4px; background: #fff; cursor: pointer; font-size: 0.9rem; transition: background 0.15s; }
-  .filter-btn.active { background: #444; color: #fff; border-color: #444; }
-  .filter-btn:hover:not(.active) { background: #f0f0f0; }
-  #search { padding: 0.3rem 0.6rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; width: 250px; }
-  #visible-count { font-size: 0.9rem; color: #666; }
-  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1.5rem; }
-  th { background: #444; color: #fff; padding: 0.5rem 0.75rem; text-align: left; white-space: nowrap; }
+  :root {
+    --primary:       #9e5ecf;
+    --primary-dark:  #893bc5;
+    --primary-light: #ac75d6;
+    --navbar-bg:     #1f1a23;
+    --border:        #dadde1;
+    --font: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: var(--font); margin: 0; background: #f5f4f7; color: #1f1a23; }
+
+  /* ── Header ── */
+  .site-header {
+    background: var(--navbar-bg);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .site-header h1 {
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+  .site-header .chip {
+    margin-left: auto;
+    background: rgba(158,94,207,0.25);
+    color: #cc91f0;
+    border: 1px solid rgba(158,94,207,0.4);
+    border-radius: 20px;
+    padding: 0.15rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ── Main content ── */
+  .main { padding: 1.5rem 2rem; }
+
+  /* ── Summary bar ── */
+  .summary {
+    background: #fff;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    margin-bottom: 1.2rem;
+    font-size: 0.88rem;
+    color: #555;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .summary span { display: flex; align-items: center; gap: 0.35rem; }
+  .summary strong { color: #1f1a23; font-weight: 600; }
+
+  /* ── Controls ── */
+  .controls { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; }
+  .filter-group {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .filter-btn {
+    padding: 0.35rem 0.9rem;
+    border: none;
+    border-right: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-family: var(--font);
+    color: #666;
+    transition: background 0.12s, color 0.12s;
+  }
+  .filter-btn:last-child { border-right: none; }
+  .filter-btn:hover:not(.active) { background: #f5f4f7; color: var(--primary); }
+  .filter-btn.active { background: var(--primary); color: #fff; font-weight: 500; }
+  #search {
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-family: var(--font);
+    background: #fff;
+    width: 260px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  #search:focus { border-color: var(--primary); }
+  #visible-count { font-size: 0.8rem; color: #999; }
+
+  /* ── Table ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+  }
+  th {
+    background: var(--navbar-bg);
+    color: hsla(0,0%,100%,0.7);
+    padding: 0.5rem 0.9rem;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
   th.sortable { cursor: pointer; user-select: none; }
-  th.sortable:hover { background: #555; }
-  th.sort-asc::after { content: " \25B2"; font-size: 0.75rem; }
-  th.sort-desc::after { content: " \25BC"; font-size: 0.75rem; }
-  td { padding: 0.4rem 0.75rem; border-bottom: 1px solid #eee; vertical-align: top; font-size: 0.9rem; }
-  tr.slow { background: #fffbe6; }
-  tr.error { background: #fff0f0; }
-  tr.slow.error { background: #fff0e6; }
-  .badge-user { background: #2e7d32; color: #fff; border-radius: 3px; padding: 1px 6px; font-size: 0.8rem; }
-  .badge-system { background: #888; color: #fff; border-radius: 3px; padding: 1px 6px; font-size: 0.8rem; }
-  .status-ok { color: #2e7d32; }
+  th.sortable:hover { color: #fff; background: #2e2735; }
+  th.sort-asc::after  { content: " \25B2"; color: #cc91f0; font-size: 0.65rem; }
+  th.sort-desc::after { content: " \25BC"; color: #cc91f0; font-size: 0.65rem; }
+  td { padding: 0.45rem 0.9rem; border-bottom: 1px solid #f0eef3; vertical-align: top; font-size: 0.875rem; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #faf9fc; }
+  tr.slow td { background: #fffbee; }
+  tr.slow:hover td { background: #fff8e0; }
+  tr.error td { background: #fff4f4; }
+  tr.error:hover td { background: #ffeaea; }
+  tr.slow.error td { background: #fff4eb; }
+  tr.slow.error:hover td { background: #ffebd8; }
+
+  /* ── Badges ── */
+  .badge-user {
+    background: #e8f5e9; color: #2e7d32;
+    border: 1px solid #a5d6a7; border-radius: 4px;
+    padding: 1px 7px; font-size: 0.75rem; font-weight: 500;
+  }
+  .badge-system {
+    background: #f3ebfc; color: var(--primary-dark);
+    border: 1px solid #ce9ef0; border-radius: 4px;
+    padding: 1px 7px; font-size: 0.75rem; font-weight: 500;
+  }
+  .status-ok    { color: #2e7d32; font-weight: 500; }
   .status-error { color: #c62828; font-size: 0.85rem; }
-  pre { margin: 0; white-space: pre-wrap; word-break: break-word; max-width: 420px; }
-  .no-results { text-align: center; padding: 2rem; color: #888; font-style: italic; }
+  pre { margin: 0; white-space: pre-wrap; word-break: break-word; max-width: 420px; font-family: var(--mono); font-size: 0.8rem; }
+  .no-results { text-align: center; padding: 3rem; color: #bbb; font-style: italic; }
 </style>
 </head>
 <body>
-<h1>SQL Log Report: $name</h1>
+<header class="site-header">
+  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+    <path fill="#292529" d="M10.722.69a2.69 2.69 0 0 1 2.556 0 2.689 2.689 0 0 0 1.616.303 2.687 2.687 0 0 1 2.383.923c.364.427.853.73 1.397.865.88.219 1.59.866 1.89 1.722.185.53.531.989.99 1.312a2.689 2.689 0 0 1 1.14 2.288 2.67 2.67 0 0 0 .45 1.58c.502.755.59 1.712.235 2.546a2.689 2.689 0 0 0-.152 1.637 2.689 2.689 0 0 1-.7 2.458 2.689 2.689 0 0 0-.732 1.471 2.689 2.689 0 0 1-1.54 2.04c-.51.234-.935.62-1.215 1.108a2.689 2.689 0 0 1-2.173 1.345 2.692 2.692 0 0 0-1.533.594c-.704.57-1.65.747-2.512.47a2.689 2.689 0 0 0-1.644 0 2.69 2.69 0 0 1-2.513-.47 2.689 2.689 0 0 0-1.532-.594 2.689 2.689 0 0 1-2.173-1.345 2.689 2.689 0 0 0-1.215-1.108 2.689 2.689 0 0 1-1.54-2.04 2.69 2.69 0 0 0-.733-1.47 2.689 2.689 0 0 1-.7-2.46 2.689 2.689 0 0 0-.151-1.636 2.689 2.689 0 0 1 .236-2.545c.311-.467.468-1.02.45-1.58a2.689 2.689 0 0 1 1.139-2.29c.459-.322.805-.78.99-1.31a2.689 2.689 0 0 1 1.89-1.723 2.689 2.689 0 0 0 1.397-.865A2.689 2.689 0 0 1 9.106.993 2.689 2.689 0 0 0 10.722.69Z"/>
+    <path fill="#393939" fill-rule="evenodd" d="M12.022 22.523c5.788 0 10.48-4.692 10.48-10.48 0-5.789-4.692-10.48-10.48-10.48s-10.48 4.691-10.48 10.48c0 5.788 4.692 10.48 10.48 10.48Zm0 .196c5.896 0 10.676-4.78 10.676-10.676 0-5.897-4.78-10.677-10.676-10.677S1.346 6.146 1.346 12.043c0 5.896 4.78 10.676 10.676 10.676Z" clip-rule="evenodd"/>
+    <path fill="#FFB0C2" d="M14.427 14.44a3.16 3.16 0 0 1-2.796 1.694 3.17 3.17 0 0 1-3.164-3.176 3.17 3.17 0 0 1 3.163-3.176 3.16 3.16 0 0 1 2.797 1.693h3.294c-.661-2.765-3.133-4.823-6.09-4.823-3.463 0-6.27 2.818-6.27 6.293 0 3.476 2.807 6.294 6.27 6.294 2.948 0 5.414-2.046 6.084-4.798h-3.288Z"/>
+    <path fill="#CC91F0" d="M16.586 9.108a3.156 3.156 0 0 0 1.158-2.448A3.152 3.152 0 0 0 14.6 3.502a3.152 3.152 0 0 0-3.146 3.158v.002l.176-.002c2.019 0 3.812.959 4.957 2.448Z"/>
+    <path fill="#CC66B8" d="M14.602 9.82a3.12 3.12 0 0 0 1.987-.709 6.236 6.236 0 0 0-5.132-2.445 3.15 3.15 0 0 0 3.145 3.155Z"/>
+  </svg>
+  <h1>SQL Log Report — $name</h1>
+  <span class="chip">$totalCount queries &nbsp;·&nbsp; ${formatDuration(totalDurationMs)}</span>
+</header>
+<main class="main">
 <div class="summary">
-  <strong>Total Queries:</strong> $totalCount &nbsp;|&nbsp;
-  <strong>Total Time:</strong> ${formatDuration(totalDurationMs)}
+  <span><strong>Total Queries:</strong> $totalCount</span>
+  <span><strong>Total Time:</strong> ${formatDuration(totalDurationMs)}</span>
 </div>
 <div class="controls">
   <div class="filter-group">
@@ -87,6 +220,7 @@ fun List<SqlStatisticsEntry>.htmlSqlLogReport(name: String): String {
   </thead>
   <tbody id="tbody"></tbody>
 </table>
+</main>
 <script>
 var DATA = $jsonData;
 var currentFilter = 'BOTH';
@@ -187,7 +321,8 @@ document.getElementById('search').addEventListener('input', function() {
 renderTable();
 </script>
 </body>
-</html>"""
+</html>
+"""
 }
 
 private fun formatParams(parameters: List<Any?>): String =

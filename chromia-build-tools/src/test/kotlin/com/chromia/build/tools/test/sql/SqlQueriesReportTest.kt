@@ -43,7 +43,7 @@ class SqlQueriesReportTest {
         val html = emptyList<SqlStatisticsEntry>().htmlSqlLogReport("my-chain")
 
         assertThat(html).contains("<title>SQL Log Report: my-chain</title>")
-        assertThat(html).contains("<h1>SQL Log Report: my-chain</h1>")
+        assertThat(html).contains("<h1>SQL Log Report \u2014 my-chain</h1>")
     }
 
     @Test
