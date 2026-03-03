@@ -26,7 +26,7 @@ fun List<SqlStatisticsEntry>.htmlSqlLogReport(name: String): String {
 
     val template = checkNotNull(
         SqlStatisticsEntry::class.java.getResource(
-            "/com/chromia/build/tools/test/sql/sqlQueriesReport.html"
+            "/com/chromia/build/tools/test/sql/sqlQueriesReportTemplate.html"
         )
     ) { "sqlQueriesReport.html template resource not found" }
         .readText()
