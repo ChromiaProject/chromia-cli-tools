@@ -753,6 +753,31 @@ public final class com/chromia/build/tools/test/TestReportKt {
 	public static final fun xmlTestReport (Lnet/postchain/rell/base/utils/UnitTestRunnerResults;Ljava/lang/String;)Ljava/lang/String;
 }
 
+public final class com/chromia/build/tools/test/sql/SqlQueriesReportKt {
+	public static final fun htmlSqlLogReport (Ljava/util/List;Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class com/chromia/build/tools/test/sql/SqlStatisticsCollector {
+	public fun <init> ()V
+	public final fun getStatistics ()Ljava/util/List;
+	public final fun onSqlExecutionFinished (Lnet/postchain/rell/api/gtx/SqlExecutionEvent;)V
+	public final fun onTestCaseFinished (Lnet/postchain/rell/base/utils/UnitTestCaseResult;)V
+	public final fun onTestCaseStart (Lnet/postchain/rell/base/utils/UnitTestCase;)V
+}
+
+public final class com/chromia/build/tools/test/sql/SqlStatisticsEntry {
+	public fun <init> (Lnet/postchain/rell/api/gtx/SqlExecutionEvent;Ljava/lang/String;)V
+	public final fun component1 ()Lnet/postchain/rell/api/gtx/SqlExecutionEvent;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Lnet/postchain/rell/api/gtx/SqlExecutionEvent;Ljava/lang/String;)Lcom/chromia/build/tools/test/sql/SqlStatisticsEntry;
+	public static synthetic fun copy$default (Lcom/chromia/build/tools/test/sql/SqlStatisticsEntry;Lnet/postchain/rell/api/gtx/SqlExecutionEvent;Ljava/lang/String;ILjava/lang/Object;)Lcom/chromia/build/tools/test/sql/SqlStatisticsEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEvent ()Lnet/postchain/rell/api/gtx/SqlExecutionEvent;
+	public final fun getTestCaseName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/chromia/build/tools/util/ApiVersionKt {
 	public static final fun getApiVersion (Lnet/postchain/client/core/PostchainQuery;)J
 }
