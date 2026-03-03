@@ -135,6 +135,24 @@
   .status-error { color: #c62828; font-size: 0.85rem; }
   pre { margin: 0; white-space: pre-wrap; word-break: break-word; max-width: 420px; font-family: var(--mono); font-size: 0.8rem; }
   .no-results { text-align: center; padding: 3rem; color: #bbb; font-style: italic; }
+
+  /* ── Seeder tip banner ── */
+  .tip-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #f3ebfc;
+    border: 1px solid #ce9ef0;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.85rem;
+    color: #5a2d82;
+  }
+  .tip-banner svg { flex-shrink: 0; }
+  .tip-banner strong { font-weight: 600; }
+  .tip-banner a { color: var(--primary-dark); font-weight: 500; }
+  .tip-banner a:hover { color: var(--primary); }
 </style>
 </head>
 <body>
@@ -150,6 +168,14 @@
   <span class="chip">{{TOTAL_COUNT}} queries &nbsp;·&nbsp; {{TOTAL_DURATION}}</span>
 </header>
 <main class="main">
+<div class="tip-banner">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+  </svg>
+  <span><strong>Tip:</strong> Queries here run against test data only. Use the
+    <a href="https://docs.chromia.com/build/cli/Seeder/" target="_blank" rel="noopener">Chromia CLI Seeder</a>
+    to populate your database with production-like data and get a more realistic picture of query performance.</span>
+</div>
 <div class="controls">
   <div class="filter-group">
     <button class="filter-btn active" data-filter="BOTH">Both</button>
