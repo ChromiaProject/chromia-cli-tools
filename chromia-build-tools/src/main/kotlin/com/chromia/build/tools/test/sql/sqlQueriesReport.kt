@@ -2,7 +2,7 @@ package com.chromia.build.tools.test.sql
 
 import com.google.gson.GsonBuilder
 
-data class SqlReport(
+private data class SqlReport(
     val idx: Int,
     val type: String,
     val durationMs: Long,
