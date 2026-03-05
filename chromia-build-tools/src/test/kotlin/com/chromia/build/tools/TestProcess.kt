@@ -133,8 +133,12 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
             ).use {
                 if (verbose) {
                     thread(isDaemon = true) {
-                        while (true) {
-                            println(it.reader.readLine() ?: break)
+                        try {
+                            while (true) {
+                                println(it.reader.readLine() ?: break)
+                            }
+                        } catch (e: java.io.IOException) {
+                            if (e.message != "Stream closed") throw e
                         }
                     }
                 }
