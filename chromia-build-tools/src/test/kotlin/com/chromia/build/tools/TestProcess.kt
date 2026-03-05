@@ -13,6 +13,24 @@ import java.time.Duration
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
+/**
+ * Wraps a running CLI process for use in integration tests.
+ *
+ * Handles process lifecycle, output reading, and assertions. Instances are created via [Builder].
+ *
+ * Example usage:
+ * ```kotlin
+ * TestProcess.Builder("node", "start")
+ *     .awaitCompletion(false)
+ *     .startCondition("Node is running")
+ *     .start { process ->
+ *         // do work while process is running
+ *     }
+ * ```
+ *
+ * The process is automatically destroyed when the block passed to [Builder.start] completes,
+ * since [TestProcess] implements [AutoCloseable].
+ */
 class TestProcess private constructor(processBuilder: ProcessBuilder, startCondition: String?, wholeOutput: String?,
                                       shouldFinish: Boolean, expectedExitCode: Int, timeout: Duration, val verbose: Boolean,
                                       val input: String?, val binaryInput: ByteArray?, val partialOutput: String? = null) : AutoCloseable {
@@ -81,6 +99,31 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
         }
     }
 
+    /**
+     * Builder for configuring and launching a [TestProcess].
+     *
+     * The [args] are the CLI sub-command and its arguments (e.g. `"node", "query", "--network", "testnet"`).
+     * The executable itself is resolved from the `DIST_EXECUTABLE` environment variable.
+     *
+     * Example — assert a command finishes successfully with specific output:
+     * ```kotlin
+     * TestProcess.Builder("node", "query")
+     *     .timeout(Duration.ofSeconds(60))
+     *     .exitCode(0)
+     *     .wholeOutput("expected output")
+     *     .start()
+     * ```
+     *
+     * Example — start a long-running process and interact with it:
+     * ```kotlin
+     * TestProcess.Builder("node", "start")
+     *     .awaitCompletion(false)
+     *     .startCondition("Node is running")
+     *     .start { process ->
+     *         // do work while process is running
+     *     }
+     * ```
+     */
     class Builder(vararg val args: String) {
         private var config: File? = null
         private var shouldFinish = true
@@ -94,21 +137,56 @@ class TestProcess private constructor(processBuilder: ProcessBuilder, startCondi
         private var input: String? = null
         private var binaryInput: ByteArray? = null
         private var partialOutput: String? = null
+
+        /** Sets the config file path, passed as `-s <path>` to the executable. */
         fun setConfig(file: File) = apply { config = file }
+
+        /** Sets the working directory for the process. */
         fun setWorkingDir(file: File) = apply { workingDir = file }
+
+        /**
+         * Whether to wait for the process to finish before returning from [start].
+         * Defaults to `true`. Set to `false` for long-running processes where you only
+         * need to wait for a [startCondition].
+         */
         fun awaitCompletion(value: Boolean) = apply { shouldFinish = value }
+
+        /** Expected exit code when [awaitCompletion] is `true`. Defaults to `0`. */
         fun exitCode(value: Int) = apply { exitCode = value }
+
+        /** Maximum time to wait for the process to finish or for [startCondition] to appear. Defaults to 30 seconds. */
         fun timeout(value: Duration) = apply { timeout = value }
+
+        /**
+         * A string to scan for in the process output before returning from [start].
+         */
         fun startCondition(condition: String) = apply { startCondition = condition }
+
+        /** Asserts that the full process output exactly equals [output] after completion. */
         fun wholeOutput(output: String) = apply { wholeOutput = output }
+
+        /** Prints each output line to stdout as it is produced. Also prints the command being run. */
         fun verbose() = apply { verbose = true }
+
+        /** Adds environment variables to the process environment. */
         fun env(vararg envvars: Pair<String, String>) = apply { env.putAll(envvars) }
+
+        /** Writes [s] to the process stdin and closes the stream before reading output. */
         fun input(s: String) = apply { input = s }
+
+        /** Writes raw bytes to the process stdin and closes the stream before reading output. */
         fun binaryInput(b: ByteArray) = apply { binaryInput = b }
+
+        /** Asserts that the process output contains [output] as one of its lines after completion. */
         fun partialOutput(output: String) = apply { partialOutput = output }
 
+        /** Starts the process with default completion handling. Shorthand for `start {}`. */
         fun start() = start {}
 
+        /**
+         * Starts the process, applies the configured assertions, and invokes [onCompleted] with the
+         * running [TestProcess]. The process is destroyed automatically when [onCompleted] returns.
+         */
         fun <R> start(onCompleted: (TestProcess) -> R): R {
             val executable = System.getenv("DIST_EXECUTABLE")
             require(executable.isNotBlank()) { "DIST_EXECUTABLE not set" }
