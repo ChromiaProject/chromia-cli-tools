@@ -76,7 +76,7 @@
                             <mainModule>
                                 version,proposal_blockchain,proposal_container,common.queries,anchoring_chain_common,economy_chain_test,economy_chain_in_directory_chain,
                             </mainModule>
-                            <configPath>${directory.config}</configPath>
+                            <configFile>${directory.config}</configFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -90,7 +90,7 @@
                             <source>${library-chain.source}</source>
                             <packageName>com.chromia.library.chain</packageName>
                             <mainModule>main</mainModule>
-                            <configPath>${library-chain.config}</configPath>
+                            <configFile>${library-chain.config}</configFile>
                             <target>${project.build.directory}/generated-sources/rell-client-library</target>
                         </configuration>
                     </execution>
