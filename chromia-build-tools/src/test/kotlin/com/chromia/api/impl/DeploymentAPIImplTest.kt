@@ -10,6 +10,7 @@ import com.chromia.api.result.BlockchainConfiguration
 import com.chromia.api.result.isSuccess
 import com.chromia.build.tools.TestClient
 import com.chromia.build.tools.config.ChromiaConfigLoader
+import com.chromia.build.tools.keystore.ChromiaKeyStore
 import com.chromia.build.tools.testData
 import com.chromia.cli.model.DeploymentModel
 import net.postchain.client.config.PostchainClientConfig
@@ -21,7 +22,9 @@ import net.postchain.gtv.GtvNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables
 import java.nio.file.Path
+import kotlin.io.path.absolutePathString
 
 fun printer(isError: Boolean, message: String) {
     assertThat(message.length).isGreaterThan(0)
@@ -37,12 +40,14 @@ class DeploymentAPIImplTest {
 
     @Test
     fun invalidConfigurations() {
-        testData(dir)
-        val testModel = DeploymentModel(BlockchainRid.ZERO_RID, "my_container", gtv("http://host"), mapOf("my_chain" to BlockchainRid.ZERO_RID))
+        EnvironmentVariables("CHROMIA_HOME", "").execute {
+            testData(dir)
+            val testModel = DeploymentModel(BlockchainRid.ZERO_RID, "my_container", gtv("http://host"), mapOf("my_chain" to BlockchainRid.ZERO_RID))
 
-        testModel.failsToCreateNewDeployment("Deployment for chain [my_chain] already configured")
-        testModel.copy(container = null).failsToCreateNewDeployment("No container id is configured")
-        testModel.copy(chains = mapOf()).failsToCreateNewDeployment("No signers configured")
+            testModel.failsToCreateNewDeployment("Deployment for chain [my_chain] already configured")
+            testModel.copy(container = null).failsToCreateNewDeployment("No container id is configured")
+            testModel.copy(chains = mapOf()).failsToCreateNewDeployment("No signers configured")
+        }
     }
 
     @Test
@@ -59,16 +64,18 @@ class DeploymentAPIImplTest {
 
     @Test
     fun failingUpdateConfigs() {
-        testData(dir)
-        val testModel = DeploymentModel(BlockchainRid.ZERO_RID, "my_container", gtv("http://host"), mapOf("my_chain" to BlockchainRid.ZERO_RID))
-        testModel.failsToUpdateDeployment("No signers configured")
-        testModel.copy(chains = mapOf()).failsToUpdateDeployment("Deployment for chain [my_chain] not found")
+        EnvironmentVariables("CHROMIA_HOME", "").execute {
+            testData(dir)
+            val testModel = DeploymentModel(BlockchainRid.ZERO_RID, "my_container", gtv("http://host"), mapOf("my_chain" to BlockchainRid.ZERO_RID))
+            testModel.failsToUpdateDeployment("No signers configured")
+            testModel.copy(chains = mapOf()).failsToUpdateDeployment("Deployment for chain [my_chain] not found")
 
-        val res = assertThrows<IllegalArgumentException> {
-            val modelWithMultiple = testModel.copy(chains = mapOf("my_chain" to BlockchainRid.buildRepeat(2), "other_chain" to BlockchainRid.buildRepeat(3)))
-            updateExisting(::printer, modelWithMultiple, ChromiaConfigLoader(::logger).loadClientConfigFile(), listOf(BlockchainConfiguration("my_chain", GtvNull), BlockchainConfiguration("other_chain", GtvNull)), 32, false)
+            val res = assertThrows<IllegalArgumentException> {
+                val modelWithMultiple = testModel.copy(chains = mapOf("my_chain" to BlockchainRid.buildRepeat(2), "other_chain" to BlockchainRid.buildRepeat(3)))
+                updateExisting(::printer, modelWithMultiple, ChromiaConfigLoader(::logger).loadClientConfigFile(), listOf(BlockchainConfiguration("my_chain", GtvNull), BlockchainConfiguration("other_chain", GtvNull)), 32, false)
+            }
+            assertThat(res.message!!).contains("Cannot update multiple blockchains when height is set")
         }
-        assertThat(res.message!!).contains("Cannot update multiple blockchains when height is set")
     }
 
     @Test
