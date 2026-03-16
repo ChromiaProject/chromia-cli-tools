@@ -15,7 +15,6 @@ import org.http4k.core.HttpHandler
 
 object LibraryChainNetworkUtils {
     const val CHROMIA_MAINNET = "mainnet"
-    const val TESTNET = "testnet"
     const val LOCALHOST = "localhost"
 
     val libraryPredefinedNetworks: Map<String, () -> BlockchainRid> by lazy {
@@ -23,11 +22,6 @@ object LibraryChainNetworkUtils {
             CHROMIA_MAINNET to {
                 BlockchainRid.buildFromHex(
                     "C9051571CD822507DDD1F3B43F2DC066B54CC5A25ECD758A1B5A42913483CF20"
-                )
-            },
-            TESTNET to {
-                BlockchainRid.buildFromHex(
-                    "76693857DEDCCA049BA3546ACADB2F73648B1A83FF8A8210F3F89EBD59DBC7C7"
                 )
             },
             LOCALHOST to {

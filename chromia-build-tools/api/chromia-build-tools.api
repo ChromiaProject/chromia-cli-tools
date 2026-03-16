@@ -497,7 +497,6 @@ public final class com/chromia/build/tools/lib/LibraryChainNetworkUtils {
 	public static final field CHROMIA_MAINNET Ljava/lang/String;
 	public static final field INSTANCE Lcom/chromia/build/tools/lib/LibraryChainNetworkUtils;
 	public static final field LOCALHOST Ljava/lang/String;
-	public static final field TESTNET Ljava/lang/String;
 	public final fun getLibraryPredefinedNetworks ()Ljava/util/Map;
 }
 
