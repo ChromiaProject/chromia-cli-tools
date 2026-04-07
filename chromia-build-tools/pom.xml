@@ -151,7 +151,7 @@
         </dependency>
         <dependency>
             <groupId>net.postchain.rell</groupId>
-            <artifactId>codegen</artifactId>
+            <artifactId>rell-codegen</artifactId>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
