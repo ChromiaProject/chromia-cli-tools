@@ -1,59 +1,36 @@
 package com.chromia.build.tools.lib
 
-import com.chromia.build.tools.blockchain.BridFetcher
-import com.chromia.build.tools.config.ChromiaClientConfig.Companion.DEFAULT_API_URL
-import com.chromia.build.tools.config.getProviderUrlsForNetwork
-import com.chromia.build.tools.lib.LibraryChainNetworkUtils.CHROMIA_MAINNET
-import com.chromia.build.tools.lib.LibraryChainNetworkUtils.libraryPredefinedNetworks
+import com.chromia.build.tools.config.ChromiaPredefinedNetworks
+import com.chromia.build.tools.config.MAINNET
 import net.postchain.client.config.PostchainClientConfig
 import net.postchain.client.core.PostchainClient
-import net.postchain.client.defaultHttpHandler
+import net.postchain.client.impl.PostchainClientImpl
 import net.postchain.client.request.EndpointPool
 import net.postchain.common.BlockchainRid
-import net.postchain.d1.client.StandardChromiaClient
-import org.http4k.core.HttpHandler
 
 object LibraryChainNetworkUtils {
-    const val CHROMIA_MAINNET = "mainnet"
-    const val LOCALHOST = "localhost"
 
-    val libraryPredefinedNetworks: Map<String, () -> BlockchainRid> by lazy {
-        mapOf(
-            CHROMIA_MAINNET to {
-                BlockchainRid.buildFromHex(
-                    "C9051571CD822507DDD1F3B43F2DC066B54CC5A25ECD758A1B5A42913483CF20"
-                )
-            },
-            LOCALHOST to {
-                fetchBridFromLocalNode()
-            }
+    val predefinedLibChainRids: Map<String, BlockchainRid> = mapOf(
+            MAINNET to BlockchainRid.buildFromHex("C9051571CD822507DDD1F3B43F2DC066B54CC5A25ECD758A1B5A42913483CF20")
+    )
+
+    fun createLibraryChainClient(
+            registry: String? = null,
+            brid: BlockchainRid? = null,
+            config: PostchainClientConfig? = null
+    ): PostchainClient = if (registry == null) {
+        val network = MAINNET
+        val lcRid = predefinedLibChainRids[network]
+                ?: error("Library chain RID is not defined for network $network.")
+        ChromiaPredefinedNetworks.connect(network, config).getChainClient(lcRid)
+    } else if (ChromiaPredefinedNetworks.isPredefined(registry)) {
+        requireNotNull(brid) { "Library chain RID is required for predefined network $registry" }
+        ChromiaPredefinedNetworks.connect(registry, config).getChainClient(brid)
+    } else { // Single node registry
+        requireNotNull(brid) { "Brid of library chain is required for registry $registry" }
+        PostchainClientImpl(config
+                ?.copy(blockchainRid = brid, endpointPool = EndpointPool.singleUrl(registry))
+                ?: PostchainClientConfig(blockchainRid = brid, endpointPool = EndpointPool.singleUrl(registry))
         )
     }
-
-    private fun fetchBridFromLocalNode() = runCatching {
-        val config = PostchainClientConfig(BlockchainRid.ZERO_RID, EndpointPool.singleUrl(DEFAULT_API_URL))
-        val httpHandler: HttpHandler = defaultHttpHandler(config)
-        BridFetcher(httpHandler, DEFAULT_API_URL).fetchBlockchainRid(0)
-    }.onFailure { _ ->
-        error("Unable to fetch brid from local node")
-    }.getOrThrow()
 }
-
-fun createLibraryChainClient(explicitUrl: String? = null, explicitBrid: BlockchainRid? = null): PostchainClient {
-    val networkOrUrl = explicitUrl ?: CHROMIA_MAINNET
-    val targetUrls = resolveLibraryChainNetworkUrls(networkOrUrl)
-
-    val libraryChainBrid = resolveLibraryChainBrid(explicitBrid, networkOrUrl)
-
-    return StandardChromiaClient(EndpointPool.default(targetUrls))
-        .getClient(libraryChainBrid)
-}
-
-private fun resolveLibraryChainNetworkUrls(networkOrUrl: String) =
-    getProviderUrlsForNetwork(networkOrUrl) ?: listOf(networkOrUrl)
-
-private fun resolveLibraryChainBrid(explicitBrid: BlockchainRid?, networkOrUrl: String) =
-    explicitBrid
-        ?: libraryPredefinedNetworks[networkOrUrl]?.invoke()
-        ?: error("Brid of library_chain is required")
-

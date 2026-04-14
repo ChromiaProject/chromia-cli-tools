@@ -206,6 +206,7 @@ public final class com/chromia/build/tools/config/ChromiaClientConfig {
 	public final fun client (Lnet/postchain/client/core/PostchainClientProvider;)Lnet/postchain/client/core/PostchainClient;
 	public final fun getApiUrls ()Ljava/util/List;
 	public final fun getBlockchainRid ()Lnet/postchain/common/BlockchainRid;
+	public final fun getConfig ()Lnet/postchain/client/config/PostchainClientConfig;
 	public final fun getEndpointPool ()Lnet/postchain/client/request/EndpointPool;
 	public final fun getSigners ()Ljava/util/List;
 	public final fun setApiUrls (Ljava/util/List;)Lcom/chromia/build/tools/config/ChromiaClientConfig;
@@ -261,14 +262,19 @@ public final class com/chromia/build/tools/config/ChromiaConfigWriter$Companion 
 	public final fun getLocal ()Lcom/chromia/build/tools/config/ChromiaConfigWriter;
 }
 
-public final class com/chromia/build/tools/config/ChromiaNetworkConfigKt {
+public final class com/chromia/build/tools/config/ChromiaNetworksKt {
 	public static final field CHROMIA_PREDEFINED_TESTING_NETWORK Ljava/lang/String;
 	public static final field DEVNET1 Ljava/lang/String;
 	public static final field DEVNET2 Ljava/lang/String;
 	public static final field MAINNET Ljava/lang/String;
 	public static final field TESTNET Ljava/lang/String;
-	public static final fun getDirectoryChainRidFor (Ljava/lang/String;)Lnet/postchain/common/BlockchainRid;
-	public static final fun getProviderUrlsForNetwork (Ljava/lang/String;)Ljava/util/List;
+}
+
+public final class com/chromia/build/tools/config/ChromiaPredefinedNetworks {
+	public static final field INSTANCE Lcom/chromia/build/tools/config/ChromiaPredefinedNetworks;
+	public final fun connect (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
+	public static synthetic fun connect$default (Lcom/chromia/build/tools/config/ChromiaPredefinedNetworks;Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;ILjava/lang/Object;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
+	public final fun isPredefined (Ljava/lang/String;)Z
 }
 
 public final class com/chromia/build/tools/config/CompressedKey {
@@ -293,6 +299,24 @@ public final class com/chromia/build/tools/config/CompressedRoot {
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getCompressedKeys ()Ljava/util/List;
 	public final fun getPath ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/build/tools/config/DirectoryChainNetwork {
+	public fun <init> (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;)V
+	public synthetic fun <init> (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lnet/postchain/client/config/PostchainClientConfig;
+	public final fun copy (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
+	public static synthetic fun copy$default (Lcom/chromia/build/tools/config/DirectoryChainNetwork;Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;ILjava/lang/Object;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChainClient (Lnet/postchain/common/BlockchainRid;)Lnet/postchain/d1/client/ChromiaPostchainClient;
+	public final fun getClientFactory ()Lnet/postchain/d1/client/StandardChromiaClient;
+	public final fun getConfig ()Lnet/postchain/client/config/PostchainClientConfig;
+	public final fun getDirectoryChainApiUrls ()Ljava/util/List;
+	public final fun getDirectoryChainClient ()Lnet/postchain/d1/client/ChromiaPostchainClient;
+	public final fun getNodeUrl ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -494,15 +518,10 @@ public final class com/chromia/build/tools/lib/GitRepositoryCloner : com/chromia
 }
 
 public final class com/chromia/build/tools/lib/LibraryChainNetworkUtils {
-	public static final field CHROMIA_MAINNET Ljava/lang/String;
 	public static final field INSTANCE Lcom/chromia/build/tools/lib/LibraryChainNetworkUtils;
-	public static final field LOCALHOST Ljava/lang/String;
-	public final fun getLibraryPredefinedNetworks ()Ljava/util/Map;
-}
-
-public final class com/chromia/build/tools/lib/LibraryChainNetworkUtilsKt {
-	public static final fun createLibraryChainClient (Ljava/lang/String;Lnet/postchain/common/BlockchainRid;)Lnet/postchain/client/core/PostchainClient;
-	public static synthetic fun createLibraryChainClient$default (Ljava/lang/String;Lnet/postchain/common/BlockchainRid;ILjava/lang/Object;)Lnet/postchain/client/core/PostchainClient;
+	public final fun createLibraryChainClient (Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Lnet/postchain/client/config/PostchainClientConfig;)Lnet/postchain/client/core/PostchainClient;
+	public static synthetic fun createLibraryChainClient$default (Lcom/chromia/build/tools/lib/LibraryChainNetworkUtils;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Lnet/postchain/client/config/PostchainClientConfig;ILjava/lang/Object;)Lnet/postchain/client/core/PostchainClient;
+	public final fun getPredefinedLibChainRids ()Ljava/util/Map;
 }
 
 public final class com/chromia/build/tools/lib/LibraryInstallException : java/lang/RuntimeException {
@@ -5390,7 +5409,7 @@ public final class com/chromia/directory1/proposal_blockchain_move/Proposal_bloc
 	public static final fun getBlockchainMoveProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/proposal_blockchain_move/GetBlockchainMoveProposalResult;
 	public static final fun proposeBlockchainMoveCancelOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
 	public static final fun proposeBlockchainMoveFinishOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;JLjava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
-	public static final fun proposeBlockchainMoveOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;Ljava/lang/String;Ljava/lang/String;)Lnet/postchain/client/transaction/TransactionBuilder;
+	public static final fun proposeBlockchainMoveOperation (Lnet/postchain/client/transaction/TransactionBuilder;[BLnet/postchain/common/BlockchainRid;Ljava/lang/String;Ljava/lang/String;Z)Lnet/postchain/client/transaction/TransactionBuilder;
 }
 
 public final class com/chromia/directory1/proposal_container/ContainerAction : java/lang/Enum, net/postchain/gtv/mapper/ToGtv {
