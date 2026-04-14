@@ -2,19 +2,20 @@ package com.chromia.build.tools.lib
 
 import com.chromia.build.tools.compile.ValidationException
 import com.chromia.build.tools.lib.DirectoryHashCalculator.RidStrategy
+import com.chromia.build.tools.lib.LibraryChainNetworkUtils.createLibraryChainClient
 import com.chromia.build.tools.util.isChromiaLib
 import com.chromia.cli.model.RellLibraryModel
 import com.chromia.library.chain.versioning.external.getLibraryRid
 import net.postchain.common.types.WrappedByteArray
 import net.postchain.common.wrap
+import net.postchain.rell.api.base.RellCliEnv
 import java.nio.file.Path
 import kotlin.io.path.notExists
-import net.postchain.rell.api.base.RellCliEnv
 
 class LibraryVerifyer(
-    private val env: RellCliEnv,
-    private val libRoot: Path,
-    private val libraryProgress: LibraryInstallProgress = CliLibraryInstallProgress(env)
+        private val env: RellCliEnv,
+        private val libRoot: Path,
+        private val libraryProgress: LibraryInstallProgress = CliLibraryInstallProgress(env)
 ) {
 
     fun verifyLibs(libs: Map<String, RellLibraryModel>) {
@@ -72,7 +73,7 @@ class LibraryVerifyer(
     }
 
     private fun RellLibraryModel.getSimpleName(originalName: String): String =
-        if (isChromiaLib) originalName.substringAfterLast(".") else originalName
+            if (isChromiaLib) originalName.substringAfterLast(".") else originalName
 }
 
 sealed class LibraryRidCompared {

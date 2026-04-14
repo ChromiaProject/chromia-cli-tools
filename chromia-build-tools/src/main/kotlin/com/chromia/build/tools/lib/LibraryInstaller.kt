@@ -5,24 +5,28 @@ import com.chromia.build.tools.lib.installers.GitLibInstaller
 import com.chromia.build.tools.util.isChromiaLib
 import com.chromia.cli.model.ChromiaModel
 import com.chromia.cli.model.RellLibraryModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.supervisorScope
 import net.postchain.rell.api.base.RellCliEnv
 import java.nio.file.Path
 
 class LibraryInstaller(
-    private val repositoryCloner: RepositoryCloner,
-    private val env: RellCliEnv,
-    private val model: ChromiaModel,
-    private val forceInstall: Boolean,
-    libraryProgress: LibraryInstallProgress?,
-    private val isExplicitInstall: Boolean = false
+        private val repositoryCloner: RepositoryCloner,
+        private val env: RellCliEnv,
+        private val model: ChromiaModel,
+        private val forceInstall: Boolean,
+        libraryProgress: LibraryInstallProgress?,
+        private val isExplicitInstall: Boolean = false
 ) {
     private val progress: LibraryInstallProgress = libraryProgress ?: CliLibraryInstallProgress(env)
     private val libRoot: Path = model.compile.source.resolve("lib")
     private val tmpLibRoot: Path = model.compile.target.resolve(".tmp/lib")
     private val libraryVerifier = LibraryVerifyer(env, libRoot, progress)
 
-    fun installLibs(libs: Map<String, RellLibraryModel>)  = runBlocking {
+    fun installLibs(libs: Map<String, RellLibraryModel>) = runBlocking {
         if (libs.isEmpty()) return@runBlocking
         installLibrariesAsync(libs)
     }
@@ -42,27 +46,27 @@ class LibraryInstaller(
     }
 
     private suspend fun installLibraryWithProgress(
-        libraryId: String,
-        libModel: RellLibraryModel
+            libraryId: String,
+            libModel: RellLibraryModel
     ) = runCatching {
         progress.onStart(libraryId)
 
         val installer = if (libModel.isChromiaLib) {
             ChromiaLibChainInstaller(progress)
-        } else  {
+        } else {
             GitLibInstaller(repositoryCloner, tmpLibRoot, libraryVerifier, progress)
         }
         installer.install(libraryId, libModel, libRoot, forceInstall)
     }.fold(
-        onSuccess = {
-            progress.onSuccess(libraryId)
-            if (isExplicitInstall && libModel.version != null) {
-                progress.onPostInstall(libraryId, libModel.version)
+            onSuccess = {
+                progress.onSuccess(libraryId)
+                if (isExplicitInstall && libModel.version != null) {
+                    progress.onPostInstall(libraryId, libModel.version)
+                }
+            },
+            onFailure = { e ->
+                val errorMessage = e.message ?: "Unknown error"
+                progress.onError(libraryId, errorMessage)
             }
-        },
-        onFailure = { e ->
-            val errorMessage = e.message ?: "Unknown error"
-            progress.onError(libraryId, errorMessage)
-        }
     )
 }

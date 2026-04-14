@@ -1,7 +1,8 @@
 package com.chromia.build.tools.lib.installers
+
 import com.chromia.build.tools.lib.DirectoryHashCalculator
+import com.chromia.build.tools.lib.LibraryChainNetworkUtils.createLibraryChainClient
 import com.chromia.build.tools.lib.LibraryInstallProgress
-import com.chromia.build.tools.lib.createLibraryChainClient
 import com.chromia.build.tools.util.safeDelete
 import com.chromia.cli.model.RellLibraryModel
 import com.chromia.library.chain.versioning.TypesSLibraryVersionFilesInBytes
@@ -9,13 +10,10 @@ import com.chromia.library.chain.versioning.external.getLibrary
 import com.chromia.library.chain.versioning.external.getLibraryRid
 import com.chromia.library.chain.versioning.external.getLibraryVersionFilesInBytes
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import net.postchain.client.core.PostchainClient
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.collections.component1
-import kotlin.collections.component2
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.copyToRecursively
 import kotlin.io.path.createDirectories
@@ -23,13 +21,14 @@ import kotlin.io.path.createTempDirectory
 import kotlin.io.path.div
 import kotlin.io.path.writeBytes
 
-class ChromiaLibChainInstaller(private val progress: LibraryInstallProgress): LibrarySourceInstaller {
+class ChromiaLibChainInstaller(private val progress: LibraryInstallProgress) : LibrarySourceInstaller {
+
     @OptIn(ExperimentalPathApi::class)
     override suspend fun install(
-        libraryId: String,
-        libModel: RellLibraryModel,
-        libRoot: Path,
-        forceInstall: Boolean,
+            libraryId: String,
+            libModel: RellLibraryModel,
+            libRoot: Path,
+            forceInstall: Boolean,
     ) {
         progress.onProgress(libraryId, 5, 100, "Connecting to library chain")
         val client = createLibraryChainClient(libModel.registry, libModel.brid)

@@ -16,7 +16,7 @@ import java.nio.file.Path
 import kotlin.io.path.absolutePathString
 
 class ChromiaClientConfig private constructor(
-    private var config: PostchainClientConfig
+        private var config: PostchainClientConfig
 ) {
     val blockchainRid get() = config.blockchainRid
     val signers get() = config.signers
@@ -46,7 +46,7 @@ class ChromiaClientConfig private constructor(
 
     fun setSignerUsingKeyId(keyId: String) = apply {
         ChromiaKeyStore(keyId).findKeyPair()?.let { setSigner(it) }
-            ?: throw UserMistake("Key with ID '$keyId' not found")
+                ?: throw UserMistake("Key with ID '$keyId' not found")
     }
 
     fun setDeployment(deploymentModel: DeploymentModel) = apply {
@@ -57,18 +57,20 @@ class ChromiaClientConfig private constructor(
 
     fun client(provider: PostchainClientProvider) = provider.createClient(config)
 
+    fun getConfig() = config.copy()
+
     companion object {
         const val DEFAULT_API_URL = "http://localhost:7740"
 
         val EMPTY = from(PropertiesConfiguration())
 
         fun from(config: Configuration): ChromiaClientConfig = PropertiesConfiguration()
-            .apply {
-                copy(config)
-                if (!config.containsKey("api.url")) setProperty("api.url", DEFAULT_API_URL)
-                if (!config.containsKey("brid")) setProperty("brid", BlockchainRid.ZERO_RID)
-            }
-            .let { fromConfiguration(it) }
-            .let { ChromiaClientConfig(it) }
+                .apply {
+                    copy(config)
+                    if (!config.containsKey("api.url")) setProperty("api.url", DEFAULT_API_URL)
+                    if (!config.containsKey("brid")) setProperty("brid", BlockchainRid.ZERO_RID)
+                }
+                .let { fromConfiguration(it) }
+                .let { ChromiaClientConfig(it) }
     }
 }

@@ -2,16 +2,17 @@ package com.chromia.build.tools.model
 
 import assertk.assertThat
 import assertk.assertions.isTrue
+import com.chromia.build.tools.lib.LibraryChainNetworkUtils
+import com.chromia.build.tools.lib.LibraryChainNetworkUtils.createLibraryChainClient
 import com.chromia.build.tools.lib.LibraryVerifyer
-import com.chromia.build.tools.lib.createLibraryChainClient
 import com.chromia.build.tools.testData
 import com.chromia.cli.model.RellLibraryModel
 import com.chromia.cli.model.parseModel
 import com.chromia.library.chain.versioning.external.getLibraryRid
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
+import io.mockk.mockkObject
+import io.mockk.unmockkObject
 import net.postchain.client.core.PostchainClient
 import net.postchain.common.hexStringToWrappedByteArray
 import net.postchain.rell.api.base.RellCliEnv
@@ -26,7 +27,7 @@ internal class RellLibraryModelTest {
 
     @AfterEach
     fun tearDown() {
-        unmockkStatic(::createLibraryChainClient)
+        unmockkObject(LibraryChainNetworkUtils)
     }
 
     @Test
@@ -93,19 +94,19 @@ internal class RellLibraryModelTest {
                 addSourceFile("lib/bar/main.rell", """module;""")
             }
         }
-        
+
         val mockClient = mockk<PostchainClient>(relaxed = true)
-        
+
         val expectedLibraryRid = "33B5C0C7909B01AD272346A49C4F4FCD6FF7E29685803F7F6C8B5EF320BF2F0C".hexStringToWrappedByteArray()
-        
-        mockkStatic(::createLibraryChainClient)
-        every { createLibraryChainClient(any(), any()) } returns mockClient
+
+        mockkObject(LibraryChainNetworkUtils)
+        every { createLibraryChainClient(any(), any(), any()) } returns mockClient
         every { mockClient.getLibraryRid("com.chromia.foo", "1.0.0") } returns expectedLibraryRid.data
-        
+
         val settings = parseModel(dir.resolve("chromia.yml").toFile())
-        val libraryVerifyer = LibraryVerifyer(RellCliEnv.DEFAULT, dir.resolve("src/lib"))
+        val libraryVerifier = LibraryVerifyer(RellCliEnv.DEFAULT, dir.resolve("src/lib"))
         settings.libs.forEach {
-            assertThat(libraryVerifyer.verifyLib(it.key, it.value)).isTrue()
+            assertThat(libraryVerifier.verifyLib(it.key, it.value)).isTrue()
         }
     }
 
@@ -120,9 +121,9 @@ internal class RellLibraryModelTest {
         }
 
         val settings = parseModel(dir.resolve("chromia.yml").toFile())
-        val libraryVerifyer = LibraryVerifyer(RellCliEnv.DEFAULT, dir.resolve("src/lib"))
+        val libraryVerifier = LibraryVerifyer(RellCliEnv.DEFAULT, dir.resolve("src/lib"))
         settings.libs.forEach {
-            assertThat(libraryVerifyer.verifyLib(it.key, it.value)).isTrue()
+            assertThat(libraryVerifier.verifyLib(it.key, it.value)).isTrue()
         }
     }
 }
