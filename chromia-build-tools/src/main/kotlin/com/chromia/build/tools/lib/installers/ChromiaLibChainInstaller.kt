@@ -11,6 +11,7 @@ import com.chromia.library.chain.versioning.external.getLibraryRid
 import com.chromia.library.chain.versioning.external.getLibraryVersionFilesInBytes
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.coroutineScope
+import net.postchain.client.config.PostchainClientConfig
 import net.postchain.client.core.PostchainClient
 import java.nio.file.Files
 import java.nio.file.Path
@@ -21,7 +22,10 @@ import kotlin.io.path.createTempDirectory
 import kotlin.io.path.div
 import kotlin.io.path.writeBytes
 
-class ChromiaLibChainInstaller(private val progress: LibraryInstallProgress) : LibrarySourceInstaller {
+class ChromiaLibChainInstaller(
+        private val progress: LibraryInstallProgress,
+        private val postchainClientConfig: PostchainClientConfig? = null
+) : LibrarySourceInstaller {
 
     @OptIn(ExperimentalPathApi::class)
     override suspend fun install(
@@ -31,7 +35,7 @@ class ChromiaLibChainInstaller(private val progress: LibraryInstallProgress) : L
             forceInstall: Boolean,
     ) {
         progress.onProgress(libraryId, 5, 100, "Connecting to library chain")
-        val client = createLibraryChainClient(libModel.registry, libModel.brid)
+        val client = createLibraryChainClient(libModel.registry, libModel.brid, postchainClientConfig)
         val version = requireNotNull(libModel.version) { "version is required for library $libraryId" }
 
         progress.onProgress(libraryId, 10, 100, "Fetching library metadata")

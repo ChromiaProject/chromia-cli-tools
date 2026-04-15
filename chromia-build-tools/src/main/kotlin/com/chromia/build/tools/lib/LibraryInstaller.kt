@@ -10,6 +10,7 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
+import net.postchain.client.config.PostchainClientConfig
 import net.postchain.rell.api.base.RellCliEnv
 import java.nio.file.Path
 
@@ -19,7 +20,8 @@ class LibraryInstaller(
         private val model: ChromiaModel,
         private val forceInstall: Boolean,
         libraryProgress: LibraryInstallProgress?,
-        private val isExplicitInstall: Boolean = false
+        private val isExplicitInstall: Boolean = false,
+        private val postchainClientConfig: PostchainClientConfig? = null
 ) {
     private val progress: LibraryInstallProgress = libraryProgress ?: CliLibraryInstallProgress(env)
     private val libRoot: Path = model.compile.source.resolve("lib")
@@ -52,7 +54,7 @@ class LibraryInstaller(
         progress.onStart(libraryId)
 
         val installer = if (libModel.isChromiaLib) {
-            ChromiaLibChainInstaller(progress)
+            ChromiaLibChainInstaller(progress, postchainClientConfig)
         } else {
             GitLibInstaller(repositoryCloner, tmpLibRoot, libraryVerifier, progress)
         }
