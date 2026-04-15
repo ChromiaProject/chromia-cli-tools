@@ -39,8 +39,9 @@ object ChromiaLibrariesApi {
         repositoryCloner: RepositoryCloner,
         forceInstall: Boolean = false,
         progress: LibraryInstallProgress? = null,
-        isExplicitInstall: Boolean = false
-    ) = com.chromia.api.impl.install(cliEnv, repositoryCloner, model, forceInstall, progress, isExplicitInstall)
+        isExplicitInstall: Boolean = false,
+        postchainClientConfig: Map<String, String> = emptyMap()
+    ) = com.chromia.api.impl.install(cliEnv, repositoryCloner, model, forceInstall, progress, isExplicitInstall, postchainClientConfig)
 }
 
 object ChromiaDeploymentApi {

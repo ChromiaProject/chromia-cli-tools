@@ -6,8 +6,11 @@ import com.chromia.build.tools.lib.LibraryChainNetworkUtils.createLibraryChainCl
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
+import io.mockk.slot
 import io.mockk.unmockkAll
+import net.postchain.client.config.PostchainClientConfig
 import net.postchain.client.impl.PostchainClientImpl
+import net.postchain.client.request.EndpointPool
 import net.postchain.common.BlockchainRid
 import net.postchain.d1.client.ChromiaPostchainClient
 import org.junit.jupiter.api.AfterEach
@@ -15,6 +18,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.time.Duration
 
 /**
  * Tests for lib-chain client creation.
@@ -50,7 +54,7 @@ internal class LibraryChainNetworkUtilsTest {
         val mockClient = mockk<ChromiaPostchainClient>()
         val mockNetwork = mockk<DirectoryChainNetwork>()
         mockkObject(ChromiaPredefinedNetworks)
-        every { ChromiaPredefinedNetworks.connect("mainnet") } returns mockNetwork
+        every { ChromiaPredefinedNetworks.connect("mainnet", any()) } returns mockNetwork
         every { mockNetwork.getChainClient(mainnetLibChainRID) } returns mockClient
 
         assertEquals(mockClient, createLibraryChainClient())
@@ -59,7 +63,7 @@ internal class LibraryChainNetworkUtilsTest {
     @Test
     fun `null registry throws when network cannot be resolved`() {
         mockkObject(ChromiaPredefinedNetworks)
-        every { ChromiaPredefinedNetworks.connect("mainnet") } throws IllegalStateException("Node URL is not defined for network mainnet")
+        every { ChromiaPredefinedNetworks.connect("mainnet", any()) } throws IllegalStateException("Node URL is not defined for network mainnet")
 
         assertThrows<IllegalStateException> { createLibraryChainClient() }
     }
@@ -72,7 +76,7 @@ internal class LibraryChainNetworkUtilsTest {
         val mockNetwork = mockk<DirectoryChainNetwork>()
         mockkObject(ChromiaPredefinedNetworks)
         every { ChromiaPredefinedNetworks.isPredefined("testnet") } returns true
-        every { ChromiaPredefinedNetworks.connect("testnet") } returns mockNetwork
+        every { ChromiaPredefinedNetworks.connect("testnet", any()) } returns mockNetwork
         every { mockNetwork.getChainClient(customBrid) } returns mockClient
 
         assertEquals(mockClient, createLibraryChainClient(registry = "testnet", brid = customBrid))
@@ -92,7 +96,7 @@ internal class LibraryChainNetworkUtilsTest {
     fun `predefined network registry throws when network cannot be resolved`() {
         mockkObject(ChromiaPredefinedNetworks)
         every { ChromiaPredefinedNetworks.isPredefined("testnet") } returns true
-        every { ChromiaPredefinedNetworks.connect("testnet") } throws IllegalStateException("Node URL is not defined for network testnet")
+        every { ChromiaPredefinedNetworks.connect("testnet", any()) } throws IllegalStateException("Node URL is not defined for network testnet")
 
         assertThrows<IllegalStateException> {
             createLibraryChainClient(registry = "testnet", brid = customBrid)
@@ -120,5 +124,51 @@ internal class LibraryChainNetworkUtilsTest {
         assertThrows<IllegalArgumentException> {
             createLibraryChainClient(registry = "https://my-node.example.com", brid = null)
         }
+    }
+
+    // --- PostchainClientConfig passthrough ---
+
+    @Test
+    fun `custom URL registry applies PostchainClientConfig timeouts`() {
+        mockkObject(ChromiaPredefinedNetworks)
+        every { ChromiaPredefinedNetworks.isPredefined("https://my-node.example.com") } returns false
+
+        val inputConfig = PostchainClientConfig(
+            blockchainRid = BlockchainRid.ZERO_RID,
+            endpointPool = EndpointPool.singleUrl("http://placeholder"),
+            connectTimeout = Duration.ofMillis(5000),
+            responseTimeout = Duration.ofMillis(10000)
+        )
+
+        val client = createLibraryChainClient(
+            registry = "https://my-node.example.com",
+            brid = customBrid,
+            config = inputConfig
+        )
+
+        val config = (client as PostchainClientImpl).config
+        assertEquals(Duration.ofMillis(5000), config.connectTimeout)
+        assertEquals(Duration.ofMillis(10000), config.responseTimeout)
+    }
+
+    @Test
+    fun `predefined network registry passes PostchainClientConfig to connect`() {
+        val mockClient = mockk<ChromiaPostchainClient>()
+        val mockNetwork = mockk<DirectoryChainNetwork>()
+        val configSlot = slot<PostchainClientConfig>()
+        mockkObject(ChromiaPredefinedNetworks)
+        every { ChromiaPredefinedNetworks.isPredefined("testnet") } returns true
+        every { ChromiaPredefinedNetworks.connect("testnet", capture(configSlot)) } returns mockNetwork
+        every { mockNetwork.getChainClient(customBrid) } returns mockClient
+
+        val inputConfig = PostchainClientConfig(
+            blockchainRid = BlockchainRid.ZERO_RID,
+            endpointPool = EndpointPool.singleUrl("http://placeholder"),
+            connectTimeout = Duration.ofMillis(7000)
+        )
+
+        createLibraryChainClient(registry = "testnet", brid = customBrid, config = inputConfig)
+
+        assertEquals(Duration.ofMillis(7000), configSlot.captured.connectTimeout)
     }
 }

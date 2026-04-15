@@ -4,7 +4,9 @@ import com.chromia.build.tools.lib.LibraryInstallProgress
 import com.chromia.build.tools.lib.LibraryInstaller
 import com.chromia.build.tools.lib.RepositoryCloner
 import com.chromia.cli.model.ChromiaModel
+import net.postchain.client.config.PostchainClientConfig
 import net.postchain.rell.api.base.RellCliEnv
+import org.apache.commons.configuration2.MapConfiguration
 
 fun install(
         cliEnv: RellCliEnv,
@@ -12,7 +14,8 @@ fun install(
         model: ChromiaModel,
         forceInstall: Boolean,
         libraryProgress: LibraryInstallProgress?,
-        isExplicitInstall: Boolean
+        isExplicitInstall: Boolean,
+        postchainClientConfig: Map<String, String> = emptyMap()
 ) {
     LibraryInstaller(
             repositoryCloner,
@@ -20,6 +23,9 @@ fun install(
             model,
             forceInstall,
             libraryProgress,
-            isExplicitInstall
+            isExplicitInstall,
+            postchainClientConfig.takeIf { it.isNotEmpty() }?.let {
+                PostchainClientConfig.fromConfiguration(MapConfiguration(it))
+            }
     ).installLibs(model.libs)
 }
