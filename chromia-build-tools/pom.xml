@@ -62,6 +62,12 @@
             <plugin>
                 <groupId>net.postchain.rell</groupId>
                 <artifactId>rell-maven-plugin</artifactId>
+                <configuration>
+                    <postchainClientConfig>
+                        <failover.attempts>2</failover.attempts>
+                        <connect.timeout>10000</connect.timeout>
+                    </postchainClientConfig>
+                </configuration>
                 <executions>
                     <execution>
                         <id>rell-client-gen</id>
