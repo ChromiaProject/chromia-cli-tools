@@ -24,7 +24,8 @@ import kotlin.io.path.writeBytes
 
 class ChromiaLibChainInstaller(
         private val progress: LibraryInstallProgress,
-        private val postchainClientConfig: PostchainClientConfig? = null
+        private val postchainClientConfig: PostchainClientConfig? = null,
+        private val postchainClientConfigOverrides: Map<String, String> = emptyMap()
 ) : LibrarySourceInstaller {
 
     @OptIn(ExperimentalPathApi::class)
@@ -35,7 +36,7 @@ class ChromiaLibChainInstaller(
             forceInstall: Boolean,
     ) {
         progress.onProgress(libraryId, 5, 100, "Connecting to library chain")
-        val client = createLibraryChainClient(libModel.registry, libModel.brid, postchainClientConfig)
+        val client = createLibraryChainClient(libModel.registry, libModel.brid, postchainClientConfig, postchainClientConfigOverrides)
         val version = requireNotNull(libModel.version) { "version is required for library $libraryId" }
 
         progress.onProgress(libraryId, 10, 100, "Fetching library metadata")

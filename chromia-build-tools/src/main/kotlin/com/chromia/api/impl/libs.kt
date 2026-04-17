@@ -6,7 +6,6 @@ import com.chromia.build.tools.lib.RepositoryCloner
 import com.chromia.cli.model.ChromiaModel
 import net.postchain.client.config.PostchainClientConfig
 import net.postchain.rell.api.base.RellCliEnv
-import org.apache.commons.configuration2.MapConfiguration
 
 fun install(
         cliEnv: RellCliEnv,
@@ -15,7 +14,8 @@ fun install(
         forceInstall: Boolean,
         libraryProgress: LibraryInstallProgress?,
         isExplicitInstall: Boolean,
-        postchainClientConfig: Map<String, String> = emptyMap()
+        postchainClientConfig: PostchainClientConfig? = null,
+        postchainClientConfigOverrides: Map<String, String> = emptyMap()
 ) {
     LibraryInstaller(
             repositoryCloner,
@@ -24,8 +24,7 @@ fun install(
             forceInstall,
             libraryProgress,
             isExplicitInstall,
-            postchainClientConfig.takeIf { it.isNotEmpty() }?.let {
-                PostchainClientConfig.fromConfiguration(MapConfiguration(it))
-            }
+            postchainClientConfig,
+            postchainClientConfigOverrides
     ).installLibs(model.libs)
 }

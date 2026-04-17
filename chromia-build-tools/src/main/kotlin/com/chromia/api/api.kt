@@ -9,6 +9,7 @@ import com.chromia.build.tools.lib.RepositoryCloner
 import com.chromia.cli.model.ChromiaModel
 import com.chromia.cli.model.DeploymentModel
 import com.chromia.directory1.proposal_blockchain.BlockchainAction
+import net.postchain.client.config.PostchainClientConfig
 import net.postchain.client.impl.PostchainClientProviderImpl
 import net.postchain.rell.api.base.RellCliEnv
 
@@ -40,8 +41,9 @@ object ChromiaLibrariesApi {
         forceInstall: Boolean = false,
         progress: LibraryInstallProgress? = null,
         isExplicitInstall: Boolean = false,
-        postchainClientConfig: Map<String, String> = emptyMap()
-    ) = com.chromia.api.impl.install(cliEnv, repositoryCloner, model, forceInstall, progress, isExplicitInstall, postchainClientConfig)
+        postchainClientConfig: PostchainClientConfig? = null,
+        postchainClientConfigOverrides: Map<String, String> = emptyMap()
+    ) = com.chromia.api.impl.install(cliEnv, repositoryCloner, model, forceInstall, progress, isExplicitInstall, postchainClientConfig, postchainClientConfigOverrides)
 }
 
 object ChromiaDeploymentApi {

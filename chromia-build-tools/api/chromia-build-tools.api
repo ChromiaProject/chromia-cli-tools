@@ -15,8 +15,8 @@ public final class com/chromia/api/ChromiaDeploymentApi {
 
 public final class com/chromia/api/ChromiaLibrariesApi {
 	public static final field INSTANCE Lcom/chromia/api/ChromiaLibrariesApi;
-	public final fun install (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;Lcom/chromia/build/tools/lib/RepositoryCloner;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLjava/util/Map;)V
-	public static synthetic fun install$default (Lcom/chromia/api/ChromiaLibrariesApi;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;Lcom/chromia/build/tools/lib/RepositoryCloner;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLjava/util/Map;ILjava/lang/Object;)V
+	public final fun install (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;Lcom/chromia/build/tools/lib/RepositoryCloner;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;)V
+	public static synthetic fun install$default (Lcom/chromia/api/ChromiaLibrariesApi;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;Lcom/chromia/build/tools/lib/RepositoryCloner;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;ILjava/lang/Object;)V
 }
 
 public abstract interface annotation class com/chromia/api/ExperimentalApi : java/lang/annotation/Annotation {
@@ -43,8 +43,8 @@ public final class com/chromia/api/impl/DeploymentKt {
 }
 
 public final class com/chromia/api/impl/LibsKt {
-	public static final fun install (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/build/tools/lib/RepositoryCloner;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLjava/util/Map;)V
-	public static synthetic fun install$default (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/build/tools/lib/RepositoryCloner;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLjava/util/Map;ILjava/lang/Object;)V
+	public static final fun install (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/build/tools/lib/RepositoryCloner;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;)V
+	public static synthetic fun install$default (Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/build/tools/lib/RepositoryCloner;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;ILjava/lang/Object;)V
 }
 
 public final class com/chromia/api/impl/compile/DefaultsKt {
@@ -273,8 +273,8 @@ public final class com/chromia/build/tools/config/ChromiaNetworksKt {
 
 public final class com/chromia/build/tools/config/ChromiaPredefinedNetworks {
 	public static final field INSTANCE Lcom/chromia/build/tools/config/ChromiaPredefinedNetworks;
-	public final fun connect (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
-	public static synthetic fun connect$default (Lcom/chromia/build/tools/config/ChromiaPredefinedNetworks;Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;ILjava/lang/Object;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
+	public final fun connect (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
+	public static synthetic fun connect$default (Lcom/chromia/build/tools/config/ChromiaPredefinedNetworks;Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;ILjava/lang/Object;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
 	public final fun isPredefined (Ljava/lang/String;)Z
 }
 
@@ -305,21 +305,27 @@ public final class com/chromia/build/tools/config/CompressedRoot {
 }
 
 public final class com/chromia/build/tools/config/DirectoryChainNetwork {
-	public fun <init> (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;)V
-	public synthetic fun <init> (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Lnet/postchain/client/config/PostchainClientConfig;
-	public final fun copy (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
-	public static synthetic fun copy$default (Lcom/chromia/build/tools/config/DirectoryChainNetwork;Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;ILjava/lang/Object;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
+	public static synthetic fun copy$default (Lcom/chromia/build/tools/config/DirectoryChainNetwork;Ljava/lang/String;Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;ILjava/lang/Object;)Lcom/chromia/build/tools/config/DirectoryChainNetwork;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getChainClient (Lnet/postchain/common/BlockchainRid;)Lnet/postchain/d1/client/ChromiaPostchainClient;
 	public final fun getClientFactory ()Lnet/postchain/d1/client/StandardChromiaClient;
 	public final fun getConfig ()Lnet/postchain/client/config/PostchainClientConfig;
+	public final fun getConfigOverrides ()Ljava/util/Map;
 	public final fun getDirectoryChainApiUrls ()Ljava/util/List;
 	public final fun getDirectoryChainClient ()Lnet/postchain/d1/client/ChromiaPostchainClient;
 	public final fun getNodeUrl ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromia/build/tools/config/PostchainClientConfigUtilsKt {
+	public static final fun withOverrides (Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;)Lnet/postchain/client/config/PostchainClientConfig;
 }
 
 public final class com/chromia/build/tools/gtv/TransformKt {
@@ -520,8 +526,8 @@ public final class com/chromia/build/tools/lib/GitRepositoryCloner : com/chromia
 
 public final class com/chromia/build/tools/lib/LibraryChainNetworkUtils {
 	public static final field INSTANCE Lcom/chromia/build/tools/lib/LibraryChainNetworkUtils;
-	public final fun createLibraryChainClient (Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Lnet/postchain/client/config/PostchainClientConfig;)Lnet/postchain/client/core/PostchainClient;
-	public static synthetic fun createLibraryChainClient$default (Lcom/chromia/build/tools/lib/LibraryChainNetworkUtils;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Lnet/postchain/client/config/PostchainClientConfig;ILjava/lang/Object;)Lnet/postchain/client/core/PostchainClient;
+	public final fun createLibraryChainClient (Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;)Lnet/postchain/client/core/PostchainClient;
+	public static synthetic fun createLibraryChainClient$default (Lcom/chromia/build/tools/lib/LibraryChainNetworkUtils;Ljava/lang/String;Lnet/postchain/common/BlockchainRid;Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;ILjava/lang/Object;)Lnet/postchain/client/core/PostchainClient;
 	public final fun getPredefinedLibChainRids ()Ljava/util/Map;
 }
 
@@ -544,8 +550,8 @@ public final class com/chromia/build/tools/lib/LibraryInstallProgress$DefaultImp
 }
 
 public final class com/chromia/build/tools/lib/LibraryInstaller {
-	public fun <init> (Lcom/chromia/build/tools/lib/RepositoryCloner;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLnet/postchain/client/config/PostchainClientConfig;)V
-	public synthetic fun <init> (Lcom/chromia/build/tools/lib/RepositoryCloner;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLnet/postchain/client/config/PostchainClientConfig;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/chromia/build/tools/lib/RepositoryCloner;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;)V
+	public synthetic fun <init> (Lcom/chromia/build/tools/lib/RepositoryCloner;Lnet/postchain/rell/api/base/RellCliEnv;Lcom/chromia/cli/model/ChromiaModel;ZLcom/chromia/build/tools/lib/LibraryInstallProgress;ZLnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun installLibs (Ljava/util/Map;)V
 }
 
@@ -593,8 +599,8 @@ public abstract interface class com/chromia/build/tools/lib/RepositoryCloner {
 
 public final class com/chromia/build/tools/lib/installers/ChromiaLibChainInstaller : com/chromia/build/tools/lib/installers/LibrarySourceInstaller {
 	public static final field Companion Lcom/chromia/build/tools/lib/installers/ChromiaLibChainInstaller$Companion;
-	public fun <init> (Lcom/chromia/build/tools/lib/LibraryInstallProgress;Lnet/postchain/client/config/PostchainClientConfig;)V
-	public synthetic fun <init> (Lcom/chromia/build/tools/lib/LibraryInstallProgress;Lnet/postchain/client/config/PostchainClientConfig;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/chromia/build/tools/lib/LibraryInstallProgress;Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;)V
+	public synthetic fun <init> (Lcom/chromia/build/tools/lib/LibraryInstallProgress;Lnet/postchain/client/config/PostchainClientConfig;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun calculateRid (Ljava/nio/file/Path;)[B
 	public fun install (Ljava/lang/String;Lcom/chromia/cli/model/RellLibraryModel;Ljava/nio/file/Path;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
