@@ -17,13 +17,9 @@
 
     <name>Chromia Cli Tools Parent</name>
 
-    <!--    <postchain.version>3.42.4</postchain.version>-->
-    <!--    <postchain.client.version>3.37.1</postchain.client.version>-->
-    <!--    <rell.version>0.14.14</rell.version>-->
-
     <properties>
         <revision>dev</revision>
-        <postchain.version>3.49.2</postchain.version>
+        <postchain.version>3.49.4</postchain.version>
         <postchain.client.version>3.39.1</postchain.client.version>
         <rell.version>0.15.3</rell.version>
         <directory.chain.version>1.110.0</directory.chain.version>
