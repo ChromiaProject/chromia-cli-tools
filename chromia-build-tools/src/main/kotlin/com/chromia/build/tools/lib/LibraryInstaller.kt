@@ -21,7 +21,8 @@ class LibraryInstaller(
         private val forceInstall: Boolean,
         libraryProgress: LibraryInstallProgress?,
         private val isExplicitInstall: Boolean = false,
-        private val postchainClientConfig: PostchainClientConfig? = null
+        private val postchainClientConfig: PostchainClientConfig? = null,
+        private val postchainClientConfigOverrides: Map<String, String> = emptyMap()
 ) {
     private val progress: LibraryInstallProgress = libraryProgress ?: CliLibraryInstallProgress(env)
     private val libRoot: Path = model.compile.source.resolve("lib")
@@ -54,7 +55,7 @@ class LibraryInstaller(
         progress.onStart(libraryId)
 
         val installer = if (libModel.isChromiaLib) {
-            ChromiaLibChainInstaller(progress, postchainClientConfig)
+            ChromiaLibChainInstaller(progress, postchainClientConfig, postchainClientConfigOverrides)
         } else {
             GitLibInstaller(repositoryCloner, tmpLibRoot, libraryVerifier, progress)
         }

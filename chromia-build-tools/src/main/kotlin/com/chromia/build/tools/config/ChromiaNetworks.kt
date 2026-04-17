@@ -16,20 +16,32 @@ const val CHROMIA_PREDEFINED_TESTING_NETWORK = "chromia_predefined_testing_netwo
 
 data class DirectoryChainNetwork(
         val nodeUrl: String,
-        val config: PostchainClientConfig? = null
+        val config: PostchainClientConfig? = null,
+        val configOverrides: Map<String, String> = emptyMap()
 ) {
 
-    val clientFactory: StandardChromiaClient = if (config != null)
-        StandardChromiaClient(config.copy(
-                requestStrategy = TryNextOnErrorRequestStrategyFactory(),
-                endpointPool = EndpointPool.singleUrl(nodeUrl)
-        ))
-    else
-        StandardChromiaClient(EndpointPool.singleUrl(nodeUrl))
+    val clientFactory: StandardChromiaClient
+    val directoryChainClient: ChromiaPostchainClient
+    val directoryChainApiUrls: List<String>
 
-    val directoryChainClient: ChromiaPostchainClient = clientFactory.getDirectoryChainClient()
+    init {
+        // Create default config if none is provided
+        val config0 = config?.copy(
+                endpointPool = EndpointPool.singleUrl(nodeUrl),
+                requestStrategy = TryNextOnErrorRequestStrategyFactory()
+        ) ?: PostchainClientConfig(
+                blockchainRid = BlockchainRid.ZERO_RID, // Automatically look up directory chain if not provided
+                endpointPool = EndpointPool.singleUrl(nodeUrl),
+                requestStrategy = TryNextOnErrorRequestStrategyFactory()
+        )
 
-    val directoryChainApiUrls = directoryChainClient.config.endpointPool.map { it.url }
+        // Apply overrides
+        val resultingConfig = config0.withOverrides(configOverrides)
+
+        clientFactory = StandardChromiaClient(resultingConfig)
+        directoryChainClient = clientFactory.getDirectoryChainClient()
+        directoryChainApiUrls = directoryChainClient.config.endpointPool.map { it.url }
+    }
 
     fun getChainClient(brid: BlockchainRid): ChromiaPostchainClient = clientFactory.getClient(brid)
 }
@@ -49,16 +61,30 @@ object ChromiaPredefinedNetworks {
     fun isPredefined(network: String): Boolean = nodeUrls.containsKey(network)
 
     /**
-     * Connects to a predefined network using [config] and caches the connection.
+     * Connects to a predefined Chromia network and returns a cached [DirectoryChainNetwork] instance.
      *
-     * The cache key is only [network]. The first call for a given network creates and caches
-     * the [DirectoryChainNetwork]. Further calls for the same network return the cached
-     * network and ignore the provided [config].
+     * This method creates a new connection to the specified predefined network on the first call
+     * and caches it for subsequent calls. The cache is keyed only by the [network] parameter.
+     *
+     * **Important:** Once a network connection is cached, subsequent calls with the same [network]
+     * will return the cached instance and ignore any newly provided [config] or [configOverrides].
+     * In particular, if multiple `rell-install` executions run within the same JVM (e.g. two Maven
+     * plugin executions in a single build), only the first execution's parameters take effect —
+     * subsequent executions silently use the cached network regardless of their [configOverrides].
+     *
+     * @param network The name of the predefined network to connect to. Must be one of:
+     *                [MAINNET], [TESTNET], [DEVNET1], [DEVNET2], or [CHROMIA_PREDEFINED_TESTING_NETWORK].
+     * @param config Optional [PostchainClientConfig] to use for the connection. Only applied on the
+     *               first call for a given network; ignored on subsequent calls.
+     * @param configOverrides Optional map of configuration overrides. Only applied on the first call
+     *                        for a given network; ignored on subsequent calls.
+     * @return A [DirectoryChainNetwork] instance for the specified network.
+     * @throws IllegalStateException if the network is not predefined (node URL not found).
      */
-    fun connect(network: String, config: PostchainClientConfig? = null): DirectoryChainNetwork {
+    fun connect(network: String, config: PostchainClientConfig? = null, configOverrides: Map<String, String> = emptyMap()): DirectoryChainNetwork {
         val url = nodeUrls[network] ?: error("Node URL is not defined for network $network")
         return networks.computeIfAbsent(network) {
-            DirectoryChainNetwork(url, config)
+            DirectoryChainNetwork(url, config, configOverrides)
         }
     }
 }
