@@ -29,15 +29,28 @@ open class CliLauncher(val name: String) : NoOpCliktCommand(name = name) {
 
     init {
         completionOption()
-        val detectedTerminal = Terminal()
+        val detectedTerminal = createTerminal()
         context {
-            terminal = Terminal(theme = when (detectedTerminal.terminalInfo.ansiLevel) {
+            terminal = createTerminal(theme = when (detectedTerminal.terminalInfo.ansiLevel) {
                 AnsiLevel.NONE -> Theme.Plain
                 AnsiLevel.ANSI16 -> Theme.Plain
                 else -> chromiaTheme
             }
             )
             helpFormatter = { PanelHelpFormatter(it) }
+        }
+    }
+
+    private fun createTerminal(theme: Theme = Theme.Default): Terminal {
+        return try {
+            Terminal(theme = theme)
+        } catch (_: ClassCastException) {
+            // Workaround for mordant 3.0.2 FFM bug on macOS with JDK 22+:
+            // VarHandle coordinate insertion crashes during terminal size detection.
+            // Falling back to explicit dimensions bypasses the broken FFM call.
+            val cols = System.getenv("COLUMNS")?.toIntOrNull() ?: 80
+            val rows = System.getenv("LINES")?.toIntOrNull() ?: 24
+            Terminal(theme = theme, width = cols, height = rows)
         }
     }
 

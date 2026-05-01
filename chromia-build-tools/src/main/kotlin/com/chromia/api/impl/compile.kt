@@ -14,6 +14,7 @@ import net.postchain.gtv.GtvFactory.gtv
 import net.postchain.gtv.builder.GtvBuilder
 import net.postchain.rell.api.base.RellApiCompile
 import net.postchain.rell.api.base.RellCliEnv
+import net.postchain.rell.api.base.RellCliException
 import net.postchain.rell.base.utils.RellGtxConfigConstants
 import net.postchain.rell.module.RellPostchainModuleFactory
 import net.postchain.web.WebStaticGTXModuleFactory
@@ -134,5 +135,10 @@ fun verify(cliEnv: RellCliEnv, model: ChromiaModel): Boolean {
             .quiet(false)
             .build()
 
-    return RellApiCompile.compileApp(compileconfig, model.compile.source.toFile(), null).valid
+    return try {
+        RellApiCompile.compileApp(compileconfig, model.compile.source.toFile(), null)
+        true
+    } catch (_: RellCliException) {
+        false
+    }
 }
