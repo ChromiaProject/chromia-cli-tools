@@ -14,8 +14,8 @@ fun UnitTestRunnerResults.xmlTestReport(name: String): String =
             attribute("version", "3.0") // xml schema version
             for (testCase in results) {
                 "testcase" {
-                    attribute("classname", testCase.case.fn.defName.module)
-                    attribute("name", testCase.case.fn.simpleName)
+                    attribute("classname", testCase.case.rrFn.base.defName.module)
+                    attribute("name", testCase.case.rrFn.base.simpleName)
                     if (!testCase.res.isOk) {
                         "failure" {
                             val message = testCase.res.error?.message ?: "FAILED"

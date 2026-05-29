@@ -21,7 +21,7 @@
         <revision>dev</revision>
         <postchain.version>3.49.10</postchain.version>
         <postchain.client.version>3.39.3</postchain.client.version>
-        <rell.version>0.15.4</rell.version>
+        <rell.version>0.16.0</rell.version>
         <directory.chain.version>1.110.2</directory.chain.version>
         <directory.source>${project.build.directory}/directory-chain/src</directory.source>
 
@@ -30,6 +30,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>2.3.0</kotlin.version>
         <kotlin.compiler.jvmTarget>21</kotlin.compiler.jvmTarget>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <kotlin.code.style>obsolete</kotlin.code.style>

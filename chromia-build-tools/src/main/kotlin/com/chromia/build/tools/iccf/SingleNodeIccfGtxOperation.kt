@@ -20,7 +20,7 @@ import net.postchain.gtv.merkleHash
 import net.postchain.gtx.GTXOpMistake
 import net.postchain.gtx.GTXOperation
 import net.postchain.gtx.data.ExtOpData
-import net.postchain.rell.base.utils.PostchainGtvUtils.cryptoSystem
+import net.postchain.rell.base.runtime.PostchainGtvUtils.cryptoSystem
 
 /**
  * Verifies the witnesses and confirmationProof of an iccf-operation where the tx has been processed on the same node.
