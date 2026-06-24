@@ -325,6 +325,15 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- http4k 6.53 (via postchain) needs Netty 4.2.x for http4k-server-netty,
+                 but postchain's BOM pins Netty 4.1.135. Import the Netty BOM first so 4.2.x wins. -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>4.2.15.Final</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-bom</artifactId>
