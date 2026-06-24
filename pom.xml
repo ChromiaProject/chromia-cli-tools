@@ -19,10 +19,10 @@
 
     <properties>
         <revision>dev</revision>
-        <postchain.version>3.49.10</postchain.version>
-        <postchain.client.version>3.39.3</postchain.client.version>
+        <postchain.version>3.49.15</postchain.version>
+        <postchain.client.version>3.39.4</postchain.client.version>
         <rell.version>0.16.0</rell.version>
-        <directory.chain.version>1.110.2</directory.chain.version>
+        <directory.chain.version>1.110.8</directory.chain.version>
         <directory.source>${project.build.directory}/directory-chain/src</directory.source>
 
         <jgit.version>7.2.1.202505142326-r</jgit.version>
@@ -325,6 +325,15 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- http4k 6.53 (via postchain) needs Netty 4.2.x for http4k-server-netty,
+                 but postchain's BOM pins Netty 4.1.135. Import the Netty BOM first so 4.2.x wins. -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>4.2.15.Final</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-bom</artifactId>
