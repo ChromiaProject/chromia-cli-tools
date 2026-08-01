@@ -35,7 +35,7 @@
             <entry key="rell">
                 <dict>
                     <entry key="compilerVersion">
-                        <string>0.16.1</string>
+                        <string>0.16.3</string>
                     </entry>
                     <entry key="modules">
                         <array>
@@ -50,7 +50,7 @@
                         </dict>
                     </entry>
                     <entry key="version">
-                        <string>0.14.5</string>
+                        <string>0.16.3</string>
                     </entry>
                     <entry key="strictGtvConversion">
                         <int>1</int>
