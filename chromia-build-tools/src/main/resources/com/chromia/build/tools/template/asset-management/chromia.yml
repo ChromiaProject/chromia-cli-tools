@@ -5,7 +5,7 @@ blockchains:
       main:
         basic: 5
 compile:
-  rellVersion: 0.16.4
+  rellVersion: 0.16.5
   source: rell/src
 database:
   schema: schema_asset_management
