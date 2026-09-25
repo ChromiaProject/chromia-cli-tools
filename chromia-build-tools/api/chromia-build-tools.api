@@ -2270,6 +2270,23 @@ public final class com/chromia/directory1/economy_chain/BridgeLeaseData {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/chromia/directory1/economy_chain/ChrSupplyInfo {
+	public fun <init> (Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;Z)V
+	public final fun component1 ()Ljava/math/BigInteger;
+	public final fun component2 ()Ljava/math/BigInteger;
+	public final fun component3 ()Ljava/math/BigInteger;
+	public final fun component4 ()Z
+	public final fun copy (Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;Z)Lcom/chromia/directory1/economy_chain/ChrSupplyInfo;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/ChrSupplyInfo;Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/math/BigInteger;ZILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/ChrSupplyInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEnforced ()Z
+	public final fun getMaxSupply ()Ljava/math/BigInteger;
+	public final fun getRemainingMintable ()Ljava/math/BigInteger;
+	public final fun getTotalSupply ()Ljava/math/BigInteger;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/chromia/directory1/economy_chain/ClusterCreationStatus : java/lang/Enum, net/postchain/gtv/mapper/ToGtv {
 	public static final field FAILURE Lcom/chromia/directory1/economy_chain/ClusterCreationStatus;
 	public static final field PENDING_APPROVAL Lcom/chromia/directory1/economy_chain/ClusterCreationStatus;
