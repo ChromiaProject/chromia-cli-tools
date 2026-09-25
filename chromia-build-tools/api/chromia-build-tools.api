@@ -2506,6 +2506,7 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final field GET_BRIDGE_LEASE_FOR_BLOCKCHAIN Ljava/lang/String;
 	public static final field GET_CHROMIA_FOUNDATION_VOTER_SET_INFO Ljava/lang/String;
 	public static final field GET_CHR_ASSET Ljava/lang/String;
+	public static final field GET_CHR_SUPPLY_INFO Ljava/lang/String;
 	public static final field GET_CLUSTERS Ljava/lang/String;
 	public static final field GET_CLUSTER_BY_NAME Ljava/lang/String;
 	public static final field GET_CLUSTER_CHANGE_TAG_PROPOSAL Ljava/lang/String;
@@ -2547,6 +2548,7 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final field GET_PROVIDER_STAKING_ACCOUNT Ljava/lang/String;
 	public static final field GET_PROVIDER_STAKING_STATUS Ljava/lang/String;
 	public static final field GET_PROVISIONAL_STAKE_BALANCE Ljava/lang/String;
+	public static final field GET_REWARD_DEBT Ljava/lang/String;
 	public static final field GET_STAKING_REQUIREMENT_CONSTANTS_PROPOSAL Ljava/lang/String;
 	public static final field GET_SYSTEM_PROVIDER_ECONOMY_CONSTANTS_PROPOSAL Ljava/lang/String;
 	public static final field GET_TAGS Ljava/lang/String;
@@ -2649,6 +2651,7 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final fun getBlockchainsWithBridgeAndAnomalyDetection (Lnet/postchain/client/core/PostchainQuery;Z)Ljava/util/List;
 	public static final fun getBridgeLeaseForBlockchain (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/BlockchainRid;J)Lcom/chromia/directory1/economy_chain/ContainerAndBridgeLeaseData;
 	public static final fun getChrAsset (Lnet/postchain/client/core/PostchainQuery;)Lcom/chromia/directory1/economy_chain/GetChrAssetResult;
+	public static final fun getChrSupplyInfo (Lnet/postchain/client/core/PostchainQuery;)Lcom/chromia/directory1/economy_chain/ChrSupplyInfo;
 	public static final fun getChromiaFoundationVoterSetInfo (Lnet/postchain/client/core/PostchainQuery;)Lcom/chromia/directory1/economy_chain/GetChromiaFoundationVoterSetInfoResult;
 	public static final fun getClusterByName (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Lcom/chromia/directory1/economy_chain/ClusterData;
 	public static final fun getClusterChangeTagProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/economy_chain/PendingClusterChangeTagData;
@@ -2691,6 +2694,7 @@ public final class com/chromia/directory1/economy_chain/Economy_chainKt {
 	public static final fun getProviderStakingAccount (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/crypto/PubKey;)[B
 	public static final fun getProviderStakingStatus (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/crypto/PubKey;)Lcom/chromia/directory1/economy_chain/ProviderStakingStatus;
 	public static final fun getProvisionalStakeBalance (Lnet/postchain/client/core/PostchainQuery;[BLcom/chromia/directory1/economy_chain/Network;)J
+	public static final fun getRewardDebt (Lnet/postchain/client/core/PostchainQuery;)Lcom/chromia/directory1/economy_chain/RewardDebtInfo;
 	public static final fun getStakingRequirementConstantsProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/economy_chain/PendingStakingRequirementConstantsData;
 	public static final fun getSystemProviderEconomyConstantsProposal (Lnet/postchain/client/core/PostchainQuery;Lnet/postchain/common/types/RowId;)Lcom/chromia/directory1/economy_chain/PendingSystemProviderEconomyConstantsData;
 	public static final fun getTagByName (Lnet/postchain/client/core/PostchainQuery;Ljava/lang/String;)Lcom/chromia/directory1/economy_chain/TagData;
@@ -3135,6 +3139,21 @@ public final class com/chromia/directory1/economy_chain/ProviderPerformanceMetri
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/chromia/directory1/economy_chain/ProviderRewardDebt {
+	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Ljava/math/BigInteger;)V
+	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/math/BigInteger;
+	public final fun copy (Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Ljava/math/BigInteger;)Lcom/chromia/directory1/economy_chain/ProviderRewardDebt;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/ProviderRewardDebt;Lnet/postchain/common/types/WrappedByteArray;Ljava/lang/String;Ljava/math/BigInteger;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/ProviderRewardDebt;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPubkey ()Lnet/postchain/common/types/WrappedByteArray;
+	public final fun getRewardDebt ()Ljava/math/BigInteger;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/chromia/directory1/economy_chain/ProviderStakingStatus {
 	public fun <init> (Lnet/postchain/common/types/WrappedByteArray;JJJJZLjava/lang/Long;Ljava/lang/Long;)V
 	public final fun component1 ()Lnet/postchain/common/types/WrappedByteArray;
@@ -3167,6 +3186,21 @@ public final class com/chromia/directory1/economy_chain/ProviderTier : java/lang
 	public fun toGtv ()Lnet/postchain/gtv/Gtv;
 	public static fun valueOf (Ljava/lang/String;)Lcom/chromia/directory1/economy_chain/ProviderTier;
 	public static fun values ()[Lcom/chromia/directory1/economy_chain/ProviderTier;
+}
+
+public final class com/chromia/directory1/economy_chain/RewardDebtInfo {
+	public fun <init> (Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/util/List;)V
+	public final fun component1 ()Ljava/math/BigInteger;
+	public final fun component2 ()Ljava/math/BigInteger;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/util/List;)Lcom/chromia/directory1/economy_chain/RewardDebtInfo;
+	public static synthetic fun copy$default (Lcom/chromia/directory1/economy_chain/RewardDebtInfo;Ljava/math/BigInteger;Ljava/math/BigInteger;Ljava/util/List;ILjava/lang/Object;)Lcom/chromia/directory1/economy_chain/RewardDebtInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChromiaFoundation ()Ljava/math/BigInteger;
+	public final fun getProviders ()Ljava/util/List;
+	public final fun getTotal ()Ljava/math/BigInteger;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/chromia/directory1/economy_chain/StakingGetAllRewardsPaidResult {
