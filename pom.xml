@@ -222,6 +222,9 @@
                 <plugin>
                     <groupId>org.owasp</groupId>
                     <artifactId>dependency-check-maven</artifactId>
+                    <!-- Keep in sync with chromia-parent, which is the source of truth for this
+                         plugin's version and configuration. This repo is its own Maven root, so
+                         it cannot inherit the block and has to duplicate it. -->
                     <version>12.2.2</version>
                     <configuration>
                         <prettyPrint>true</prettyPrint>
@@ -229,9 +232,7 @@
                         <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
                         <yarnAuditAnalyzerEnabled>false</yarnAuditAnalyzerEnabled>
                         <suppressionFiles>
-                            <suppressionFile>
-                                https://gitlab.com/chromaway/chromia-parent/-/raw/dev/common-dependencies-suppression.xml?ref_type=heads
-                            </suppressionFile>
+                            <suppressionFile>https://gitlab.com/chromaway/chromia-parent/-/raw/dev/common-dependencies-suppression.xml?ref_type=heads</suppressionFile>
                             <suppressionFile>dependencies-suppression.xml</suppressionFile>
                         </suppressionFiles>
                     </configuration>
