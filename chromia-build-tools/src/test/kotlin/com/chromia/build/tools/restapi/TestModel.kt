@@ -35,6 +35,8 @@ import net.postchain.gtv.merkle.makeMerkleHashCalculator
 import net.postchain.gtx.Gtx
 import net.postchain.gtx.GtxQuery
 import java.time.Instant
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 
 class TestModel(
         override val blockchainRid: BlockchainRid = BlockchainRid.buildRepeat(1),
@@ -43,8 +45,9 @@ class TestModel(
 ) : CachedModel {
     override val queryCacheTtlSeconds: Long = 0
     override var live: Boolean = true
-    override val txQueue = mutableListOf<Gtx>()
-    override val txMap = mutableMapOf<TxRid, Gtx>()
+    // Thread-safe: the REST API serves requests concurrently and deployments post transactions in parallel
+    override val txQueue: MutableList<Gtx> = CopyOnWriteArrayList()
+    override val txMap: MutableMap<TxRid, Gtx> = ConcurrentHashMap()
 
     private val merkleHashCalculator = makeMerkleHashCalculator(merkleHashVersion)
 
