@@ -192,3 +192,19 @@ The project uses:
 - **Kotlin BCV Plugin** - Binary compatibility verification
 
 See [Setup documentation](docs/Setup.md#ide-setup) for IDE configuration.
+
+### API compatibility
+
+The public API of `chromia-build-tools`, `chromia-cli-base`, `chromia-cli-tools` is tracked with `kotlin-bcv-maven-plugin`. Each module records its API in `<module>/api/<module>.api`, and the build (`verify` phase) fails if the compiled API differs from that file.
+
+To accept an intended API change, compile the module, regenerate the file and commit it:
+
+```shell
+mvn -pl <module> -am -DskipTests clean compile com.chromaway:kotlin-bcv-maven-plugin:0.2.0:dump
+```
+
+To run only the check (needs compiled classes):
+
+```shell
+mvn -pl <module> com.chromaway:kotlin-bcv-maven-plugin:0.2.0:check
+```
