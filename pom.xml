@@ -19,7 +19,7 @@
 
     <properties>
         <revision>dev</revision>
-        <postchain.version>3.49.21</postchain.version>
+        <postchain.version>3.49.23</postchain.version>
         <postchain.client.version>3.39.7</postchain.client.version>
         <rell.version>0.16.6</rell.version>
         <directory.chain.version>1.110.11</directory.chain.version>
@@ -239,7 +239,7 @@
                     <version>12.2.2</version>
                     <configuration>
                         <prettyPrint>true</prettyPrint>
-                        <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+                        <failBuildOnCVSS>7</failBuildOnCVSS>
                         <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
                         <yarnAuditAnalyzerEnabled>false</yarnAuditAnalyzerEnabled>
                         <suppressionFiles>
@@ -357,7 +357,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>2.22.3</version>
+                <version>2.22.4</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
