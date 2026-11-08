@@ -11,6 +11,7 @@ abstract class AbstractTemplateFactory : TemplateFactory {
             }
         }
         createProjectFiles(targetDir, projectName, options)
+        AgentInstructionsSupport().addToProject(targetDir)
     }
 
     abstract fun createProjectFiles(targetDir: File, projectName: String, options: TemplateOptions?)
