@@ -5,6 +5,7 @@ import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.chromia.lib.ft4.core.accounts.AuthType
 import com.chromia.lib.ft4.core.auth.Signature
@@ -222,6 +223,76 @@ class FTAuthenticatorTest {
         assertDoesNotThrow {
             testCommand.addEvmAuthOperation(client, transactionBuilder, "my_op", listOf(gtv("foo")), evmAddress,
                     accountId, authDescriptorId, launchWebBrowser = false) { url ->
+                val response = ApacheClient()(Request(Method.POST, "$url/signatures")
+                        .header("Content-Type", "application/json")
+                        .body("""[{"r":"0x1234","s":"0x5678","v":5}]"""))
+                assertThat(response.status.successful).isTrue()
+            }
+        }
+        
+        verify(transactionBuilder).evmAuthOperation(accountId, authDescriptorId, listOf(signature))
+    }
+
+    @Test @Timeout(value = 30, unit = TimeUnit.SECONDS)
+    fun evmAuthCallbacksWithoutSessionTokenAreRejected() {
+        val evmAddress = "183B9875AC828CE1A56D5152874B2833AC8ABB63".hexStringToByteArray()
+        val accountId = "5".repeat(64).hexStringToByteArray()
+        val authDescriptorId = "6".repeat(64).hexStringToByteArray()
+        val descriptor = Ft4GetAccountAuthDescriptorsBySignerResult(
+                id = authDescriptorId.wrap(),
+                args = gtv(gtv(gtv("A")), gtv(evmAddress)),
+                created = System.currentTimeMillis(),
+                authType = AuthType.S,
+                rules = GtvNull,
+                accountId = accountId.wrap()
+        )
+        val client = mock<PostchainClient> {
+            on { config } doReturn PostchainClientConfig(
+                    blockchainRid = BlockchainRid(
+                            "3250B9CCD1FAA489BFCC9706DE55237F102DE7A5ED66D5FE6E8EE6A20823D2BD".hexStringToByteArray()),
+                    endpointPool = mock(),
+            )
+            on { merkleHashCalculator } doReturn GtvMerkleHashCalculatorV2(::sha256Digest)
+            on { query(eq(GET_VERSION), any()) } doReturn gtv("0.4.0")
+            on { query(eq(GET_ACCOUNTS_BY_SIGNER), any()) } doReturn GtvObjectMapper.toGtvDictionary(PagedResult(
+                    nextCursor = null,
+                    data = listOf(gtv((mapOf("id" to gtv(descriptor.accountId)))))
+            ))
+            on { query(eq(GET_ACCOUNT_AUTH_DESCRIPTORS_BY_SIGNER), any()) } doReturn
+                    gtv(GtvObjectMapper.toGtvDictionary(descriptor))
+            on { query(eq(GET_AUTH_FLAGS), any()) } doReturn gtv(listOf(gtv("A")))
+            on { query(eq(GET_AUTH_MESSAGE_TEMPLATE), any()) } doReturn
+                    gtv("{blockchain_rid} auth message template {nonce}")
+            on { query(eq(GET_AUTH_DESCRIPTOR_COUNTER), any()) } doReturn gtv(17)
+        }
+        testCommand.initFtAuth(client)
+
+        val (accountId2, authDescriptorId2) = testCommand.findFtAccountIdWithAuthDescriptorId(
+                client,
+                null,
+                evmAddress,
+                "my_op",
+                null)
+        assertThat(accountId2).isEqualTo(accountId)
+        assertThat(authDescriptorId2).isEqualTo(authDescriptorId)
+
+        val signature = Signature(
+                r = "1234".hexStringToWrappedByteArray(), s = "5678".hexStringToWrappedByteArray(), v = 5)
+
+        val transactionBuilder = mock<TransactionBuilder>()
+        assertDoesNotThrow {
+            testCommand.addEvmAuthOperation(client, transactionBuilder, "my_op", listOf(gtv("foo")), evmAddress,
+                    accountId, authDescriptorId, launchWebBrowser = false) { url ->
+                // A caller that only knows the port must not be able to read the page, abort or answer the signing
+                val portOnly = url.substringBeforeLast("/")
+                assertThat(ApacheClient()(Request(Method.GET, portOnly)).status.successful).isFalse()
+                assertThat(ApacheClient()(Request(Method.POST, "$portOnly/error")
+                        .body("abort")).status.successful).isFalse()
+                assertThat(ApacheClient()(Request(Method.POST, "$portOnly/signatures")
+                        .header("Content-Type", "application/json")
+                        .body("""[{"r":"0x9999","s":"0x9999","v":1}]""")).status.successful).isFalse()
+                assertThat(ApacheClient()(Request(Method.GET, url)).status.successful).isTrue()
+
                 val response = ApacheClient()(Request(Method.POST, "$url/signatures")
                         .header("Content-Type", "application/json")
                         .body("""[{"r":"0x1234","s":"0x5678","v":5}]"""))
