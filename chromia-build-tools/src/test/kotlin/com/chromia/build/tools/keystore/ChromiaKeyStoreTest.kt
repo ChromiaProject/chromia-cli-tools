@@ -15,6 +15,7 @@ import uk.org.webcompere.systemstubs.environment.EnvironmentVariables
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.attribute.PosixFilePermission
+import java.nio.file.attribute.PosixFilePermissions
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.readText
 
@@ -81,6 +82,42 @@ class ChromiaKeyStoreTest {
             chromiaKeyStore.saveKeyPair(keyPair)
             val throwable = assertThrows<UserMistake> { chromiaKeyStore.saveKeyPair(keyPair) }
             assertThat(throwable.message).isEqualTo("Key pair with keyId: chromia_key already exists in $testDir")
+        }
+    }
+
+    @Test
+    fun `secret files are owner-only even when a world-readable file already exists`() {
+        val os = System.getProperty("os.name").lowercase()
+        if (!(os.contains("nix") || os.contains("nux") || os.contains("mac"))) return
+        EnvironmentVariables("CHROMIA_HOME", testDir.absolutePathString()).execute {
+            val chromiaKeyStore = ChromiaKeyStore()
+            val worldReadable = PosixFilePermissions.fromString("rw-r--r--")
+            Files.createFile(chromiaKeyStore.privateKeyFile, PosixFilePermissions.asFileAttribute(worldReadable))
+            Files.createFile(chromiaKeyStore.mnemonicFile, PosixFilePermissions.asFileAttribute(worldReadable))
+            Files.setPosixFilePermissions(chromiaKeyStore.privateKeyFile, worldReadable)
+            Files.setPosixFilePermissions(chromiaKeyStore.mnemonicFile, worldReadable)
+
+            chromiaKeyStore.saveKeyPair(keyPair, mnemonic)
+
+            assertThat(Files.getPosixFilePermissions(chromiaKeyStore.privateKeyFile))
+                    .containsExactlyInAnyOrder(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)
+            assertThat(Files.getPosixFilePermissions(chromiaKeyStore.mnemonicFile))
+                    .containsExactlyInAnyOrder(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)
+            assertThat(chromiaKeyStore.privateKeyFile.readText()).isEqualTo(keyPair.privKey.hex())
+        }
+    }
+
+    @Test
+    fun `new secret files are created owner-only`() {
+        val os = System.getProperty("os.name").lowercase()
+        if (!(os.contains("nix") || os.contains("nux") || os.contains("mac"))) return
+        EnvironmentVariables("CHROMIA_HOME", testDir.absolutePathString()).execute {
+            val chromiaKeyStore = ChromiaKeyStore("new_key")
+            chromiaKeyStore.saveKeyPair(keyPair, mnemonic)
+            assertThat(Files.getPosixFilePermissions(chromiaKeyStore.privateKeyFile))
+                    .containsExactlyInAnyOrder(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)
+            assertThat(Files.getPosixFilePermissions(chromiaKeyStore.mnemonicFile))
+                    .containsExactlyInAnyOrder(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)
         }
     }
 }
