@@ -686,6 +686,18 @@ public abstract class com/chromia/build/tools/template/AbstractTemplateFactory :
 	public fun createProjectFromTemplate (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
 }
 
+public final class com/chromia/build/tools/template/AgentInstructionsSupport {
+	public static final field AGENTS_FILE_NAME Ljava/lang/String;
+	public static final field CLAUDE_FILE_NAME Ljava/lang/String;
+	public static final field CURSOR_RULE_PATH Ljava/lang/String;
+	public static final field Companion Lcom/chromia/build/tools/template/AgentInstructionsSupport$Companion;
+	public fun <init> ()V
+	public final fun addToProject (Ljava/io/File;)V
+}
+
+public final class com/chromia/build/tools/template/AgentInstructionsSupport$Companion {
+}
+
 public final class com/chromia/build/tools/template/AssetManagementTemplateFactory : com/chromia/build/tools/template/AbstractTemplateFactory {
 	public fun <init> ()V
 	public fun createProjectFiles (Ljava/io/File;Ljava/lang/String;Lcom/chromia/build/tools/template/TemplateOptions;)V
