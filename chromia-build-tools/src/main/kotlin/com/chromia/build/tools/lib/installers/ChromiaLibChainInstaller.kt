@@ -48,7 +48,7 @@ class ChromiaLibChainInstaller(
         }
 
         val tempLibraryDir = createTempDirectory(name)
-        val targetDir = libRoot / name
+        val targetDir = resolveInside(libRoot, name)
 
         try {
             progress.onProgress(libraryId, 30, 100, "Downloading library files")
@@ -65,7 +65,7 @@ class ChromiaLibChainInstaller(
                     .filter { (filePath, _) -> shouldInstallFile(filePath, libModel) }
 
             installableFiles.forEach { (filePath, content) ->
-                val tempPath = tempLibraryDir / filePath
+                val tempPath = resolveInside(tempLibraryDir, filePath)
                 installFile(tempPath, content.data)
             }
 
@@ -140,5 +140,23 @@ class ChromiaLibChainInstaller(
 
     companion object {
         private const val LIBRARY_PAGE_SIZE = 20L
+
+        /**
+         * Resolves a path received from the library chain against [baseDir] and makes sure the result
+         * stays inside [baseDir]. Absolute paths and paths that climb out with `..` are rejected, so a
+         * library entry can never write outside the directory it is installed into.
+         */
+        internal fun resolveInside(baseDir: Path, untrustedPath: String): Path {
+            val base = baseDir.toAbsolutePath().normalize()
+            val relative = Path.of(untrustedPath)
+            require(untrustedPath.isNotBlank() && !relative.isAbsolute) {
+                "Library contains an invalid file path: '$untrustedPath'"
+            }
+            val resolved = base.resolve(relative).normalize()
+            require(resolved != base && resolved.startsWith(base)) {
+                "Library file path '$untrustedPath' points outside the installation directory"
+            }
+            return resolved
+        }
     }
 }

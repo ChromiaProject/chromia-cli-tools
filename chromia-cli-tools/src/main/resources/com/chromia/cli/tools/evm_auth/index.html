@@ -5,6 +5,7 @@
     <script type="module">
         import {ethers} from "/webjars/ethers/6.13.1/dist/ethers.min.js";
 
+        const sessionToken = "{{token}}";
         const myAddress = "{{address}}";
         const messages = [
             {{messages}}
@@ -23,7 +24,7 @@
                 const rawSignature = await signer.signMessage(message);
                 signatures.push(ethers.Signature.from(rawSignature).toJSON());
             }
-            await fetch("/signatures", {
+            await fetch(`/${sessionToken}/signatures`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -39,7 +40,7 @@
                 await signIt(window.ethereum);
             }
         } catch (err) {
-            await fetch("/error", {
+            await fetch(`/${sessionToken}/error`, {
                 method: "POST",
                 body: err.message
             });

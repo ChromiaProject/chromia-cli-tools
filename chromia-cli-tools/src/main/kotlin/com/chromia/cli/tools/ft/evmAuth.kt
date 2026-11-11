@@ -28,6 +28,7 @@ import org.http4k.server.asServer
 import java.awt.Desktop
 import java.io.IOException
 import java.net.URI
+import java.security.SecureRandom
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutionException
 
@@ -96,25 +97,29 @@ fun CoreCliktCommand.fetchEvmSignatures(
         fetchEvmAuthMessage(client, accountId, authDescriptorId, it.opName, it.opArgs, it.forEvmSignatures)
     }
 
+    // Unguessable per-session path segment. Only the page we open knows it, so another local process
+    // or a web page that finds the port cannot read the page or post to the callback endpoints.
+    val sessionToken = ByteArray(32).also { SecureRandom().nextBytes(it) }.toHex().lowercase()
     val html = this::class.java.getResource("/com/chromia/cli/tools/evm_auth/index.html")!!.readText()
+            .replace("{{token}}", sessionToken)
             .replace("{{address}}", "0x${evmAddress.toHex()}")
             .replace("{{messages}}", authMessages.joinToString(separator = "") {
                 "\"${StringEscapeUtils.escapeEcmaScript(it)}\",\n"
             })
     val signaturesFuture = CompletableFuture<String>()
     val server = routes(
-            "/" bind GET to { Response(OK).header("Content-Type", "text/html").body(html) },
-            "/signatures" bind POST to { request ->
+            "/$sessionToken" bind GET to { Response(OK).header("Content-Type", "text/html").body(html) },
+            "/$sessionToken/signatures" bind POST to { request ->
                 signaturesFuture.complete(request.bodyString())
                 Response(OK)
             },
-            "/error" bind POST to { request ->
+            "/$sessionToken/error" bind POST to { request ->
                 signaturesFuture.completeExceptionally(CliktError(request.bodyString()))
                 Response(OK)
             },
             webJars()
     ).asServer(Netty(port = 0)).start()
-    val url = "http://localhost:${server.port()}"
+    val url = "http://localhost:${server.port()}/$sessionToken"
     if (launchWebBrowser) {
         openWebLink(url)
     }
