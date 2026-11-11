@@ -7,7 +7,7 @@ This is a [Chromia](https://chromia.com) dApp written in Rell. These notes are f
 Run these from the directory that holds `chromia.yml`:
 
 - `chr build` compiles every blockchain in `chromia.yml`. Errors print as `file(line:col) ERROR: message`, and the exit code is non-zero on failure.
-- `chr test` runs the unit tests (no database setup needed). The last lines read `SUMMARY: n FAILED / n PASSED`, and the exit code is non-zero if a test fails.
+- `chr test` runs the unit tests against a local PostgreSQL (chr's defaults: `localhost:5432`, database, user and password `postchain`). The last lines read `SUMMARY: n FAILED / n PASSED`, and the exit code is non-zero if a test fails.
 - `chr test --tests=<pattern>` runs matching test functions; `chr test --file=src/test/<name>_test.rell` runs one file.
 - `chr code format` formats the code in place (`.rell_format`); `chr code lint` checks style (`.rell_lint`).
 - `chr generate client-stubs --typescript` (or `--kotlin`, `--python`, `--javascript`) writes a typed client to `build/stubs`.
